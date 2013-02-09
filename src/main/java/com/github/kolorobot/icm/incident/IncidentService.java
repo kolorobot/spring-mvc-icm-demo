@@ -1,5 +1,7 @@
 package com.github.kolorobot.icm.incident;
 
+import java.util.Date;
+
 import javax.inject.Inject;
 
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,7 +21,8 @@ public class IncidentService {
 	
 	public Incident createIncident(UserDetails user, Incident incident) {
 		Account reporter = accountRepository.findByEmail(user.getUsername());
-		incident.setReporter(reporter);
+		incident.setCreator(reporter);
+		incident.setCreated(new Date());
 		incidentRepository.save(incident);
 		return incident;
 	}

@@ -20,19 +20,17 @@
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
 </head>
 <body>
 	
 	<tiles:insertAttribute name="header"  defaultValue="" />
 	<!-- Page content -->
-	<div class="container">
+	<div class="container table">
 		<tiles:insertAttribute name="body" defaultValue="" />
 	</div>
 	<!-- End of page content -->
 	<tiles:insertAttribute name="footer"  defaultValue="" />
-	
-	<script src="http://code.jquery.com/jquery-latest.js"></script>
-    <script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
 </body>
 </html>

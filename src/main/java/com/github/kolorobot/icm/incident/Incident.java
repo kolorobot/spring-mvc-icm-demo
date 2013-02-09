@@ -1,5 +1,6 @@
 package com.github.kolorobot.icm.incident;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -10,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -19,7 +22,7 @@ import com.github.kolorobot.icm.account.Account;
 public class Incident {
 	
 	public enum Status {
-		NEW, CONFIRMED, NOT_CONFIRMED, IN_PROGRESS, DONE;
+		NEW, CONFIRMED, NOT_CONFIRMED, IN_PROGRESS, SOLVED;
 	}
 
 	@Id
@@ -27,8 +30,8 @@ public class Incident {
 	private Long id;
 	
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "reporter_id", nullable = false, updatable = false)
-	private Account reporter;
+	@JoinColumn(name = "creator_id", nullable = false, updatable = false)
+	private Account creator;
 	
 	@Column(name = "incident_type")
 	@NotBlank
@@ -40,6 +43,9 @@ public class Incident {
 	
 	@NotBlank
 	private String description;
+		
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date created;
 	
 	private Status status = Status.NEW;
 	
@@ -58,12 +64,12 @@ public class Incident {
 		this.id = id;
 	}
 
-	public Account getReporter() {
-		return reporter;
+	public Account getCreator() {
+		return creator;
 	}
 
-	public void setReporter(Account reporter) {
-		this.reporter = reporter;
+	public void setCreator(Account creator) {
+		this.creator = creator;
 	}
 
 	public String getIncidentType() {
@@ -112,6 +118,14 @@ public class Incident {
 
 	public void setAudits(List<Audit> audits) {
 		this.audits = audits;
+	}
+
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
 	}
 	
 }

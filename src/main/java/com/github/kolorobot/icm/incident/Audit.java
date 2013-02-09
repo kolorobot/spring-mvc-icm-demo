@@ -14,6 +14,8 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.github.kolorobot.icm.account.Account;
+
 @Entity(name = "audit")
 public class Audit {
 	
@@ -24,6 +26,10 @@ public class Audit {
 	@ManyToOne
 	@JoinColumn(name = "incident_id")
 	private Incident incident;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "creator_id", nullable = false, updatable = false)
+	private Account creator;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@NotNull
