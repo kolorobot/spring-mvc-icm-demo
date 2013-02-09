@@ -14,16 +14,20 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class UserService implements UserDetailsService {
 	
 	@Autowired
 	private AccountRepository accountRepository;
 	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	@PostConstruct	
 	protected void initialize() {
-		accountRepository.save(new Account("user", "demo", "ROLE_USER"));
-		accountRepository.save(new Account("admin", "admin", "ROLE_ADMIN"));
+		createAccount(new Account("User", "user@icm.com", "demo", "ROLE_USER"));
+		createAccount(new Account("Admin", "admin@icm.com", "admin", "ROLE_ADMIN"));
 	}
 	
 	@Override
@@ -33,6 +37,11 @@ public class UserService implements UserDetailsService {
 			throw new UsernameNotFoundException("user not found");
 		}
 		return new User(account.getEmail(), account.getPassword(), Collections.singleton(createAuthority(account)));
+	}
+	
+	public void createAccount(Account account) {
+		account.setPassword(passwordEncoder.encode(account.getPassword()));
+		accountRepository.save(account);
 	}
 	
 	public void signin(Account account) {

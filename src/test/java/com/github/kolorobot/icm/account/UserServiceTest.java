@@ -51,7 +51,7 @@ public class UserServiceTest {
 	@Test
 	public void shouldReturnUserDetails() {
 		// arrange
-		Account demoUser = new Account("user", "demo", "ROLE_USER");
+		Account demoUser = new Account("User", "user", "demo", "ROLE_USER");
 		when(accountRepositoryMock.findByEmail("user")).thenReturn(demoUser);
 
 		// act

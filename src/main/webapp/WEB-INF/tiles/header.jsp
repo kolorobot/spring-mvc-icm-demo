@@ -18,6 +18,9 @@
 					</security:authorize>
 					<security:authorize access="isAuthenticated()">
 						<li><a href='<s:url value="/logout"></s:url>'>Logout</a></li>
+						<form class="navbar-search pull-left" action='<c:url value="/incident/search" />'>
+							<input type="text" name="q" class="search-query" placeholder="Search">
+						</form>
 					</security:authorize>
 				</ul>
 			</div>

@@ -1,5 +1,5 @@
 .form {
-  max-width: 300px;
+  max-width: 380px;
   padding: 19px 29px 29px;
   margin: 0 auto 20px;
   background-color: #fff;
@@ -16,12 +16,14 @@
   margin-bottom: 10px;
 }
 .form input[type="text"],
-.form input[type="password"] {
+.form input[type="password"],
+.form textarea {
   font-size: 16px;
   height: auto;
   margin-bottom: 15px;
   padding: 7px 9px;
 }
+
 .form .form-text {
   margin-top: 10px;
 }
