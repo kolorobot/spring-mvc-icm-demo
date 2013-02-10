@@ -2,6 +2,7 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles-extras" prefix="tilesx"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
@@ -27,7 +28,21 @@
 	
 	<tiles:insertAttribute name="header"  defaultValue="" />
 	<!-- Page content -->
-	<div class="container table">
+	<div class="container">
+		<c:if test="${not empty message}">
+			<c:choose>
+				<c:when test="${message.type == 'WARNING'}">
+					<c:set value="" var="alertClass" />
+				</c:when>
+				<c:otherwise>
+					<c:set value="alert-${fn:toLowerCase(message.type)}" var="alertClass" />
+				</c:otherwise>
+			</c:choose>
+			<div class="alert ${alertClass}">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				${message.message}
+			</div>
+		</c:if>
 		<tiles:insertAttribute name="body" defaultValue="" />
 	</div>
 	<!-- End of page content -->

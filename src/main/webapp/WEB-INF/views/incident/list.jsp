@@ -44,7 +44,6 @@
 						</button>
 						<ul class="dropdown-menu">
 							<li><a data-id="${item.getId()}" data-modal-label="Incident details" href="#" class="open-IncidentDetailsDialog">View Details</a></li>
-							<li><a data-id="${item.getId()}" data-modal-label="Incident audits" href="#" class="open-IncidentAuditsDialog">View Audits</a></li>
 						</ul>
 					</div>
 				</td>
@@ -66,19 +65,6 @@
 		// populate dialog data
 		var id = $(this).data('id');
 		var url = '<c:url value="/incident"/>' + "/" + id;
-		$('#dialog-body').load(url);
-		// show dialog
-		$('#dialog').modal('show');
-	});
-	$(document).on("click", ".open-IncidentAuditsDialog", function() {
-		// clear
-		$('#dialog-body').text("");
-		// set dialog title		
-		var label = $(this).data('modal-label');
-		$('#modalLabel').text(label);
-		// populate dialog data
-		var id = $(this).data('id');
-		var url = '<c:url value="/incident"/>' + "/" + id + "/audit";
 		$('#dialog-body').load(url);
 		// show dialog
 		$('#dialog').modal('show');

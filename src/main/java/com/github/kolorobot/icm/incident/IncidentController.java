@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.github.kolorobot.icm.support.web.Message;
 
 @Controller
 @RequestMapping("/incident")
@@ -32,7 +36,7 @@ class IncidentController {
 	}
 	
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public String signup(UserDetails user, @Valid @ModelAttribute IncidentForm incidentForm, Errors errors) {
+	public String create(UserDetails user, @Valid @ModelAttribute IncidentForm incidentForm, Errors errors, RedirectAttributes ra) {
 		if (errors.hasErrors()) {
 			return null;
 		}
@@ -44,7 +48,9 @@ class IncidentController {
 		
 		incidentService.createIncident(user, incident);
 		
-		return "redirect:/";
+		ra.addFlashAttribute(Message.MESSAGE_ATTRIBUTE, new Message("New incident successfully created", Message.Type.SUCCESS));
+		
+		return "redirect:/incident/list";
 	}
 	
 	@RequestMapping(value = "/list")
@@ -54,20 +60,33 @@ class IncidentController {
 		return incidentRepository.findAll();
 	}
 	
+	@RequestMapping(value = "/{id}", headers = "X-Requested-With=XMLHttpRequest")
+	@Transactional
+	public String detailsAjax(@PathVariable("id") Long id, Model model) {
+		// FIXME Only current user's incident
+		Incident incident = incidentRepository.findOne(id);
+		List<Audit> audits = new ArrayList<Audit>(incident.getAudits());
+		model.addAttribute("incident", incident);
+		model.addAttribute("audits", audits);
+		return "incident/detailsAjax";
+	}
+	
 	@RequestMapping(value = "/{id}")
+	@Transactional
 	public String details(@PathVariable("id") Long id, Model model) {
 		// FIXME Only current user's incident
-		model.addAttribute("incident", incidentRepository.findOne(id));
+		Incident incident = incidentRepository.findOne(id);
+		List<Audit> audits = new ArrayList<Audit>(incident.getAudits());
+		model.addAttribute("incident", incident);
+		model.addAttribute("audits", audits);
 		return "incident/details";
 	}
 	
-	@RequestMapping(value = "/{id}/audit")
-	@Transactional
-	public String auditList(@PathVariable("id") Long id, Model model) {
-		// FIXME Only current user's incident
-		// FIXME Get audits sorted
-		List<Audit> audits = new ArrayList<Audit>(incidentRepository.findOne(id).getAudits());
-		model.addAttribute("audits", audits);
-		return "incident/audit/list";
+	@RequestMapping(value = "search")
+	public String search(@RequestParam String q) {
+		// FIXME Not handled conversion error
+		// FIXME Not handled any error
+		Long incidentId = Long.valueOf(q);
+		return "forward:/incident/" + incidentId;
 	}
 }

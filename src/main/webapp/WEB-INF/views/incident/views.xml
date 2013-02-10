@@ -12,10 +12,10 @@
 	<definition name="incident/list" extends="default">
 		<put-attribute name="body" value="/WEB-INF/views/incident/list.jsp" />
 	</definition>	
-	<definition name="incident/details" extends="ajax">
+	<definition name="incident/detailsAjax" extends="ajax">
 		<put-attribute name="body" value="/WEB-INF/views/incident/details.jsp" />
 	</definition>
-	<definition name="incident/audit/list" extends="ajax">
-		<put-attribute name="body" value="/WEB-INF/views/incident/auditList.jsp" />
+	<definition name="incident/details" extends="default">
+		<put-attribute name="body" value="/WEB-INF/views/incident/details.jsp" />
 	</definition>
 </tiles-definitions>
