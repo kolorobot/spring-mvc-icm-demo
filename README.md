@@ -9,12 +9,12 @@ Installation
 ------------
 
 * Install Java environment (JDK 1.7) - http://www.oracle.com/technetwork/java/javase/downloads/index.html
-* Set JAVA_HOME environment variable
+  * Don't forget to set JAVA_HOME environment variable after installation
 * Install and configure Maven3 - http://maven.apache.org/download.cgi
 * Install MySQL 5 database - http://dev.mysql.com/downloads/
-** Create database using the following script: https://github.com/kolorobot/spring-mvc-icm-demo/blob/master/src/main/sql/mysql-create-database.sql
+  * Create database using the following script: https://github.com/kolorobot/spring-mvc-icm-demo/blob/master/src/main/sql/mysql-create-database.sql
 * Download the source code as zip
-** (Optional) Use *git* client and clone the repository
+  * (Optional) Use *git* client and clone the repository
 * Unzip the source code
 
 Run the project
