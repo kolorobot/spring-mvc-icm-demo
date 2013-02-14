@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
 
@@ -22,7 +23,20 @@
 		</tr>
 		<tr>
 			<th>Incident address</th>
-			<td><c:out value="${incident.getIncidentAddress()}" default="N/A" /></td>
+			<td>
+				<c:choose>
+					<c:when test="${incident.getAddress() != null}">
+						<c:out value="${incident.getAddress().getAddressLine()}" /> <br/>					
+						<c:out value="${incident.getAddress().getCityLine()}" />
+					</c:when>
+					<c:otherwise>
+						N/A
+					</c:otherwise>
+				</c:choose>
+				<address>
+					
+				</address>
+			</td>
 		</tr>
 		<tr>
 			<th>Current status</th>

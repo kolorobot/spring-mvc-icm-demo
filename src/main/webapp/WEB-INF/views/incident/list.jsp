@@ -1,6 +1,8 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="security"%>
 
 <div id="dialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
 	<div class="modal-header">
@@ -44,6 +46,9 @@
 						</button>
 						<ul class="dropdown-menu">
 							<li><a data-id="${item.getId()}" data-modal-label="Incident details" href="#" class="open-IncidentDetailsDialog">View Details</a></li>
+							<security:authorize access="hasRole('ROLE_ADMIN')">
+								<li><a data-id="${item.getId()}" href="#" class="">Add Audit</a></li>
+							</security:authorize>
 						</ul>
 					</div>
 				</td>

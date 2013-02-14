@@ -3,6 +3,7 @@ package com.github.kolorobot.icm.incident;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,12 +12,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.github.kolorobot.icm.account.Account;
+import com.github.kolorobot.icm.account.Address;
 
 @Entity(name = "incident")
 public class Incident {
@@ -37,9 +40,9 @@ public class Incident {
 	@NotBlank
 	private String incidentType;
 	
-	@Column(name = "incident_address")
-	@NotBlank
-	private String incidentAddress;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "address_id")
+	private Address address;
 	
 	@NotBlank
 	private String description;
@@ -53,7 +56,7 @@ public class Incident {
 	@JoinColumn(name = "assignee_id")
 	private Account assignee;
 	
-	@OneToMany(mappedBy = "incident")
+	@OneToMany(mappedBy = "incident", cascade = CascadeType.ALL)
 	private List<Audit> audits;
 
 	public Long getId() {
@@ -78,14 +81,6 @@ public class Incident {
 
 	public void setIncidentType(String incidentType) {
 		this.incidentType = incidentType;
-	}
-
-	public String getIncidentAddress() {
-		return incidentAddress;
-	}
-
-	public void setIncidentAddress(String incidentAddress) {
-		this.incidentAddress = incidentAddress;
 	}
 
 	public String getDescription() {
@@ -126,6 +121,14 @@ public class Incident {
 
 	public void setCreated(Date created) {
 		this.created = created;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 	
 }
