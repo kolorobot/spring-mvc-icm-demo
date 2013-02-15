@@ -26,9 +26,9 @@ public class UserService implements UserDetailsService {
 	
 	@PostConstruct	
 	protected void initialize() {
-		createAccount(new Account("User", "user@icm.com", "demo", "ROLE_USER"));
+//		createAccount(new Account("User", "user@icm.com", "demo", "ROLE_USER"));
 		// there should be only one admin account
-		createAccount(new Account("Admin", "admin@icm.com", "admin", "ROLE_ADMIN"));
+//		createAccount(new Account("Admin", "admin@icm.com", "admin", "ROLE_ADMIN"));
 	}
 	
 	@Override

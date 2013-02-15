@@ -1,6 +1,7 @@
 package com.github.kolorobot.icm.incident;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.github.kolorobot.icm.account.Account;
 import com.github.kolorobot.icm.account.AccountRepository;
 import com.github.kolorobot.icm.account.Address;
 import com.github.kolorobot.icm.support.web.Message;
@@ -27,7 +29,7 @@ import com.github.kolorobot.icm.support.web.Message;
 class IncidentController {
 	
 	@Inject
-	private IncidentService incidentService; 
+	private AccountRepository accountRepository;
 	
 	@Inject
 	private IncidentRepository incidentRepository;
@@ -52,10 +54,14 @@ class IncidentController {
 		incident.setAddress(incidentAddress);
 		incident.setDescription(incidentForm.getDescription());
 		incident.setIncidentType(incidentForm.getType());
+		Account reporter = accountRepository.findByEmail(user.getUsername());
+		Account assignee = accountRepository.findByEmail("admin@icm.com");
+		incident.setCreator(reporter);
+		incident.setAssignee(assignee);
+		incident.setCreated(new Date());
+		incidentRepository.save(incident);
 		
-		incidentService.createIncident(user, incident);
-		
-		ra.addFlashAttribute(Message.MESSAGE_ATTRIBUTE, new Message("New incident successfully created", Message.Type.SUCCESS));
+		ra.addFlashAttribute(Message.MESSAGE_ATTRIBUTE, new Message("New incident created successfully", Message.Type.SUCCESS));
 		
 		return "redirect:/incident/list";
 	}
@@ -95,5 +101,32 @@ class IncidentController {
 		// FIXME Not handled any error
 		Long incidentId = Long.valueOf(q);
 		return "forward:/incident/" + incidentId;
+	}
+	
+	// FIXME Should be available only for ROLE_ADMIN
+	@RequestMapping("/{incidentId}/audit/create")	
+	public String createAudit(@PathVariable Long incidentId, Model model) {
+		model.addAttribute(new AuditForm());
+		return "incident/audit/create";
+	}
+	
+	// FIXME Should be available only for ROLE_ADMIN
+	@RequestMapping(value = "/{incidentId}/audit/create", method = RequestMethod.POST)
+	@Transactional
+	public String createAudit(UserDetails user, @PathVariable Long incidentId, @Valid @ModelAttribute AuditForm auditForm, Errors errors, RedirectAttributes ra) {
+		// FIXME Only current user's incident
+		Audit audit = new Audit();
+		audit.setDescription(auditForm.getDescription());		
+		audit.setStatus(auditForm.getStatus());
+		Account creator = accountRepository.findByEmail(user.getUsername());
+		Incident incident = incidentRepository.findOne(incidentId);
+		audit.setCreated(new Date());
+		audit.setCreator(creator);
+		incident.addAudit(audit);
+		incidentRepository.save(incident);
+		
+		ra.addFlashAttribute(Message.MESSAGE_ATTRIBUTE, new Message("New audit created successfully", Message.Type.SUCCESS));
+		
+		return "redirect:/incident/" + incidentId;
 	}
 }

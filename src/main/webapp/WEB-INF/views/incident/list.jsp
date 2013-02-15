@@ -47,7 +47,7 @@
 						<ul class="dropdown-menu">
 							<li><a data-id="${item.getId()}" data-modal-label="Incident details" href="#" class="open-IncidentDetailsDialog">View Details</a></li>
 							<security:authorize access="hasRole('ROLE_ADMIN')">
-								<li><a data-id="${item.getId()}" href="#" class="">Add Audit</a></li>
+								<li><a href='<c:url value="/incident/${item.getId()}/audit/create"/>' class="">Add Audit</a></li>
 							</security:authorize>
 						</ul>
 					</div>

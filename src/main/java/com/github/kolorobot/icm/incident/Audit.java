@@ -37,6 +37,9 @@ public class Audit {
 	
 	@NotBlank
 	private String description;
+	
+	@NotNull
+	private Incident.Status status;
 
 	public Long getId() {
 		return id;
@@ -68,6 +71,22 @@ public class Audit {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Incident.Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Incident.Status status) {
+		this.status = status;
+	}
+
+	public Account getCreator() {
+		return creator;
+	}
+
+	public void setCreator(Account creator) {
+		this.creator = creator;
 	}
 	
 }

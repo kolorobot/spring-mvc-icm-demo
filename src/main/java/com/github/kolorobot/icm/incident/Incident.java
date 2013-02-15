@@ -1,5 +1,6 @@
 package com.github.kolorobot.icm.incident;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -57,6 +59,7 @@ public class Incident {
 	private Account assignee;
 	
 	@OneToMany(mappedBy = "incident", cascade = CascadeType.ALL)
+	@OrderBy(value = "created DESC")
 	private List<Audit> audits;
 
 	public Long getId() {
@@ -108,6 +111,9 @@ public class Incident {
 	}
 
 	public List<Audit> getAudits() {
+		if (audits == null) {
+			audits = new ArrayList<Audit>();
+		}
 		return audits;
 	}
 
@@ -129,6 +135,12 @@ public class Incident {
 
 	public void setAddress(Address address) {
 		this.address = address;
+	}
+
+	public void addAudit(Audit audit) {
+		getAudits().add(audit);
+		setStatus(audit.getStatus());
+		audit.setIncident(this);
 	}
 	
 }

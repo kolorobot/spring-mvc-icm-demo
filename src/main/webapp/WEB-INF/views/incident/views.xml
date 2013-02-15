@@ -18,4 +18,10 @@
 	<definition name="incident/details" extends="default">
 		<put-attribute name="body" value="/WEB-INF/views/incident/details.jsp" />
 	</definition>
+	<definition name="incident/audit/create" extends="default">
+		<put-attribute name="body" value="/WEB-INF/views/incident/createAudit.jsp" />
+		<put-list-attribute name="styles">
+			<add-attribute value="form.css" />
+		</put-list-attribute>
+	</definition>
 </tiles-definitions>
