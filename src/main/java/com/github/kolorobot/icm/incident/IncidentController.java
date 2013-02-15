@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.github.kolorobot.icm.account.AccountRepository;
 import com.github.kolorobot.icm.account.Address;
 import com.github.kolorobot.icm.support.web.Message;
 
@@ -31,6 +32,7 @@ class IncidentController {
 	@Inject
 	private IncidentRepository incidentRepository;
 	
+		
 	@RequestMapping("/create")
 	public IncidentForm create() {
 		return new IncidentForm();

@@ -175,6 +175,12 @@
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>1.9.9</version>
 		</dependency>
+		<!-- Utilities -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>13.0.1</version>
+		</dependency>
 		<!-- Test -->
 		<dependency>
 			<groupId>junit</groupId>

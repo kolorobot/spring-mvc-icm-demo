@@ -21,7 +21,10 @@ public class IncidentService {
 	
 	public Incident createIncident(UserDetails user, Incident incident) {
 		Account reporter = accountRepository.findByEmail(user.getUsername());
+		Account assignee = accountRepository.findByEmail("admin@icm.com");
+
 		incident.setCreator(reporter);
+		incident.setAssignee(assignee);
 		incident.setCreated(new Date());
 		incidentRepository.save(incident);
 		return incident;
