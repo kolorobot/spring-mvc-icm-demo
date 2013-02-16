@@ -13,24 +13,24 @@
 	
 	</div>		
 	<div class="modal-footer">
-		<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		<button class="btn" data-dismiss="modal" aria-hidden="true"><s:message code="close" /></button>
 	</div>
 </div>
-<h2>Incidents</h2>
+<h2><s:message code="incident.incidents" /></h2>
 <table class="table table-hover">
 	<thead>
 		<tr>
-			<th>Id</th>
-			<th>Created</th>
-			<th>Incident type</th>
-			<th>Status</th>
-			<th>Action</th>
+			<th><s:message code="incident.id" /></th>
+			<th><s:message code="incident.created" /></th>
+			<th><s:message code="incident.description" /></th>
+			<th><s:message code="incident.status" /></th>
+			<th><s:message code="action" /></th>
 		</tr>
 	</thead>
 	<tbody>
 		<c:if test="${empty incidents}">
 			<tr>
-				<td colspan="5"><p class="muted">No records found</p></td>
+				<td colspan="5"><p class="muted"><s:message code="noRecords" /></p></td>
 			</tr>		
 		</c:if>
 		<c:forEach var="item" items="${incidents}">
@@ -42,12 +42,12 @@
 				<td>
 					<div class="btn-group">
 						<button class="btn dropdown-toggle" data-toggle="dropdown">
-							Action <span class="caret"></span>
+							<s:message code="action" /> <span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu">
-							<li><a data-id="${item.getId()}" data-modal-label="Incident details" href="#" class="open-IncidentDetailsDialog">View Details</a></li>
+							<li><a data-id="${item.getId()}" data-modal-label='<s:message code="incident.details.dialog" />' href="#" class="open-IncidentDetailsDialog"><s:message code="details" /></a></li>
 							<security:authorize access="hasRole('ROLE_ADMIN')">
-								<li><a href='<c:url value="/incident/${item.getId()}/audit/create"/>' class="">Add Audit</a></li>
+								<li><a href='<c:url value="/incident/${item.getId()}/audit/create"/>' class=""><s:message code="incident.audit.add" /></a></li>
 							</security:authorize>
 						</ul>
 					</div>
@@ -57,7 +57,7 @@
 	</tbody>
 </table>
 <p class="lead">
-	<a href='<c:url value="/incident/create"/>' class="btn btn-large btn-primary">Create Incident</a></p> 
+	<a href='<c:url value="/incident/create"/>' class="btn btn-large btn-primary"><s:message code="incident.create" /></a></p> 
 </p>
 
 <script>

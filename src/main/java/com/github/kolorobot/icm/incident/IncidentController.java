@@ -23,6 +23,7 @@ import com.github.kolorobot.icm.account.Account;
 import com.github.kolorobot.icm.account.AccountRepository;
 import com.github.kolorobot.icm.account.Address;
 import com.github.kolorobot.icm.support.web.Message;
+import com.github.kolorobot.icm.support.web.Message.Type;
 
 @Controller
 @RequestMapping("/incident")
@@ -41,8 +42,9 @@ class IncidentController {
 	}
 	
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public String create(UserDetails user, @Valid @ModelAttribute IncidentForm incidentForm, Errors errors, RedirectAttributes ra) {
+	public String create(UserDetails user, @Valid @ModelAttribute IncidentForm incidentForm, Errors errors, RedirectAttributes ra, Model model) {
 		if (errors.hasErrors()) {
+			model.addAttribute(Message.MESSAGE_ATTRIBUTE, new Message("incident.create.failed", Type.ERROR));
 			return null;
 		}
 		
@@ -61,7 +63,7 @@ class IncidentController {
 		incident.setCreated(new Date());
 		incidentRepository.save(incident);
 		
-		ra.addFlashAttribute(Message.MESSAGE_ATTRIBUTE, new Message("New incident created successfully", Message.Type.SUCCESS));
+		ra.addFlashAttribute(Message.MESSAGE_ATTRIBUTE, new Message("incident.create.success", Message.Type.SUCCESS));
 		
 		return "redirect:/incident/list";
 	}
@@ -113,7 +115,11 @@ class IncidentController {
 	// FIXME Should be available only for ROLE_ADMIN
 	@RequestMapping(value = "/{incidentId}/audit/create", method = RequestMethod.POST)
 	@Transactional
-	public String createAudit(UserDetails user, @PathVariable Long incidentId, @Valid @ModelAttribute AuditForm auditForm, Errors errors, RedirectAttributes ra) {
+	public String createAudit(UserDetails user, @PathVariable Long incidentId, @Valid @ModelAttribute AuditForm auditForm, Errors errors, RedirectAttributes ra, Model model) {
+		if (errors.hasErrors()) {
+			model.addAttribute(Message.MESSAGE_ATTRIBUTE, new Message("incident.audit.create.failed", Type.ERROR));
+			return null;
+		}
 		// FIXME Only current user's incident
 		Audit audit = new Audit();
 		audit.setDescription(auditForm.getDescription());		
@@ -125,7 +131,7 @@ class IncidentController {
 		incident.addAudit(audit);
 		incidentRepository.save(incident);
 		
-		ra.addFlashAttribute(Message.MESSAGE_ATTRIBUTE, new Message("New audit created successfully", Message.Type.SUCCESS));
+		ra.addFlashAttribute(Message.MESSAGE_ATTRIBUTE, new Message("incident.audit.create.success", Message.Type.SUCCESS));
 		
 		return "redirect:/incident/" + incidentId;
 	}

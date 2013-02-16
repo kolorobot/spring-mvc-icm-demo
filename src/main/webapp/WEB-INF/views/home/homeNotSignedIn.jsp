@@ -3,9 +3,9 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
 
 <div class="hero-unit">
-	<h1><s:message code="view.index.title" /></h1>
-	<p>Sign up to get started with Incident management application.</p>
+	<h1><s:message code="home.application.name" /></h1>
+	<p><s:message code="home.signup.message" /></p>
 	<p>
-		<a href='<s:url value="/signup" />' class="btn btn-primary btn-large"> Sign Up </a>
+		<a href='<s:url value="/signup" />' class="btn btn-primary btn-large"> <s:message code="signup" /> </a>
 	</p>
 </div>

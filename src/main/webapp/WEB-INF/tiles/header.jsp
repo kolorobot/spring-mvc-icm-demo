@@ -13,14 +13,14 @@
 			<a class="brand" href="#">ICM</a>
 			<div class="nav-collapse collapse">
 				<ul class="nav">
-					<li class="active"><a href='<s:url value="/"></s:url>'>Home</a></li>					
+					<li class="active"><a href='<s:url value="/"></s:url>'><s:message code="header.home" /></a></li>					
 					<security:authorize access="!isAuthenticated()">
-						<li><a href='<s:url value="/signin"></s:url>'>Sign in</a></li>
+						<li><a href='<s:url value="/signin"></s:url>'><s:message code="signin" /></a></li>
 					</security:authorize>
 					<security:authorize access="isAuthenticated()">
-						<li><a href='<s:url value="/logout"></s:url>'>Logout</a></li>
+						<li><a href='<s:url value="/logout"></s:url>'><s:message code="logout" /></a></li>
 						<form class="navbar-search pull-left" action='<c:url value="/incident/search" />'>
-							<input type="text" name="q" class="search-query" placeholder="Search">
+							<input type="text" name="q" class="search-query" placeholder='<s:message code="header.search" />'>
 						</form>
 					</security:authorize>
 				</ul>

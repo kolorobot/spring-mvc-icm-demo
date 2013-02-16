@@ -3,6 +3,6 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
 
 <div class="alert alert-error alert-block">  
-  <h4>Oops! Something went wrong [${rootCause}]</h4>
+  <h4><s:message code="error.header" /> [${rootCause}]</h4>
   ${stackTraceAsString}
 </div>
