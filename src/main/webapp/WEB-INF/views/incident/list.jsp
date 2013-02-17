@@ -38,7 +38,9 @@
 				<td>${item.getId()}</td>
 				<td>${item.getCreated()}</td>
 				<td>${item.getIncidentType()}</td>
-				<td>${item.getStatus()}</td>
+				<td>
+					<s:message code="incident.status.${item.getStatus()}" />
+				</td>
 				<td>
 					<div class="btn-group">
 						<button class="btn dropdown-toggle" data-toggle="dropdown">

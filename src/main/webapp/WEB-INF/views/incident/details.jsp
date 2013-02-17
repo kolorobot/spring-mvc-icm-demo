@@ -37,7 +37,9 @@
 		</tr>
 		<tr>
 			<th><s:message code="incident.status" /></th>
-			<td><c:out value="${incident.getStatus()}" default="N/A" /></td>
+			<td>
+				<s:message code="incident.status.${incident.getStatus()}" />
+			</td>
 		</tr>
 		<tr>
 			<th>Creator</th>

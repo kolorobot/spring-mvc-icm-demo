@@ -15,5 +15,5 @@
 		<input type="checkbox" name="_spring_security_remember_me"><s:message code="signin.rememberMe" /></input>
 	</label>
 	<button class="btn btn-large btn-primary" type="submit"><s:message code="signin" /></button>
-	<p class="form-text">New here? <a href='<s:url value="/signup"/>'><s:message code="signup" /></a></p>
+	<p class="form-text"><s:message code="signin.newMember" /> <a href='<s:url value="/signup"/>'><s:message code="signup" /></a></p>
 </form>
