@@ -22,6 +22,7 @@
 		<tr>
 			<th><s:message code="incident.id" /></th>
 			<th><s:message code="incident.created" /></th>
+			<% /* Should be type */ %>
 			<th><s:message code="incident.description" /></th>
 			<th><s:message code="incident.status" /></th>
 			<th><s:message code="action" /></th>

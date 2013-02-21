@@ -1,8 +1,8 @@
 package com.github.kolorobot.icm.account;
 
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
 
 import java.util.Collection;
 
@@ -28,14 +28,6 @@ public class UserServiceTest {
 
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
-
-	@Test
-	public void shouldInitializeWithOneDemoUser() {
-		// act
-		userService.initialize();
-		// assert
-		verify(accountRepositoryMock, times(2)).save(any(Account.class));
-	}
 
 	@Test
 	public void shouldThrowExceptionWhenUserNotFound() {

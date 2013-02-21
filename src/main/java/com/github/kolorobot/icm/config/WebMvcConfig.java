@@ -3,19 +3,25 @@ package com.github.kolorobot.icm.config;
 import java.util.List;
 
 import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.method.support.*;
-import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.method.support.ModelAndViewContainer;
+import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
-import org.springframework.web.servlet.view.tiles3.*;
+import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
+import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
+
+import com.github.kolorobot.icm.account.User;
 
 @Configuration
 public class WebMvcConfig extends WebMvcConfigurationSupport {
@@ -55,6 +61,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 		return configurer;
 	}
 	
+	
 	@Override
 	public Validator getValidator() {
 		LocalValidatorFactoryBean validator = new LocalValidatorFactoryBean();
@@ -74,20 +81,20 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 	
 	@Override
 	protected void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-		argumentResolvers.add(new UserDetailsHandlerMethodArgumentResolver());
+		argumentResolvers.add(new UserHandlerMethodArgumentResolver());
 	}
 	
 	// custom argument resolver inner classes
 
-	private static class UserDetailsHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
+	private static class UserHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
 		public boolean supportsParameter(MethodParameter parameter) {
-			return UserDetails.class.isAssignableFrom(parameter.getParameterType());
+			return User.class.isAssignableFrom(parameter.getParameterType());
 		}
 
 		public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
 			Authentication auth = (Authentication) webRequest.getUserPrincipal();
-			return auth != null && auth.getPrincipal() instanceof UserDetails ? auth.getPrincipal() : null;
+			return auth != null && auth.getPrincipal() instanceof User ? auth.getPrincipal() : null;
 		}
 	}
 }

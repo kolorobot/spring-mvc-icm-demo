@@ -2,12 +2,14 @@ package com.github.kolorobot.icm.incident;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -16,14 +18,15 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import com.github.kolorobot.icm.account.Account;
 
-@Entity(name = "audit")
+@Entity
+@Table(name = "audit")
 public class Audit {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@ManyToOne
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "incident_id")
 	private Incident incident;
 	
@@ -40,7 +43,14 @@ public class Audit {
 	
 	@NotNull
 	private Incident.Status status;
+		
+	@Column(name = "previous_status")
+	private Incident.Status previousStatus;
 
+	@NotNull
+	@Column(name = "operator_id")
+	private String operatorId;
+	
 	public Long getId() {
 		return id;
 	}
@@ -88,5 +98,26 @@ public class Audit {
 	public void setCreator(Account creator) {
 		this.creator = creator;
 	}
+
+	public Incident.Status getPreviousStatus() {
+		return previousStatus;
+	}
+
+	public void setPreviousStatus(Incident.Status previousStatus) {
+		this.previousStatus = previousStatus;
+	}
 	
+	public String getOperatorId() {
+		return operatorId;
+	}
+
+	public void setOperatorId(String operatorId) {
+		this.operatorId = operatorId;
+	}
+	
+	@Override
+	public String toString() {
+		return "Audit [id=" + id + ", description=" + description
+				+ ", created=" + created + "]";
+	}
 }

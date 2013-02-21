@@ -10,6 +10,8 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.filter.*;
 import org.springframework.web.servlet.DispatcherServlet;
 
+import com.github.kolorobot.icm.support.web.SessionStateVerificationFilter;
+
 public class WebAppInitializer implements WebApplicationInitializer {
 
 	@Override
@@ -25,6 +27,9 @@ public class WebAppInitializer implements WebApplicationInitializer {
 		characterEncodingFilter.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
 		characterEncodingFilter.setInitParameter("encoding", "UTF-8");
 		characterEncodingFilter.setInitParameter("forceEncoding", "true");
+		
+		FilterRegistration.Dynamic customFilter = servletContext.addFilter("sessionStateVerificationFilter", new SessionStateVerificationFilter());
+		customFilter.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
 		
 		servletContext.addListener(new ContextLoaderListener(context));
 		servletContext.setInitParameter("defaultHtmlEscape", "true");

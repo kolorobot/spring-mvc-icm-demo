@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.validator.constraints.NotBlank;
@@ -16,7 +17,7 @@ import org.hibernate.validator.constraints.NotBlank;
 @Entity
 @Table(name = "account")
 public class Account implements java.io.Serializable {
-
+	
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -38,6 +39,10 @@ public class Account implements java.io.Serializable {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "address_id")
 	private Address address;
+	
+	@NotNull
+	@Column(name = "operator_id")
+	private String operatorId;
 	
 	protected Account() {
 
@@ -100,5 +105,13 @@ public class Account implements java.io.Serializable {
 
 	public void setAddress(Address address) {
 		this.address = address;
+	}
+
+	public String getOperatorId() {
+		return operatorId;
+	}
+
+	public void setOperatorId(String operatorId) {
+		this.operatorId = operatorId;
 	}
 }

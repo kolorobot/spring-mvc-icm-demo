@@ -18,6 +18,16 @@
 	<s:message code="signup.confirmPassword" var="confirmPassword"/>
 	<form:password path="confirmedPassword" class="input-block-level" placeholder='${confirmPassword}' />
 	<form:errors path="confirmedPassword" element="p" class="text-error"/>
+	
+	<label for="role"><s:message code="signup.role" /></label>
+	
+	<select class="input-block-level" name="role">
+		<s:message code="signup.role.user" var="roleUser"/>
+		<option label="${roleUser}" value="ROLE_USER"></option>
+		<s:message code="signup.role.admin" var="roleAdmin"/>
+		<option label="${roleAdmin}" value="ROLE_ADMIN"></option>
+	</select>
+	
 	<button class="btn btn-large btn-primary" type="submit"><s:message code="signup" /></button>
 	<p class="form-text"><s:message code="signup.haveAccount" /> <a href='<s:url value="/signin"/>'><s:message code="signin" /></a></p>
 </form:form>

@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
 
-<p class="lead">Details</p>
+<p class="lead"><s:message code="details" /></p>
 <table class="table table-hover">
 	<tbody>
 		<tr>
@@ -42,7 +42,7 @@
 			</td>
 		</tr>
 		<tr>
-			<th>Creator</th>
+			<th><s:message code="incident.creator" /></th>
 			<td>
 				<s:message code="incident.account.name" />:  <strong><c:out value="${incident.getCreator().getName()}" default="N/A" /></strong><br/>
 				<s:message code="incident.account.email" />: <strong><c:out value="${incident.getCreator().getEmail()}" default="N/A" /></strong>,<br/>
@@ -50,7 +50,7 @@
 			</td>
 		</tr>
 		<tr>
-			<th>Assigned to</th>
+			<th><s:message code="incident.assignedTo" /></th>
 			<td>
 				<s:message code="incident.account.name" />:  <strong><c:out value="${incident.getAssignee().getName()}" default="N/A" /></strong><br/>
 				<s:message code="incident.account.email" />: <strong><c:out value="${incident.getAssignee().getEmail()}" default="N/A" /></strong>,<br/>
@@ -66,9 +66,11 @@
 			<th><s:message code="incident.audit.id" /></th>
 			<th><s:message code="incident.audit.created" /></th>
 			<th><s:message code="incident.audit.description" /></th>
+			<th><s:message code="incident.status" /></th>
 		</tr>
 	</thead>
 	<tbody>
+		<c:set var="audits" value="${incident.getAudits()}" />
 		<c:if test="${empty audits}">
 			<tr>
 				<td colspan="3"><p class="muted"><s:message code="noRecords" /></p></td>
@@ -79,6 +81,7 @@
 				<td>${item.getId()}</td>
 				<td>${item.getCreated()}</td>
 				<td>${item.getDescription()}</td>
+				<td><s:message code="incident.status.${item.getPreviousStatus()}" /> => <s:message code="incident.status.${item.getStatus()}" /></td>
 			</tr>
 		</c:forEach>
 	</tbody>

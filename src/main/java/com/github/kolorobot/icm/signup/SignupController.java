@@ -1,5 +1,6 @@
 package com.github.kolorobot.icm.signup;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ class SignupController {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private HttpSession session;
+	
 	@RequestMapping(value = "signup")
 	public SignupForm signup() {
 		return new SignupForm();
@@ -30,9 +34,14 @@ class SignupController {
 		}
 		
 		Account account = signupForm.createAccount();
+		account.setOperatorId(getOperatorId());
 		userService.createAccount(account);
 		userService.signin(account);
 		
 		return "redirect:/";
+	}
+	
+	private String getOperatorId() {
+		return (String) session.getAttribute("operatorId");
 	}
 }

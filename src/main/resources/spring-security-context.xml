@@ -8,13 +8,13 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 	
 	<security:http auto-config="true" disable-url-rewriting="true" use-expressions="true">
 		<security:form-login login-page="/signin" authentication-failure-url="/signin?error=1"/>
-		<security:logout logout-url="/logout" />
+		<security:logout logout-url="/logout" invalidate-session="false"/>
 		<security:remember-me services-ref="rememberMeServices" key="remember-me-key"/>
 		<security:intercept-url pattern="/" access="permitAll" />
+		<security:intercept-url pattern="/operator/**" access="permitAll" />
 		<security:intercept-url pattern="/resources/**" access="permitAll" />
 		<security:intercept-url pattern="/signin" access="permitAll" />
 		<security:intercept-url pattern="/signup" access="permitAll" />
-		<security:intercept-url pattern="/default/**" access="permitAll" />
 		<security:intercept-url pattern="/**" access="isAuthenticated()" />
 	</security:http>
 	

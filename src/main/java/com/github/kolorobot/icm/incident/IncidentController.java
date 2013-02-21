@@ -1,13 +1,11 @@
 package com.github.kolorobot.icm.incident;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
 
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -22,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.github.kolorobot.icm.account.Account;
 import com.github.kolorobot.icm.account.AccountRepository;
 import com.github.kolorobot.icm.account.Address;
+import com.github.kolorobot.icm.account.User;
 import com.github.kolorobot.icm.support.web.Message;
 import com.github.kolorobot.icm.support.web.Message.Type;
 
@@ -42,7 +41,7 @@ class IncidentController {
 	}
 	
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public String create(UserDetails user, @Valid @ModelAttribute IncidentForm incidentForm, Errors errors, RedirectAttributes ra, Model model) {
+	public String create(User user, @Valid @ModelAttribute IncidentForm incidentForm, Errors errors, RedirectAttributes ra, Model model) {
 		if (errors.hasErrors()) {
 			model.addAttribute(Message.MESSAGE_ATTRIBUTE, new Message("incident.create.failed", Type.ERROR));
 			return null;
@@ -51,13 +50,18 @@ class IncidentController {
 		Address incidentAddress = new Address();
 		incidentAddress.setCityLine(incidentForm.getCityLine());
 		incidentAddress.setAddressLine(incidentForm.getAddressLine());
+		incidentAddress.setOperatorId(user.getOperatorId());
 		
 		Incident incident = new Incident();
 		incident.setAddress(incidentAddress);
 		incident.setDescription(incidentForm.getDescription());
 		incident.setIncidentType(incidentForm.getType());
-		Account reporter = accountRepository.findByEmail(user.getUsername());
+		incident.setOperatorId(user.getOperatorId());
+		Account reporter = accountRepository.findOne(user.getAccountId());
+		
+		// FIXME How to handle assignment?
 		Account assignee = accountRepository.findByEmail("admin@icm.com");
+		
 		incident.setCreator(reporter);
 		incident.setAssignee(assignee);
 		incident.setCreated(new Date());
@@ -70,66 +74,75 @@ class IncidentController {
 	
 	@RequestMapping(value = "/list")
 	@ModelAttribute(value = "incidents")
-	public List<Incident> list() {
-		// FIXME Only current user's incidents
-		return incidentRepository.findAll();
+	public List<Incident> list(User user) {
+		if (user.isInRole("ROLE_ADMIN")) {
+			return incidentRepository.findAll();	
+		} else {
+			return incidentRepository.findAll(user.getAccountId());	
+		}
 	}
 	
 	@RequestMapping(value = "/{id}", headers = "X-Requested-With=XMLHttpRequest")
 	@Transactional
-	public String detailsAjax(@PathVariable("id") Long id, Model model) {
-		// FIXME Only current user's incident
-		Incident incident = incidentRepository.findOne(id);
-		List<Audit> audits = new ArrayList<Audit>(incident.getAudits());
+	public String detailsAjax(User user, @PathVariable("id") Long id, Model model) {
+		Incident incident = incidentRepository.findOne(id, user.getAccountId());
 		model.addAttribute("incident", incident);
-		model.addAttribute("audits", audits);
 		return "incident/detailsAjax";
 	}
 	
 	@RequestMapping(value = "/{id}")
 	@Transactional
-	public String details(@PathVariable("id") Long id, Model model) {
-		// FIXME Only current user's incident
-		Incident incident = incidentRepository.findOne(id);
-		List<Audit> audits = new ArrayList<Audit>(incident.getAudits());
+	public String details(User user, @PathVariable("id") Long id, Model model) {
+		Incident incident;
+		
+		if (user.isInRole("ROLE_ADMIN")) {
+			incident = incidentRepository.findOne(id);
+		} else {
+			incident = incidentRepository.findOne(id, user.getAccountId());
+		}
+		
 		model.addAttribute("incident", incident);
-		model.addAttribute("audits", audits);
 		return "incident/details";
 	}
 	
 	@RequestMapping(value = "search")
 	public String search(@RequestParam String q) {
-		// FIXME Not handled conversion error
-		// FIXME Not handled any error
+		// FIXME Not handled conversion error (functional bug)
 		Long incidentId = Long.valueOf(q);
 		return "forward:/incident/" + incidentId;
 	}
 	
-	// FIXME Should be available only for ROLE_ADMIN
+	// FIXME Should be available only for ROLE_ADMIN (security bug)
 	@RequestMapping("/{incidentId}/audit/create")	
 	public String createAudit(@PathVariable Long incidentId, Model model) {
 		model.addAttribute(new AuditForm());
 		return "incident/audit/create";
 	}
 	
-	// FIXME Should be available only for ROLE_ADMIN
+	// FIXME Should be available only for ROLE_ADMIN (security bug)
 	@RequestMapping(value = "/{incidentId}/audit/create", method = RequestMethod.POST)
 	@Transactional
-	public String createAudit(UserDetails user, @PathVariable Long incidentId, @Valid @ModelAttribute AuditForm auditForm, Errors errors, RedirectAttributes ra, Model model) {
+	public String createAudit(User user, @PathVariable Long incidentId, @Valid @ModelAttribute AuditForm auditForm, Errors errors, RedirectAttributes ra, Model model) {
 		if (errors.hasErrors()) {
 			model.addAttribute(Message.MESSAGE_ATTRIBUTE, new Message("incident.audit.create.failed", Type.ERROR));
 			return null;
 		}
-		// FIXME Only current user's incident
+		
+		Incident incident = incidentRepository.findOne(incidentId);
+		Account creator = accountRepository.findOne(user.getAccountId());
+		
 		Audit audit = new Audit();
 		audit.setDescription(auditForm.getDescription());		
 		audit.setStatus(auditForm.getStatus());
-		Account creator = accountRepository.findByEmail(user.getUsername());
-		Incident incident = incidentRepository.findOne(incidentId);
 		audit.setCreated(new Date());
 		audit.setCreator(creator);
-		incident.addAudit(audit);
-		incidentRepository.save(incident);
+		audit.setPreviousStatus(incident.getStatus());
+		audit.setOperatorId(user.getOperatorId());
+		incident.setStatus(auditForm.getStatus());
+		audit.setIncident(incident);
+		incident.getAudits().add(audit);
+		
+		incident = incidentRepository.save(incident);
 		
 		ra.addFlashAttribute(Message.MESSAGE_ATTRIBUTE, new Message("incident.audit.create.success", Message.Type.SUCCESS));
 		

@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 @SuppressWarnings("serial")
 @Entity(name = "address")
@@ -21,7 +22,11 @@ public class Address implements Serializable {
 	
 	@Column(name = "city_line")
 	private String cityLine;
-
+	
+	@NotNull
+	@Column(name = "operator_id")
+	private String operatorId;
+	
 	public Long getId() {
 		return id;
 	}
@@ -45,5 +50,13 @@ public class Address implements Serializable {
 
 	public void setCityLine(String cityLine) {
 		this.cityLine = cityLine;
+	}
+
+	public String getOperatorId() {
+		return operatorId;
+	}
+
+	public void setOperatorId(String operatorId) {
+		this.operatorId = operatorId;
 	}
 }

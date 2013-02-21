@@ -6,7 +6,8 @@
 	<h2 class="form-heading"><s:message code="incident.audit.add" /></h2>
 	<form:errors path="" element="p" class="text-error" />
 	
-	<form:select path="status" >
+	<span><s:message code="incident.status" />:&nbsp;</span>
+	<form:select path="status">
 		<c:forEach items="${auditForm.getAvailableStatuses()}" var="item">
 			<s:message code="incident.status.${item}" var="label" />
 			<form:option value="${item}" label="${label}"></form:option>
