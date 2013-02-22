@@ -6,26 +6,34 @@
 <form:form class="form" method="post" modelAttribute="signupForm">
 	<h2 class="form-heading"><s:message code="signup.header" /></h2>
 	<form:errors path="" element="p" class="text-error" />
+	
 	<s:message code="signup.name" var="name" />
-	<form:input path="name" class="input-block-level" placeholder='${name}' />
+	<label for="name">${name}</label>
+	<form:input path="name" class="input-block-level"  />
 	<form:errors path="name" element="p" class="text-error"/> 
+	
 	<s:message code="signup.email" var="email"/>
-	<form:input path="email" class="input-block-level" placeholder='${email}' /> 
+	<label for="email">${email}</label>
+	<form:input path="email" class="input-block-level"  /> 
 	<form:errors path="email" element="p" class="text-error"/> 
+	
 	<s:message code="signup.password" var="password"/>
-	<form:password path="password" class="input-block-level" placeholder='${password}' />
+	<label for="password">${password}</label>
+	<form:password path="password" class="input-block-level"  />
 	<form:errors path="password" element="p" class="text-error"/> 
+	
 	<s:message code="signup.confirmPassword" var="confirmPassword"/>
-	<form:password path="confirmedPassword" class="input-block-level" placeholder='${confirmPassword}' />
+	<label for="confirmPassword">${confirmPassword}</label>
+	<form:password path="confirmedPassword" class="input-block-level"  />
 	<form:errors path="confirmedPassword" element="p" class="text-error"/>
 	
 	<label for="role"><s:message code="signup.role" /></label>
 	
 	<select class="input-block-level" name="role">
 		<s:message code="signup.role.user" var="roleUser"/>
-		<option label="${roleUser}" value="ROLE_USER"></option>
+		<option value="ROLE_USER">${roleUser}</option>
 		<s:message code="signup.role.admin" var="roleAdmin"/>
-		<option label="${roleAdmin}" value="ROLE_ADMIN"></option>
+		<option value="ROLE_ADMIN">${roleAdmin}</option>
 	</select>
 	
 	<button class="btn btn-large btn-primary" type="submit"><s:message code="signup" /></button>

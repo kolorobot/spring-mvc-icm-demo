@@ -9,8 +9,10 @@
   			<s:message code="signin.error" />
   		</div>
   	</c:if>
-	<input type="text" class="input-block-level" placeholder='<s:message code="signin.email" />' name="j_username" /> 
-	<input type="password" class="input-block-level" placeholder='<s:message code="signin.password" />' name="j_password" />
+	<label for="j_username"><s:message code="signin.email" /></label>
+	<input type="text" class="input-block-level" name="j_username" /> 
+	<label for="j_password"><s:message code="signin.password" /></label>
+	<input type="password" class="input-block-level" name="j_password" />
 	<label class="checkbox">
 		<input type="checkbox" name="_spring_security_remember_me"><s:message code="signin.rememberMe" /></input>
 	</label>

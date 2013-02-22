@@ -15,9 +15,9 @@
 				<ul class="nav">
 					<li class="active"><a href='<s:url value="/"></s:url>'><s:message code="header.home" /></a></li>										
 					<security:authorize access="isAuthenticated()">						
-						<form class="navbar-search pull-left form-search" action='<c:url value="/incident/search" />'>
-							<input type="text" name="q" class="search-query" placeholder='<s:message code="header.search" />'>
-							<button type="submit" class="btn btn-mini"><i class="icon-search"></i></button>
+						<form class="navbar-search" action='<c:url value="/incident/search" />'>
+								<div class="icon-search"></div>
+								<input type="text" name="q" class="search-query span3" placeholder='<s:message code="header.search" />'>
 						</form>										
 					</security:authorize>
 				</ul>
