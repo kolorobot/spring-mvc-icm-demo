@@ -41,7 +41,7 @@
 			</c:choose>
 			<div class="alert ${alertClass}">
 				<button type="button" class="close" data-dismiss="alert">&times;</button>
-				<s:message code="${message.message}" />
+				<s:message code="${message.message}" arguments="${message.args}"/>
 			</div>
 		</c:if>
 		<tiles:insertAttribute name="body" defaultValue="" />

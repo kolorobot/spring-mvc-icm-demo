@@ -6,16 +6,33 @@
 	<h2 class="form-heading"><s:message code="incident.audit.add" /></h2>
 	<form:errors path="" element="p" class="text-error" />
 	
-	<label for="status"><s:message code="incident.status" /></label>
-	<form:select path="status" class="input-block-level">
-		<c:forEach items="${auditForm.getAvailableStatuses()}" var="item">
-			<s:message code="incident.status.${item}" var="label" />
-			<form:option value="${item}" label="${label}"></form:option>
-		</c:forEach>
-	</form:select>
-	<form:errors path="status" element="p" class="text-error"/> 
+	<p><s:message code="incident.oldStatus" />: <strong><s:message code="incident.status.${auditForm.getOldStatus()}" /></strong></p>
 	
-	<label for="status"><s:message code="incident.audit.description" /></label>
+	<c:if test="${auditForm.canChangeStatus()}">
+		<label for="newStatus">
+			<s:message code="incident.newStatus" />
+		</label>
+		<form:select path="newStatus" class="input-block-level">
+			<c:forEach items="${auditForm.getAvailableStatuses()}" var="item">
+				<s:message code="incident.status.${item}" var="label" />
+				<form:option value="${item}" label="${label}"></form:option>
+			</c:forEach>
+		</form:select>
+	</c:if>
+	
+	<c:if test="${auditForm.canAssignEmployee()}">
+		<label for="assigneeId">
+			<s:message code="incident.assignTo" />
+		</label>
+		<form:select path="assigneeId" class="input-block-level">
+			<option />
+			<c:forEach items="${auditForm.getAvailableEmployees()}" var="item">
+				<form:option value="${item.id}" label="${item.name} (E-mail: ${item.email}, ID: ${item.id})"></form:option>
+			</c:forEach>
+		</form:select>
+	</c:if>
+	
+	<label for="description"><s:message code="incident.audit.description" /></label>
 	<form:textarea path="description" class="input-block-level" rows="5" />
 	<form:errors path="description" element="p" class="text-error"/> 
 	

@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @SuppressWarnings("serial")
 @Entity(name = "address")
@@ -18,9 +19,11 @@ public class Address implements Serializable {
 	private Long id;
 	
 	@Column(name = "address_line")
+	@Size(max = 255)
 	private String addressLine;
 	
 	@Column(name = "city_line")
+	@Size(max = 255)
 	private String cityLine;
 	
 	@NotNull

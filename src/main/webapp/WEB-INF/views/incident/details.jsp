@@ -11,15 +11,15 @@
 		</tr>		
 		<tr>
 			<th><s:message code="incident.created" /></th>
-			<td><c:out value="${incident.getCreated()}" default="N/A" /></td>
+			<td><c:out value="${incident.getCreated()}" default="-" /></td>
 		</tr>
 		<tr>
 			<th><s:message code="incident.type" /></th>
-			<td><c:out value="${incident.getIncidentType()}" default="N/A" /></td>
+			<td><c:out value="${incident.getIncidentType()}" default="-" /></td>
 		</tr>
 		<tr>
 			<th><s:message code="incident.description" /></th>
-			<td><c:out value="${incident.getDescription()}" default="N/A" /></td>
+			<td><c:out value="${incident.getDescription()}" default="-" /></td>
 		</tr>
 		<tr>
 			<th><s:message code="incident.address" /></th>
@@ -30,7 +30,7 @@
 						<c:out value="${incident.getAddress().getCityLine()}" />
 					</c:when>
 					<c:otherwise>
-						N/A
+						-
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -44,17 +44,17 @@
 		<tr>
 			<th><s:message code="incident.creator" /></th>
 			<td>
-				<s:message code="incident.account.name" />:  <strong><c:out value="${incident.getCreator().getName()}" default="N/A" /></strong><br/>
-				<s:message code="incident.account.email" />: <strong><c:out value="${incident.getCreator().getEmail()}" default="N/A" /></strong>,<br/>
-				<s:message code="incident.account.phone" />: <strong><c:out value="${incident.getCreator().getPhone()}" default="N/A" /></strong>
+				<s:message code="incident.account.name" />:  <strong><c:out value="${incident.getCreator().getName()}" default="-" /></strong><br/>
+				<s:message code="incident.account.email" />: <strong><c:out value="${incident.getCreator().getEmail()}" default="-" /></strong><br/>
+				<s:message code="incident.account.phone" />: <strong></strong>
 			</td>
 		</tr>
 		<tr>
 			<th><s:message code="incident.assignedTo" /></th>
 			<td>
-				<s:message code="incident.account.name" />:  <strong><c:out value="${incident.getAssignee().getName()}" default="N/A" /></strong><br/>
-				<s:message code="incident.account.email" />: <strong><c:out value="${incident.getAssignee().getEmail()}" default="N/A" /></strong>,<br/>
-				<s:message code="incident.account.phone" />: <strong><c:out value="${incident.getAssignee().getPhone()}" default="N/A" /></strong>
+				<s:message code="incident.account.name" />:  <strong><c:out value="${incident.getAssignee().getName()}" default="" /></strong><br/>
+				<s:message code="incident.account.email" />: <strong><c:out value="${incident.getAssignee().getEmail()}" default="" /></strong><br/>
+				<s:message code="incident.account.phone" />: <strong><c:out value="${incident.getAssignee().getPhone()}" default="-" /></strong>
 			</td>
 		</tr>
 	</tbody>

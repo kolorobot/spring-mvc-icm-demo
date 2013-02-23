@@ -49,7 +49,7 @@
 						</button>
 						<ul class="dropdown-menu">
 							<li><a data-id="${item.getId()}" data-modal-label='<s:message code="incident.details.dialog" />' href="#" class="open-IncidentDetailsDialog"><s:message code="details" /></a></li>
-							<security:authorize access="hasRole('ROLE_ADMIN')">
+							<security:authorize access="!hasRole('ROLE_USER')">
 								<li><a href='<c:url value="/incident/${item.getId()}/audit/create"/>' class=""><s:message code="incident.audit.add" /></a></li>
 							</security:authorize>
 						</ul>

@@ -20,6 +20,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -44,6 +45,7 @@ public class Incident {
 	
 	@Column(name = "incident_type")
 	@NotBlank
+	@Size(max = 50)
 	private String incidentType;
 	
 	@OneToOne(cascade = CascadeType.ALL)
@@ -51,6 +53,7 @@ public class Incident {
 	private Address address;
 	
 	@NotBlank
+	@Size(max = 255)
 	private String description;
 		
 	@Temporal(TemporalType.TIMESTAMP)

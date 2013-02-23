@@ -1,6 +1,8 @@
 package com.github.kolorobot.icm.incident;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -21,9 +23,11 @@ import com.github.kolorobot.icm.account.Account;
 import com.github.kolorobot.icm.account.AccountRepository;
 import com.github.kolorobot.icm.account.Address;
 import com.github.kolorobot.icm.account.User;
+import com.github.kolorobot.icm.incident.Incident.Status;
 import com.github.kolorobot.icm.support.web.AjaxViewException;
 import com.github.kolorobot.icm.support.web.Message;
 import com.github.kolorobot.icm.support.web.Message.Type;
+import com.google.common.collect.Lists;
 
 @Controller
 @RequestMapping("/incident")
@@ -49,7 +53,8 @@ class IncidentController {
 		}
 		
 		Address incidentAddress = new Address();
-		incidentAddress.setCityLine(incidentForm.getCityLine());
+		// FIXME incidentAddress.setCityLine(incidentForm.getCityLine());
+		incidentAddress.setCityLine(incidentForm.getAddressLine());
 		incidentAddress.setAddressLine(incidentForm.getAddressLine());
 		incidentAddress.setOperatorId(user.getOperatorId());
 		
@@ -59,18 +64,24 @@ class IncidentController {
 		incident.setIncidentType(incidentForm.getType());
 		incident.setOperatorId(user.getOperatorId());
 		Account reporter = accountRepository.findOne(user.getAccountId());
-		
-		// FIXME How to handle assignment?
-		Account assignee = accountRepository.findByEmail("admin@icm.com");
-		
+	
 		incident.setCreator(reporter);
-		incident.setAssignee(assignee);
-		incident.setCreated(new Date());
+		Date someDate = randomDate();
+		incident.setCreated(someDate);
 		incidentRepository.save(incident);
 		
-		ra.addFlashAttribute(Message.MESSAGE_ATTRIBUTE, new Message("incident.create.success", Message.Type.SUCCESS));
+		ra.addFlashAttribute(Message.MESSAGE_ATTRIBUTE, new Message("incident.create.success", Message.Type.SUCCESS, incident.getId()));
 		
 		return "redirect:/incident/list";
+	}
+	
+	private Date randomDate() {
+		long day = 24L * 60L * 60L * 1000L;
+		long month = 30L * day;
+		
+		long randomTime = day	+ (long) (Math.random() * ((month - day) + 1));
+		Date date = new Date(System.currentTimeMillis() - randomTime);
+		return date;
 	}
 	
 	@RequestMapping(value = "/list")
@@ -127,11 +138,55 @@ class IncidentController {
 	
 	// FIXME Should be available only for ROLE_ADMIN (security bug)
 	@RequestMapping("/{incidentId}/audit/create")	
-	public String createAudit(@PathVariable Long incidentId, Model model) {
-		model.addAttribute(new AuditForm());
+	public String createAudit(User user, @PathVariable Long incidentId, Model model) {
+		Incident incident = getIncident(user, incidentId);
+		
+		if (incident == null) {
+			throw new IllegalStateException("Why, Leo, why?");
+		}
+		
+		AuditForm form = new AuditForm();
+		form.setOldStatus(incident.getStatus());
+		form.setAvailableStatuses(getAvailableStatuses(user, incident));
+		form.setAvailableEmployees(getAvailableEmployees(user, incident));
+		
+		model.addAttribute(form);
 		return "incident/audit/create";
 	}
+
+	private List<Status> getAvailableStatuses(User user, Incident incident) {
+		Status status = incident.getStatus();
+		if (user.isInRole(Account.ROLE_ADMIN)) {
+			if(EnumSet.of(Status.NOT_CONFIRMED, Status.SOLVED).contains(status)) {
+				return Lists.newArrayList(Status.CLOSED, Status.NEW);
+			}
+		} else if (user.isInRole(Account.ROLE_EMPLOYEE)) {
+			switch(status) {
+				case NEW:
+					return Lists.newArrayList(Status.CONFIRMED, Status.NOT_CONFIRMED, Status.SOLVED);
+				case CONFIRMED:
+					return Lists.newArrayList(Status.NEW, Status.NOT_CONFIRMED, Status.SOLVED);
+				case NOT_CONFIRMED:
+					return Lists.newArrayList(Status.NEW, Status.CONFIRMED, Status.SOLVED);
+				case SOLVED:
+					return Lists.newArrayList(Status.NEW, Status.CONFIRMED, Status.NOT_CONFIRMED);
+			default:
+				break;
+			}
+		} else {
+			throw new IllegalAccessError();
+		}
+		return null;
+	}
 	
+	private List<Account> getAvailableEmployees(User user, Incident incident) {
+		if (user.isInRole(Account.ROLE_ADMIN) 
+				&& EnumSet.of(Status.NEW, Status.NOT_CONFIRMED, Status.SOLVED).contains(incident.getStatus())) {
+			return accountRepository.findAll(user.getOperatorId());
+		}
+		return null;
+	}
+
 	// FIXME Should be available only for ROLE_ADMIN (security bug)
 	@RequestMapping(value = "/{incidentId}/audit/create", method = RequestMethod.POST)
 	@Transactional
@@ -146,12 +201,25 @@ class IncidentController {
 		
 		Audit audit = new Audit();
 		audit.setDescription(auditForm.getDescription());		
-		audit.setStatus(auditForm.getStatus());
+		
 		audit.setCreated(new Date());
 		audit.setCreator(creator);
 		audit.setPreviousStatus(incident.getStatus());
 		audit.setOperatorId(user.getOperatorId());
-		incident.setStatus(auditForm.getStatus());
+		
+		Status newStatus = auditForm.getNewStatus();
+		if (newStatus == null) {
+			newStatus = incident.getStatus();
+		}
+		audit.setStatus(newStatus);
+		incident.setStatus(newStatus);
+		
+		Long assigneeId = auditForm.getAssigneeId();
+		if (assigneeId != null) {
+			Account assignee = accountRepository.findOne(assigneeId);
+			incident.setAssignee(assignee);
+		}
+		
 		audit.setIncident(incident);
 		incident.getAudits().add(audit);
 		
