@@ -15,7 +15,12 @@
 	<s:message code="signup.email" var="email"/>
 	<label for="email">${email}</label>
 	<form:input path="email" class="input-block-level"  /> 
-	<form:errors path="email" element="p" class="text-error"/> 
+	<form:errors path="email" element="p" class="text-error"/>
+	
+	<s:message code="signup.phone" var="phone"/>
+	<label for="email">${phone}</label>
+	<form:input path="phone" class="input-block-level"  /> 
+	<form:errors path="phone" element="p" class="text-error"/>  
 	
 	<s:message code="signup.password" var="password"/>
 	<label for="password">${password}</label>
@@ -34,6 +39,8 @@
 		<option value="ROLE_USER">${roleUser}</option>
 		<s:message code="signup.role.admin" var="roleAdmin"/>
 		<option value="ROLE_ADMIN">${roleAdmin}</option>
+		<s:message code="signup.role.employee" var="roleEmployee"/>
+		<option value="ROLE_EMPLOYEE">${roleEmployee}</option>
 	</select>
 	
 	<button class="btn btn-large btn-primary" type="submit"><s:message code="signup" /></button>

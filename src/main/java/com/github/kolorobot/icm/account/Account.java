@@ -18,6 +18,10 @@ import org.hibernate.validator.constraints.NotBlank;
 @Table(name = "account")
 public class Account implements java.io.Serializable {
 	
+	public static final String ROLE_USER = "ROLE_USER";
+	public static final String ROLE_ADMIN = "ROLE_ADMIN";
+	public static final String ROLE_EMPLOYEE = "ROLE_EMPLOYEE";
+	
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -34,7 +38,7 @@ public class Account implements java.io.Serializable {
 	@JsonIgnore
 	private String password;
 
-	private String role = "ROLE_USER";
+	private String role = ROLE_USER;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "address_id")

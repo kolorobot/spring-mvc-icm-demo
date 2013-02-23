@@ -21,6 +21,7 @@ import com.github.kolorobot.icm.account.Account;
 import com.github.kolorobot.icm.account.AccountRepository;
 import com.github.kolorobot.icm.account.Address;
 import com.github.kolorobot.icm.account.User;
+import com.github.kolorobot.icm.support.web.AjaxViewException;
 import com.github.kolorobot.icm.support.web.Message;
 import com.github.kolorobot.icm.support.web.Message.Type;
 
@@ -75,34 +76,46 @@ class IncidentController {
 	@RequestMapping(value = "/list")
 	@ModelAttribute(value = "incidents")
 	public List<Incident> list(User user) {
-		if (user.isInRole("ROLE_ADMIN")) {
-			return incidentRepository.findAll();	
-		} else {
-			return incidentRepository.findAll(user.getAccountId());	
-		}
+		// FIXME does not conform with the requirements
+		return incidentRepository.findAllByOperatorId(user.getOperatorId());	
 	}
 	
 	@RequestMapping(value = "/{id}", headers = "X-Requested-With=XMLHttpRequest")
 	@Transactional
 	public String detailsAjax(User user, @PathVariable("id") Long id, Model model) {
-		Incident incident = incidentRepository.findOne(id, user.getAccountId());
+		Incident incident = getIncident(user, id);
+		
+		if (incident == null) {			
+			throw new AjaxViewException("Exception 0x156DDE");
+		}
+		
 		model.addAttribute("incident", incident);
 		return "incident/detailsAjax";
 	}
-	
+
 	@RequestMapping(value = "/{id}")
 	@Transactional
 	public String details(User user, @PathVariable("id") Long id, Model model) {
-		Incident incident;
+		Incident incident = getIncident(user, id);
 		
-		if (user.isInRole("ROLE_ADMIN")) {
-			incident = incidentRepository.findOne(id);
-		} else {
-			incident = incidentRepository.findOne(id, user.getAccountId());
+		if (incident == null) {			
+			throw new IllegalAccessError("Exception 0x156DDE");
 		}
 		
 		model.addAttribute("incident", incident);
 		return "incident/details";
+	}
+	
+	private Incident getIncident(User user, Long id) {
+		Incident incident = null;
+		if (user.isInRole(Account.ROLE_USER)) {
+			incident = incidentRepository.findOneByIdAndCreatorId(id, user.getAccountId(), user.getOperatorId());
+		} else if (user.isInRole(Account.ROLE_EMPLOYEE)) {
+			incident = incidentRepository.findOneByIdAndAssigneeId(id, user.getAccountId(), user.getOperatorId());
+		} else {
+			incident = incidentRepository.findOne(id, user.getOperatorId());
+		}
+		return incident;
 	}
 	
 	@RequestMapping(value = "search")

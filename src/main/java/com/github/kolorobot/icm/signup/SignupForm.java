@@ -2,7 +2,8 @@ package com.github.kolorobot.icm.signup;
 
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.*;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
 
 import com.github.kolorobot.icm.account.Account;
 
@@ -17,6 +18,8 @@ class SignupForm {
 	@NotBlank
 	@Email
 	private String email;
+
+	private String phone;
 	@NotBlank
 	private String password;
 	@NotBlank
@@ -65,7 +68,20 @@ class SignupForm {
 	}
 
 	public Account createAccount() {
-		return new Account(getName(), getEmail(), getPassword(), getRole().toString());
+		Account account = new Account(getName(), getEmail(), getPassword(), getRole().toString());
+		account.setPhone(getPhone());
+		return account;
+	}
+
+	public String getPhone() {
+		if (phone != null && phone.isEmpty()) {
+			return null;
+		}
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 }

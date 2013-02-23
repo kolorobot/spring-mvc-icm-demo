@@ -31,7 +31,7 @@ import com.github.kolorobot.icm.account.Address;
 public class Incident {
 	
 	public enum Status {
-		NEW, CONFIRMED, NOT_CONFIRMED, IN_PROGRESS, SOLVED;
+		NEW, CONFIRMED, NOT_CONFIRMED, SOLVED, CLOSED;
 	}
 
 	@Id
