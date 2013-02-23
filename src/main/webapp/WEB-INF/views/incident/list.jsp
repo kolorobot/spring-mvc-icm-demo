@@ -13,7 +13,7 @@
 	
 	</div>		
 	<div class="modal-footer">
-		<button class="btn" data-dismiss="modal" aria-hidden="true"><s:message code="close" /></button>
+		<button class="btn" aria-hidden="true"><s:message code="close" /></button>
 	</div>
 </div>
 <h2><s:message code="incident.incidents" /></h2>

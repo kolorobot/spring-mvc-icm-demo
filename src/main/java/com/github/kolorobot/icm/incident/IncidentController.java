@@ -111,7 +111,7 @@ class IncidentController {
 		if (user.isInRole(Account.ROLE_USER)) {
 			incident = incidentRepository.findOneByIdAndCreatorId(id, user.getAccountId(), user.getOperatorId());
 		} else if (user.isInRole(Account.ROLE_EMPLOYEE)) {
-			incident = incidentRepository.findOneByIdAndAssigneeId(id, user.getAccountId(), user.getOperatorId());
+			incident = incidentRepository.findOneByIdAndAssigneeIdOrCreatorId(id, user.getAccountId(), user.getOperatorId());
 		} else {
 			incident = incidentRepository.findOne(id, user.getOperatorId());
 		}

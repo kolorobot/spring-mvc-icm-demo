@@ -19,4 +19,7 @@ public interface IncidentRepository extends JpaRepository<Incident, Long> {
 	@Query("SELECT i FROM Incident i WHERE i.id = ?1 AND i.assignee.id = ?2 AND i.operatorId = ?3")
 	Incident findOneByIdAndAssigneeId(Long id, Long accountId, String operatorId);
 
+	@Query("SELECT i FROM Incident i WHERE i.id = ?1 AND (i.assignee.id = ?2 OR i.creator.id = ?2) AND i.operatorId = ?3")
+	Incident findOneByIdAndAssigneeIdOrCreatorId(Long id, Long accountId, String operatorId);
+
 }

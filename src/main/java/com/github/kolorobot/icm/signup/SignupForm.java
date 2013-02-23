@@ -1,6 +1,7 @@
 package com.github.kolorobot.icm.signup;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
@@ -14,6 +15,7 @@ class SignupForm {
 	}
 
 	@NotBlank
+	@Size(max = 49)
 	private String name;
 	@NotBlank
 	@Email
@@ -21,8 +23,10 @@ class SignupForm {
 
 	private String phone;
 	@NotBlank
+	@Size(max = 50)
 	private String password;
 	@NotBlank
+	@Size(max = 50)
 	private String confirmedPassword;
 	@NotNull
 	private Role role = Role.ROLE_USER;

@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.validator.constraints.NotBlank;
@@ -27,15 +28,19 @@ public class Account implements java.io.Serializable {
 	private Long id;
 	
 	@NotBlank
+	@Size(max = 49)
+	@Column
 	private String name;
 
 	@Column(unique = true)
+	@Size(max = 50)
 	private String email;
 	
 	@Column
 	private String phone;
 	
 	@JsonIgnore
+	@Size(max = 50)
 	private String password;
 
 	private String role = ROLE_USER;
