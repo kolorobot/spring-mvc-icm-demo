@@ -40,7 +40,6 @@ public class Account implements java.io.Serializable {
 	private String phone;
 	
 	@JsonIgnore
-	@Size(max = 50)
 	private String password;
 
 	private String role = ROLE_USER;
