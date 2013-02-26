@@ -1,4 +1,4 @@
-package com.github.kolorobot.icm.support.web;
+package com.github.kolorobot.icm.operator;
 
 import java.io.IOException;
 
@@ -13,18 +13,15 @@ public class SessionStateVerificationFilter extends OncePerRequestFilter {
 	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-		
-		if(!pathMatches(request) && OperatorUtils.getOperatorId(request, response) == null) {
+		if(!pathMatches(request) && OperatorHelper.getOperatorId(request, response) == null) {
 			request.getRequestDispatcher("/operator").forward(request, response);
 		}
 		filterChain.doFilter(request, response);
 	}
-
 
 	private boolean pathMatches(HttpServletRequest request) {
 		String uri = request.getRequestURI();
 		String contextPath = request.getContextPath();
 		return uri.equals(contextPath + "/operator") || uri.startsWith(contextPath + "/resources/");
 	}
-
 }

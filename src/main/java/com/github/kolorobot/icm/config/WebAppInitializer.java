@@ -10,7 +10,7 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.filter.*;
 import org.springframework.web.servlet.DispatcherServlet;
 
-import com.github.kolorobot.icm.support.web.SessionStateVerificationFilter;
+import com.github.kolorobot.icm.operator.SessionStateVerificationFilter;
 
 public class WebAppInitializer implements WebApplicationInitializer {
 

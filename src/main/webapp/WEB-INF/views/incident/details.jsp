@@ -66,7 +66,7 @@
 			<th><s:message code="incident.audit.id" /></th>
 			<th><s:message code="incident.audit.created" /></th>
 			<th><s:message code="incident.audit.description" /></th>
-			<th><s:message code="incident.status" /></th>
+			<th><s:message code="incident.status.change" /></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -81,7 +81,11 @@
 				<td>${item.getId()}</td>
 				<td>${item.getCreated()}</td>
 				<td>${item.getDescription()}</td>
-				<td><s:message code="incident.status.${item.getPreviousStatus()}" /> => <s:message code="incident.status.${item.getStatus()}" /></td>
+				<td>
+					<s:message code="incident.status.${item.getPreviousStatus()}" var="previousStatus"/> 
+					<s:message code="incident.status.${item.getStatus()}" var="currentStatus"/>
+					<s:message code="incident.status.change.message" arguments="${previousStatus}, ${currentStatus}" />
+				</td>
 			</tr>
 		</c:forEach>
 	</tbody>

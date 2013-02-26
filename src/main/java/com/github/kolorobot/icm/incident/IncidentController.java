@@ -22,10 +22,9 @@ import com.github.kolorobot.icm.account.Account;
 import com.github.kolorobot.icm.account.AccountRepository;
 import com.github.kolorobot.icm.account.Address;
 import com.github.kolorobot.icm.account.User;
+import com.github.kolorobot.icm.error.AjaxRequestException;
 import com.github.kolorobot.icm.incident.Incident.Status;
-import com.github.kolorobot.icm.support.web.AjaxViewException;
-import com.github.kolorobot.icm.support.web.Message;
-import com.github.kolorobot.icm.support.web.Message.Type;
+import com.github.kolorobot.icm.support.web.MessageHelper;
 import com.google.common.collect.Lists;
 
 @Controller
@@ -38,6 +37,9 @@ class IncidentController {
 	@Inject
 	private IncidentRepository incidentRepository;
 	
+	@Inject
+	private AuditRepository auditRepository;
+	
 		
 	@RequestMapping("/create")
 	public IncidentForm create() {
@@ -46,13 +48,12 @@ class IncidentController {
 	
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public String create(User user, @Valid @ModelAttribute IncidentForm incidentForm, Errors errors, RedirectAttributes ra, Model model) {
-		if (errors.hasErrors()) {
-			model.addAttribute(Message.MESSAGE_ATTRIBUTE, new Message("incident.create.failed", Type.ERROR));
+		if (errors.hasErrors()) {			
+			MessageHelper.addErrorAttribute(model, "incident.create.failed");
 			return null;
 		}
 		
 		Address incidentAddress = new Address();
-		// FIXME incidentAddress.setCityLine(incidentForm.getCityLine());
 		incidentAddress.setCityLine(incidentForm.getAddressLine());
 		incidentAddress.setAddressLine(incidentForm.getAddressLine());
 		incidentAddress.setOperatorId(user.getOperatorId());
@@ -69,7 +70,7 @@ class IncidentController {
 		incident.setCreated(someDate);
 		incidentRepository.save(incident);
 		
-		ra.addFlashAttribute(Message.MESSAGE_ATTRIBUTE, new Message("incident.create.success", Message.Type.SUCCESS, incident.getId()));
+		MessageHelper.addSuccessAttribute(ra, "incident.create.success", incident.getId());
 		
 		return "redirect:/incident/list";
 	}
@@ -96,7 +97,7 @@ class IncidentController {
 		Incident incident = getIncident(user, id);
 		
 		if (incident == null) {			
-			throw new AjaxViewException("Exception 0x156DDE");
+			throw new AjaxRequestException("Exception 0x156DDE");
 		}
 		
 		model.addAttribute("incident", incident);
@@ -109,7 +110,7 @@ class IncidentController {
 		Incident incident = getIncident(user, id);
 		
 		if (incident == null) {			
-			throw new IllegalAccessError("Exception 0x156DDE");
+			throw new IllegalStateException("Exception 0x156DDE");
 		}
 		
 		model.addAttribute("incident", incident);
@@ -130,7 +131,6 @@ class IncidentController {
 	
 	@RequestMapping(value = "search")
 	public String search(@RequestParam String q) {
-		// FIXME Not handled conversion error (functional bug)
 		Long incidentId = Long.valueOf(q);
 		return "forward:/incident/" + incidentId;
 	}
@@ -186,12 +186,11 @@ class IncidentController {
 		return null;
 	}
 
-	// FIXME Should be available only for ROLE_ADMIN (security bug)
 	@RequestMapping(value = "/{incidentId}/audit/create", method = RequestMethod.POST)
 	@Transactional
 	public String createAudit(User user, @PathVariable Long incidentId, @Valid @ModelAttribute AuditForm auditForm, Errors errors, RedirectAttributes ra, Model model) {
 		if (errors.hasErrors()) {
-			model.addAttribute(Message.MESSAGE_ATTRIBUTE, new Message("incident.audit.create.failed", Type.ERROR));
+			MessageHelper.addErrorAttribute(model, "incident.audit.create.failed");
 			return null;
 		}
 		
@@ -222,9 +221,9 @@ class IncidentController {
 		audit.setIncident(incident);
 		incident.getAudits().add(audit);
 		
-		incident = incidentRepository.save(incident);
+		auditRepository.save(audit);
 		
-		ra.addFlashAttribute(Message.MESSAGE_ATTRIBUTE, new Message("incident.audit.create.success", Message.Type.SUCCESS));
+		MessageHelper.addErrorAttribute(ra, "incident.audit.create.success", audit.getId());
 		
 		return "redirect:/incident/" + incidentId;
 	}

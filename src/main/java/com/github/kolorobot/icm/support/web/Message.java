@@ -4,7 +4,7 @@ public class Message {
 
 	public static final String MESSAGE_ATTRIBUTE = "message";
 	
-	public enum Type {
+	public static enum Type {
 		ERROR, WARNING, INFO, SUCCESS;
 	}
 

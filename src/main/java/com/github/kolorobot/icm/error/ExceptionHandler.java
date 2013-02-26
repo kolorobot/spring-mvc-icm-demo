@@ -1,4 +1,4 @@
-package com.github.kolorobot.icm.support.web;
+package com.github.kolorobot.icm.error;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
@@ -7,10 +7,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.common.base.Throwables;
 
 @ControllerAdvice
-public class ExceptionHandler {
+class ExceptionHandler {
 	
-	@org.springframework.web.bind.annotation.ExceptionHandler(value = AjaxViewException.class)	
-	public ModelAndView ajaxViewException(Exception exception, WebRequest request) {
+	@org.springframework.web.bind.annotation.ExceptionHandler(value = AjaxRequestException.class)	
+	public ModelAndView ajaxRequestException(Exception exception, WebRequest request) {
 		ModelAndView modelAndView = new ModelAndView("ajaxError");
 		addError(exception, modelAndView);
 		return modelAndView;
