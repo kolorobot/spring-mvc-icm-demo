@@ -34,14 +34,14 @@
 	
 	<label for="role"><s:message code="signup.role" /></label>
 	
-	<select class="input-block-level" name="role">
+	<form:select class="input-block-level" path="role">
 		<s:message code="signup.role.user" var="roleUser"/>
-		<option value="ROLE_USER">${roleUser}</option>
+		<form:option value="ROLE_USER">${roleUser}</form:option>
 		<s:message code="signup.role.admin" var="roleAdmin"/>
-		<option value="ROLE_ADMIN">${roleAdmin}</option>
+		<form:option value="ROLE_ADMIN">${roleAdmin}</form:option>
 		<s:message code="signup.role.employee" var="roleEmployee"/>
-		<option value="ROLE_EMPLOYEE">${roleEmployee}</option>
-	</select>
+		<form:option value="ROLE_EMPLOYEE">${roleEmployee}</form:option>
+	</form:select>
 	
 	<button class="btn btn-large btn-primary" type="submit"><s:message code="signup" /></button>
 	<p class="form-text"><s:message code="signup.haveAccount" /> <a href='<s:url value="/signin"/>'><s:message code="signin" /></a></p>
