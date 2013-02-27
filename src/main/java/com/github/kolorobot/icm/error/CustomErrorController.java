@@ -21,7 +21,7 @@ class CustomErrorController {
 		if (requestUri == null) {
 			requestUri = "Unknown";
 		}
-		String message = statusCode + " returned for " + requestUri + " by" + servletName; 
+		String message = statusCode + " returned for " + requestUri + " by " + servletName; 
 		throw new Exception(message, throwable);
 	}
 }

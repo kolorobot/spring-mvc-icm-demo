@@ -2,15 +2,7 @@
 <!DOCTYPE tiles-definitions PUBLIC
 	"-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
 	"http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
-<tiles-definitions>
-	<definition name="operator" extends="default">
-		<put-attribute name="body" value="/WEB-INF/views/home/operator.jsp"></put-attribute>
-		<put-attribute name="header" value="" type="string" />
-		<put-attribute name="footer" value="" type="string" />
-		<put-list-attribute name="styles">
-			<add-attribute value="form.css" />
-		</put-list-attribute>
-	</definition>
+<tiles-definitions>	
 	<definition name="homeNotSignedIn" extends="default">
 		<put-attribute name="body" value="/WEB-INF/views/home/homeNotSignedIn.jsp"></put-attribute>
 	</definition>
