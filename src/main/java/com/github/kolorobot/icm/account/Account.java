@@ -62,7 +62,11 @@ public class Account implements java.io.Serializable {
 		this.password = password;
 		this.role = role;
 	}
-
+	
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
 	public Long getId() {
 		return id;
 	}

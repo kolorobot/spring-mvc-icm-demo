@@ -1,14 +1,11 @@
 package com.github.kolorobot.icm.incident;
 
-import java.util.Date;
-import java.util.EnumSet;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,29 +15,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.github.kolorobot.icm.account.Account;
-import com.github.kolorobot.icm.account.AccountRepository;
-import com.github.kolorobot.icm.account.Address;
 import com.github.kolorobot.icm.account.User;
 import com.github.kolorobot.icm.error.AjaxRequestException;
-import com.github.kolorobot.icm.incident.Incident.Status;
 import com.github.kolorobot.icm.support.web.MessageHelper;
-import com.google.common.collect.Lists;
 
 @Controller
 @RequestMapping("/incident")
 class IncidentController {
 	
 	@Inject
-	private AccountRepository accountRepository;
+	private IncidentService incidentService;
 	
 	@Inject
-	private IncidentRepository incidentRepository;
+	private AuditFormFactory auditFormFactory;
 	
-	@Inject
-	private AuditRepository auditRepository;
-	
-		
 	@RequestMapping("/create")
 	public IncidentForm create() {
 		return new IncidentForm();
@@ -52,81 +40,35 @@ class IncidentController {
 			MessageHelper.addErrorAttribute(model, "incident.create.failed");
 			return null;
 		}
-		
-		Address incidentAddress = new Address();
-		incidentAddress.setCityLine(incidentForm.getAddressLine());
-		incidentAddress.setAddressLine(incidentForm.getAddressLine());
-		incidentAddress.setOperatorId(user.getOperatorId());
-		
-		Incident incident = new Incident();
-		incident.setAddress(incidentAddress);
-		incident.setDescription(incidentForm.getDescription());
-		incident.setIncidentType(incidentForm.getType());
-		incident.setOperatorId(user.getOperatorId());
-		Account reporter = accountRepository.findOne(user.getAccountId());
-	
-		incident.setCreator(reporter);
-		Date someDate = randomDate();
-		incident.setCreated(someDate);
-		incidentRepository.save(incident);
-		
+		Incident incident = incidentService.create(user, incidentForm);
 		MessageHelper.addSuccessAttribute(ra, "incident.create.success", incident.getId());
-		
 		return "redirect:/incident/list";
-	}
-	
-	private Date randomDate() {
-		long day = 24L * 60L * 60L * 1000L;
-		long month = 30L * day;
-		
-		long randomTime = day	+ (long) (Math.random() * ((month - day) + 1));
-		Date date = new Date(System.currentTimeMillis() - randomTime);
-		return date;
-	}
+	}	
 	
 	@RequestMapping(value = "/list")
 	@ModelAttribute(value = "incidents")
 	public List<Incident> list(User user) {
-		// FIXME does not conform with the requirements
-		return incidentRepository.findAllByOperatorId(user.getOperatorId());	
+		return incidentService.getIncidents(user);	
 	}
 	
 	@RequestMapping(value = "/{id}", headers = "X-Requested-With=XMLHttpRequest")
-	@Transactional
 	public String detailsAjax(User user, @PathVariable("id") Long id, Model model) {
 		Incident incident = getIncident(user, id);
-		
 		if (incident == null) {			
 			throw new AjaxRequestException("Exception 0x156DDE");
 		}
-		
 		model.addAttribute("incident", incident);
 		return "incident/detailsAjax";
 	}
 
 	@RequestMapping(value = "/{id}")
-	@Transactional
 	public String details(User user, @PathVariable("id") Long id, Model model) {
 		Incident incident = getIncident(user, id);
-		
 		if (incident == null) {			
 			throw new IllegalStateException("Exception 0x156DDE");
 		}
-		
 		model.addAttribute("incident", incident);
 		return "incident/details";
-	}
-	
-	private Incident getIncident(User user, Long id) {
-		Incident incident = null;
-		if (user.isInRole(Account.ROLE_USER)) {
-			incident = incidentRepository.findOneByIdAndCreatorId(id, user.getAccountId(), user.getOperatorId());
-		} else if (user.isInRole(Account.ROLE_EMPLOYEE)) {
-			incident = incidentRepository.findOneByIdAndAssigneeIdOrCreatorId(id, user.getAccountId(), user.getOperatorId());
-		} else {
-			incident = incidentRepository.findOne(id, user.getOperatorId());
-		}
-		return incident;
 	}
 	
 	@RequestMapping(value = "search")
@@ -135,96 +77,33 @@ class IncidentController {
 		return "forward:/incident/" + incidentId;
 	}
 	
-	// FIXME Should be available only for ROLE_ADMIN (security bug)
 	@RequestMapping("/{incidentId}/audit/create")	
 	public String createAudit(User user, @PathVariable Long incidentId, Model model) {
 		Incident incident = getIncident(user, incidentId);
-		
 		if (incident == null) {
 			throw new IllegalStateException("Why, Leo, why?");
 		}
-		
-		AuditForm form = new AuditForm();
-		form.setOldStatus(incident.getStatus());
-		form.setAvailableStatuses(getAvailableStatuses(user, incident));
-		form.setAvailableEmployees(getAvailableEmployees(user, incident));
-		
-		model.addAttribute(form);
+		model.addAttribute(auditFormFactory.createAuditForm(user, incident));
 		return "incident/audit/create";
 	}
 
-	private List<Status> getAvailableStatuses(User user, Incident incident) {
-		Status status = incident.getStatus();
-		if (user.isInRole(Account.ROLE_ADMIN)) {
-			if(EnumSet.of(Status.NOT_CONFIRMED, Status.SOLVED).contains(status)) {
-				return Lists.newArrayList(Status.CLOSED, Status.NEW);
-			}
-		} else if (user.isInRole(Account.ROLE_EMPLOYEE)) {
-			switch(status) {
-				case NEW:
-					return Lists.newArrayList(Status.CONFIRMED, Status.NOT_CONFIRMED, Status.SOLVED);
-				case CONFIRMED:
-					return Lists.newArrayList(Status.NEW, Status.NOT_CONFIRMED, Status.SOLVED);
-				case NOT_CONFIRMED:
-					return Lists.newArrayList(Status.NEW, Status.CONFIRMED, Status.SOLVED);
-				case SOLVED:
-					return Lists.newArrayList(Status.NEW, Status.CONFIRMED, Status.NOT_CONFIRMED);
-			default:
-				break;
-			}
-		} else {
-			throw new IllegalAccessError();
-		}
-		return null;
-	}
-	
-	private List<Account> getAvailableEmployees(User user, Incident incident) {
-		if (user.isInRole(Account.ROLE_ADMIN) 
-				&& EnumSet.of(Status.NEW, Status.NOT_CONFIRMED, Status.SOLVED).contains(incident.getStatus())) {
-			return accountRepository.findAll(user.getOperatorId());
-		}
-		return null;
-	}
-
 	@RequestMapping(value = "/{incidentId}/audit/create", method = RequestMethod.POST)
-	@Transactional
 	public String createAudit(User user, @PathVariable Long incidentId, @Valid @ModelAttribute AuditForm auditForm, Errors errors, RedirectAttributes ra, Model model) {
 		if (errors.hasErrors()) {
 			MessageHelper.addErrorAttribute(model, "incident.audit.create.failed");
 			return null;
 		}
-		
-		Incident incident = incidentRepository.findOne(incidentId);
-		Account creator = accountRepository.findOne(user.getAccountId());
-		
-		Audit audit = new Audit();
-		audit.setDescription(auditForm.getDescription());		
-		
-		audit.setCreated(new Date());
-		audit.setCreator(creator);
-		audit.setPreviousStatus(incident.getStatus());
-		audit.setOperatorId(user.getOperatorId());
-		
-		Status newStatus = auditForm.getNewStatus();
-		if (newStatus == null) {
-			newStatus = incident.getStatus();
-		}
-		audit.setStatus(newStatus);
-		incident.setStatus(newStatus);
-		
-		Long assigneeId = auditForm.getAssigneeId();
-		if (assigneeId != null) {
-			Account assignee = accountRepository.findOne(assigneeId);
-			incident.setAssignee(assignee);
-		}
-		
-		audit.setIncident(incident);
-		incident.getAudits().add(audit);
-		
-		auditRepository.save(audit);
-		
+		Incident incident = getIncident(user, incidentId);
+		Audit audit = incidentService.addAudit(user, incident, auditForm);
 		MessageHelper.addErrorAttribute(ra, "incident.audit.create.success", audit.getId());
-		
 		return "redirect:/incident/" + incidentId;
+	}
+	
+	//
+	// private helpers
+	//
+	
+	private Incident getIncident(User user, Long incidentId) {
+		return incidentService.getIncident(user, incidentId);
 	}
 }

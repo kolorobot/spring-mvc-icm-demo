@@ -65,7 +65,7 @@ public class Incident {
 	@JoinColumn(name = "assignee_id")
 	private Account assignee;
 	
-	@OneToMany(mappedBy = "incident", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "incident", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@OrderBy(value = "created DESC")
 	private List<Audit> audits;
 	
@@ -154,6 +154,12 @@ public class Incident {
 
 	public void setOperatorId(String operatorId) {
 		this.operatorId = operatorId;
+	}
+
+	public void addAudit(Audit audit) {		
+		setStatus(audit.getStatus());
+		getAudits().add(audit);
+		audit.setIncident(this);
 	}
 	
 }
