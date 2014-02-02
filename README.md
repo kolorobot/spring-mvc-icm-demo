@@ -27,3 +27,12 @@ Navigate to the project folder and run the following command:
 Open the browser and navigate to:
 
     http://localhost:8080/icm
+
+Database
+--------
+
+The project is based on SQLite database. By default, the database will be created in a user's home directory.
+If you want to change the data source url, please add 'dataSource.url=<url>' system property (usually through -D JVM switch).
+
+Database schema will be created and the database will be populated with some initial data.
+This can be disabled (e.g. at next application deployment) with 'dataSource.populate=<boolean>' system property.

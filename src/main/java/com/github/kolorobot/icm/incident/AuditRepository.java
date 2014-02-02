@@ -1,7 +1,10 @@
 package com.github.kolorobot.icm.incident;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 
-public interface AuditRepository extends JpaRepository<Audit, Long> {
+public interface AuditRepository {
 
+    Audit save(Audit audit);
+
+    List<Audit> findAll(Long incidentId);
 }

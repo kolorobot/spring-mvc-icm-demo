@@ -5,6 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.validation.Valid;
 
+import com.github.kolorobot.icm.account.Account;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -22,14 +23,13 @@ import com.github.kolorobot.icm.support.web.MessageHelper;
 @Controller
 @RequestMapping("/incident")
 class IncidentController {
-	
+
 	@Inject
 	private IncidentService incidentService;
-	
-	@Inject
+    @Inject
 	private AuditFormFactory auditFormFactory;
-	
-	@RequestMapping("/create")
+
+    @RequestMapping("/create")
 	public IncidentForm create() {
 		return new IncidentForm();
 	}
@@ -51,16 +51,6 @@ class IncidentController {
 		return incidentService.getIncidents(user);	
 	}
 	
-	@RequestMapping(value = "/{id}", headers = "X-Requested-With=XMLHttpRequest")
-	public String detailsAjax(User user, @PathVariable("id") Long id, Model model) {
-		Incident incident = getIncident(user, id);
-		if (incident == null) {			
-			throw new AjaxRequestException("Exception 0x156DDE");
-		}
-		model.addAttribute("incident", incident);
-		return "incident/detailsAjax";
-	}
-
 	@RequestMapping(value = "/{id}")
 	public String details(User user, @PathVariable("id") Long id, Model model) {
 		Incident incident = getIncident(user, id);
@@ -68,10 +58,13 @@ class IncidentController {
 			throw new IllegalStateException("Exception 0x156DDE");
 		}
 		model.addAttribute("incident", incident);
+        model.addAttribute("audits", getAudits(incident));
+        model.addAttribute("incidentCreator", getCreator(incident));
+        model.addAttribute("incidentAssignee", getAssignee(incident));
 		return "incident/details";
 	}
-	
-	@RequestMapping(value = "search")
+
+    @RequestMapping(value = "search")
 	public String search(@RequestParam String q) {
 		Long incidentId = Long.valueOf(q);
 		return "forward:/incident/" + incidentId;
@@ -106,4 +99,16 @@ class IncidentController {
 	private Incident getIncident(User user, Long incidentId) {
 		return incidentService.getIncident(user, incidentId);
 	}
+
+    private List<Audit> getAudits(Incident incident) {
+        return incidentService.getAudits(incident);
+    }
+
+    private Account getCreator(Incident incident) {
+        return incidentService.getCreator(incident);
+    }
+
+    private Account getAssignee(Incident incident) {
+        return incidentService.getAssignee(incident);
+    }
 }

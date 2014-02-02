@@ -32,9 +32,7 @@ class SignupController {
 		if (errors.hasErrors()) {
 			return null;
 		}
-		
 		Account account = signupForm.createAccount();
-		account.setOperatorId(getOperatorId());
 		userService.createAccount(account);
 		userService.signin(account);
 		

@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.github.kolorobot.icm.account.Account;
 import com.github.kolorobot.icm.account.AccountRepository;
-import com.github.kolorobot.icm.account.Address;
 import com.github.kolorobot.icm.account.User;
 import com.github.kolorobot.icm.incident.Incident.Status;
 
@@ -27,7 +26,7 @@ class IncidentService {
 	private AuditRepository auditRepository;
 	
 	public List<Incident> getIncidents(User user) {
-		return incidentRepository.findAllByOperatorId(user.getOperatorId());
+		return incidentRepository.findAll();
 	}
 	
 	public Incident getIncident(User user, Long incidentId) {
@@ -39,21 +38,31 @@ class IncidentService {
 		} 
 		return getOne(user, incidentId);
 	}
-	
+
+    public List<Audit> getAudits(Incident incident) {
+        return auditRepository.findAll(incident.getId());
+    }
+
+    public Account getCreator(Incident incident) {
+        return accountRepository.findOne(incident.getCreatorId());
+    }
+
+    public Account getAssignee(Incident incident) {
+        return accountRepository.findOne(incident.getAssigneeId());
+    }
+
 	@Transactional
 	public Incident create(User user, IncidentForm incidentForm)  {
 		
 		Address incidentAddress = new Address();
 		incidentAddress.setCityLine(incidentForm.getAddressLine());
 		incidentAddress.setAddressLine(incidentForm.getAddressLine());
-		incidentAddress.setOperatorId(user.getOperatorId());
 		
 		Incident incident = new Incident();
 		incident.setAddress(incidentAddress);
 		incident.setDescription(incidentForm.getDescription());
 		incident.setIncidentType(incidentForm.getType());
-		incident.setOperatorId(user.getOperatorId());
-		incident.setCreator(accountRepository.findOne(user.getAccountId()));
+		incident.setCreatorId(user.getAccountId());
 		incident.setCreated(randomDate());
 		
 		return incidentRepository.save(incident);
@@ -63,26 +72,24 @@ class IncidentService {
 	public Audit addAudit(User user, Incident incident, AuditForm auditForm) {
 		
 		Audit audit = new Audit();
-		audit.setDescription(auditForm.getDescription());	
+        audit.setIncidentId(incident.getId());
+        audit.setDescription(auditForm.getDescription());
 		audit.setCreated(new Date());
-		audit.setCreator(accountRepository.findOne(user.getAccountId()));
+		audit.setCreatorId(user.getAccountId());
 		audit.setPreviousStatus(incident.getStatus());
-		audit.setOperatorId(user.getOperatorId());
-		
+
 		// update the status
-		Status status = auditForm.getNewStatus();
-		if (status == null) {
-			status = incident.getStatus();
-		}
-		audit.setStatus(status);
-		
+		Status newStatus = auditForm.getNewStatus();
+		audit.setStatus(newStatus);
+        incident.setStatus(newStatus);
+
 		// assign someone to the incident
 		Long assigneeId = auditForm.getAssigneeId();
 		if (assigneeId != null) {
-			incident.setAssignee(accountRepository.findOne(assigneeId));
+			incident.setAssigneeId(assigneeId);
 		}
-		incident.addAudit(audit);
-		
+
+        incidentRepository.update(incident);
 		return auditRepository.save(audit);
 	}
 	
@@ -91,15 +98,15 @@ class IncidentService {
 	//
 	
 	private Incident getUserIncident(User user, Long incidentId) {
-		return incidentRepository.findOneByIdAndCreatorId(incidentId, user.getAccountId(), user.getOperatorId());
+		return incidentRepository.findOneByIdAndCreatorId(incidentId, user.getAccountId());
 	}
 	
 	private Incident getEmployeeIncident(User user, Long incidentId) {
-		return incidentRepository.findOneByIdAndAssigneeIdOrCreatorId(incidentId, user.getAccountId(), user.getOperatorId());
+		return incidentRepository.findOneByIdAndAssigneeIdOrCreatorId(incidentId, user.getAccountId());
 	}
 	
 	private Incident getOne(User user, Long incidentId) {
-		return incidentRepository.findOne(incidentId, user.getOperatorId());
+		return incidentRepository.findOne(incidentId);
 	}
 	
 	private Date randomDate() {
@@ -109,4 +116,6 @@ class IncidentService {
 		Date date = new Date(System.currentTimeMillis() - randomTime);
 		return date;
 	}
+
+
 }

@@ -10,7 +10,7 @@
 					<span class="icon-bar"></span> 
 					<span class="icon-bar"></span>
 			</a> 
-			<a class="brand" href="#">ICM (${operatorId})</a>
+			<a class="brand" href="#">ICM</a>
 			<div class="nav-collapse collapse">
 				<ul class="nav">
 					<li class="active"><a href='<s:url value="/"></s:url>'><s:message code="header.home" /></a></li>										

@@ -29,7 +29,7 @@ public class GetIncidentTest {
 		// act
 		service.getIncident(user, 1L);
 		// assert
-		verify(incidentRepository, times(1)).findOneByIdAndCreatorId(1L, 1L, "OP01");
+		verify(incidentRepository, times(1)).findOneByIdAndCreatorId(1L, 1L);
 	}
 	
 	@Test
@@ -40,7 +40,7 @@ public class GetIncidentTest {
 		// act
 		service.getIncident(user, 1L);
 		// assert
-		verify(incidentRepository, times(1)).findOneByIdAndAssigneeIdOrCreatorId(1L, 1L, "OP01");
+		verify(incidentRepository, times(1)).findOneByIdAndAssigneeIdOrCreatorId(1L, 1L);
 	}
 	
 	@Test
@@ -51,13 +51,12 @@ public class GetIncidentTest {
 		// act
 		service.getIncident(user, 1L);
 		// assert
-		verify(incidentRepository, times(1)).findOne(1L, "OP01");
+		verify(incidentRepository, times(1)).findOne(1L);
 	}
 
 	private Account createAccount(String role) {
 		Account account = new Account("name", "email", "password", role);
 		account.setId(1L);
-		account.setOperatorId("OP01");
 		return account;
 	}
 

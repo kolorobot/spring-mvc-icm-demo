@@ -58,7 +58,7 @@ class AuditFormFactory {
 	private List<Account> getAvailableEmployees(User user, Incident incident) {
 		if (user.isInRole(ROLE_ADMIN) 
 				&& EnumSet.of(NEW, NOT_CONFIRMED, SOLVED).contains(incident.getStatus())) {
-			return accountRepository.findAll(user.getOperatorId());
+			return accountRepository.findAll();
 		}
 		return null;
 	}

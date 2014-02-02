@@ -23,10 +23,10 @@ public class UserService implements UserDetailsService {
 		if(account == null) {
 			throw new UsernameNotFoundException("user not found");
 		}
-		return createUser(account);
+		return toUser(account);
 	}
 
-	private UserDetails createUser(Account account) {
+	private UserDetails toUser(Account account) {
 		return new com.github.kolorobot.icm.account.User(account);
 	}
 
@@ -41,7 +41,7 @@ public class UserService implements UserDetailsService {
 	}
 	
 	private Authentication authenticate(Account account) {
-		UserDetails user = createUser(account);
+		UserDetails user = toUser(account);
 		return new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());		
 	}
 }

@@ -44,17 +44,17 @@
 		<tr>
 			<th><s:message code="incident.creator" /></th>
 			<td>
-				<s:message code="incident.account.name" />:  <strong><c:out value="${incident.getCreator().getName()}" default="-" /></strong><br/>
-				<s:message code="incident.account.email" />: <strong><c:out value="${incident.getCreator().getEmail()}" default="-" /></strong><br/>
+				<s:message code="incident.account.name" />:  <strong><c:out value="${incidentCreator.getName()}" default="-" /></strong><br/>
+				<s:message code="incident.account.email" />: <strong><c:out value="${incidentCreator.getEmail()}" default="-" /></strong><br/>
 				<s:message code="incident.account.phone" />: <strong></strong>
 			</td>
 		</tr>
 		<tr>
 			<th><s:message code="incident.assignedTo" /></th>
 			<td>
-				<s:message code="incident.account.name" />:  <strong><c:out value="${incident.getAssignee().getName()}" default="" /></strong><br/>
-				<s:message code="incident.account.email" />: <strong><c:out value="${incident.getAssignee().getEmail()}" default="" /></strong><br/>
-				<s:message code="incident.account.phone" />: <strong><c:out value="${incident.getAssignee().getPhone()}" default="-" /></strong>
+				<s:message code="incident.account.name" />:  <strong><c:out value="${incidentAssignee.getName()}" default="" /></strong><br/>
+				<s:message code="incident.account.email" />: <strong><c:out value="${incidentAssignee.getEmail()}" default="" /></strong><br/>
+				<s:message code="incident.account.phone" />: <strong><c:out value="${incidentAssignee.getPhone()}" default="-" /></strong>
 			</td>
 		</tr>
 	</tbody>
@@ -70,7 +70,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		<c:set var="audits" value="${incident.getAudits()}" />
+		<c:set var="audits" value="${audits}" />
 		<c:if test="${empty audits}">
 			<tr>
 				<td colspan="3"><p class="muted"><s:message code="noRecords" /></p></td>

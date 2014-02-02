@@ -1,16 +1,13 @@
 package com.github.kolorobot.icm.config;
 
-import java.util.List;
-
-import javax.inject.Inject;
-import javax.persistence.EntityManagerFactory;
-
+import com.github.kolorobot.icm.account.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.MethodParameter;
-import org.springframework.orm.jpa.support.OpenEntityManagerInViewInterceptor;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -19,14 +16,13 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
 import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 
-import com.github.kolorobot.icm.account.User;
+import java.util.List;
 
 @Configuration
 public class WebMvcConfig extends WebMvcConfigurationSupport {
@@ -37,10 +33,9 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 	
 	private static final String RESOURCES_HANDLER = "/resources/";
 	private static final String RESOURCES_LOCATION = RESOURCES_HANDLER + "**";
-	
-	@Inject
-	private EntityManagerFactory entityManagerFactory;
-	
+
+    private static final Logger LOGGER = LoggerFactory.getLogger("Config");
+
 	@Override
 	public RequestMappingHandlerMapping requestMappingHandlerMapping() {
 		RequestMappingHandlerMapping requestMappingHandlerMapping = super.requestMappingHandlerMapping();
@@ -90,13 +85,6 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 	@Override
 	protected void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
 		argumentResolvers.add(new UserHandlerMethodArgumentResolver());
-	}
-
-	@Override
-	protected void addInterceptors(InterceptorRegistry registry) {
-		OpenEntityManagerInViewInterceptor interceptor = new OpenEntityManagerInViewInterceptor();
-		interceptor.setEntityManagerFactory(entityManagerFactory);
-		registry.addWebRequestInterceptor(interceptor);
 	}
 	
 	// custom argument resolver inner classes

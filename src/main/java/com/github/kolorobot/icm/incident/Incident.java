@@ -1,77 +1,43 @@
 package com.github.kolorobot.icm.incident;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.github.kolorobot.icm.account.Account;
-import com.github.kolorobot.icm.account.Address;
+import javax.validation.constraints.Size;
+import java.util.Date;
 
-@Entity
-@Table(name = "incident")
 public class Incident {
 	
 	public enum Status {
 		NEW, CONFIRMED, NOT_CONFIRMED, SOLVED, CLOSED;
-	}
+        public static Status valueOf(int ordinal) {
+            for(Status status : Status.values()) {
+                if (status.ordinal() == ordinal) {
+                    return status;
+                }
+            }
+            return null;
+        }
+    }
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "creator_id", nullable = false, updatable = false)
-	private Account creator;
+	private Long creatorId;
 	
-	@Column(name = "incident_type")
 	@NotBlank
 	@Size(max = 50)
 	private String incidentType;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "address_id")
 	private Address address;
 	
 	@NotBlank
 	@Size(max = 255)
 	private String description;
 		
-	@Temporal(TemporalType.TIMESTAMP)
 	private Date created;
 	
 	private Status status = Status.NEW;
 	
-	@ManyToOne
-	@JoinColumn(name = "assignee_id")
-	private Account assignee;
-	
-	@OneToMany(mappedBy = "incident", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@OrderBy(value = "created DESC")
-	private List<Audit> audits;
-	
-	@NotNull
-	@Column(name = "operator_id")
-	private String operatorId;
+	private Long assigneeId;
 	
 	public Long getId() {
 		return id;
@@ -81,12 +47,12 @@ public class Incident {
 		this.id = id;
 	}
 
-	public Account getCreator() {
-		return creator;
+	public Long getCreatorId() {
+		return creatorId;
 	}
 
-	public void setCreator(Account creator) {
-		this.creator = creator;
+	public void setCreatorId(Long creatorId) {
+		this.creatorId = creatorId;
 	}
 
 	public String getIncidentType() {
@@ -113,23 +79,12 @@ public class Incident {
 		this.status = status;
 	}
 
-	public Account getAssignee() {
-		return assignee;
+	public Long getAssigneeId() {
+		return assigneeId;
 	}
 
-	public void setAssignee(Account assignee) {
-		this.assignee = assignee;
-	}
-
-	public List<Audit> getAudits() {
-		if (audits == null) {
-			audits = new ArrayList<Audit>();
-		}
-		return audits;
-	}
-
-	public void setAudits(List<Audit> audits) {
-		this.audits = audits;
+	public void setAssigneeId(Long assigneeId) {
+		this.assigneeId = assigneeId;
 	}
 
 	public Date getCreated() {
@@ -147,19 +102,5 @@ public class Incident {
 	public void setAddress(Address address) {
 		this.address = address;
 	}
-	
-	public String getOperatorId() {
-		return operatorId;
-	}
 
-	public void setOperatorId(String operatorId) {
-		this.operatorId = operatorId;
-	}
-
-	public void addAudit(Audit audit) {		
-		setStatus(audit.getStatus());
-		getAudits().add(audit);
-		audit.setIncident(this);
-	}
-	
 }

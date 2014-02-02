@@ -1,68 +1,74 @@
 package com.github.kolorobot.icm.config;
 
-import java.util.Properties;
-
-import javax.sql.DataSource;
-
-import org.springframework.beans.factory.annotation.Value;
+import com.google.common.base.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+import javax.sql.DataSource;
+import java.io.File;
+import java.sql.SQLException;
+
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = "com.github.kolorobot.icm", entityManagerFactoryRef = "entityManagerFactory")
 public class PersistenceConfig implements TransactionManagementConfigurer {
-	
-	@Value("${dataSource.driverClassName}")
-	private String driver;
-	@Value("${dataSource.url}")
-	private String url;
-	@Value("${dataSource.username}")
-	private String username;
-	@Value("${dataSource.password}")
-	private String password;
-	@Value("${hibernate.dialect}")
-	private String dialect;
-	@Value("${hibernate.hbm2ddl.auto}")
-	private String hbm2ddlAuto;
 
-	@Bean	
-	public DataSource dataSource() {
-		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		dataSource.setDriverClassName(driver);
-		dataSource.setUrl(url);
-		dataSource.setUsername(username);
-		dataSource.setPassword(password);
-		return dataSource;
-	}
-	
-	@Bean(name = "entityManagerFactory")
-	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-		LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
-		entityManagerFactoryBean.setDataSource(dataSource());
-		entityManagerFactoryBean.setPackagesToScan("com.github.kolorobot.icm");
-		entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-		
-		Properties jpaProperties = new Properties();
-		jpaProperties.put(org.hibernate.cfg.Environment.DIALECT, dialect);
-		jpaProperties.put(org.hibernate.cfg.Environment.HBM2DDL_AUTO, hbm2ddlAuto);
-		jpaProperties.put(org.hibernate.cfg.Environment.SHOW_SQL, "true");
-		entityManagerFactoryBean.setJpaProperties(jpaProperties);
-		
-		return entityManagerFactoryBean;
-	}
+    private static final Logger LOGGER = LoggerFactory.getLogger("Config");
 
-	@Bean(name = "transactionManager")
-	public PlatformTransactionManager annotationDrivenTransactionManager() {
-		return new JpaTransactionManager();
-	}
+    @Inject
+    private DataSource dataSource;
 
+    @PostConstruct
+    public void init() throws SQLException {
+        String dataSourcePopulate = System.getProperty("dataSource.populate");
+        if (Strings.isNullOrEmpty(dataSourcePopulate)) {
+            return;
+        }
+        ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
+        databasePopulator.addScript(new ClassPathResource("sqlite/sqlite-schema.sql"));
+        databasePopulator.addScript(new ClassPathResource("sqlite/sqlite-accounts.sql"));
+        databasePopulator.addScript(new ClassPathResource("sqlite/sqlite-incidents.sql"));
+        databasePopulator.populate(dataSource.getConnection());
+    }
+
+    @Bean
+    public DataSource dataSource() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName("org.sqlite.JDBC");
+        dataSource.setUrl(resolveUrl());
+        return dataSource;
+    }
+
+    private String resolveUrl() {
+        String dataSourceUrl = System.getProperty("dataSource.url");
+        if (!Strings.isNullOrEmpty(dataSourceUrl)) {
+            return dataSourceUrl;
+        }
+        String databaseUrl = System.getProperty("user.home") + "/icm.db";
+        LOGGER.warn("By default, the database will be created in a user's home directory (" + new File(databaseUrl).getAbsolutePath() + ")");
+        LOGGER.warn("If you want to change the data source url, please add 'dataSource.url=<url>' system property and run the application again.");
+        return "jdbc:sqlite:" + databaseUrl;
+    }
+
+    @Bean(name = "transactionManager")
+    public PlatformTransactionManager annotationDrivenTransactionManager() {
+        return new DataSourceTransactionManager(dataSource());
+    }
+
+    @Bean
+    public JdbcTemplate jdbcTemplate() {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource());
+        return jdbcTemplate;
+    }
 }
