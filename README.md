@@ -27,11 +27,11 @@ This can be disabled (e.g. at next application deployment) with 'dataSource.popu
 Run the project
 ----------------
 
-- Navigate to the project folder and run the following command:
+Navigate to the project folder and run the following command:
 
 	mvn tomcat7:run
 
-- Open the browser and navigate to:
+Open the browser and navigate to:
 
     http://localhost:8080/icm
 
@@ -43,20 +43,5 @@ Deploying to Tomcat (Windows)
 - Download a Tomcat 7 server and extract to previously created directory
 - Navigate to `CATALINA_HOME/webapps` folder and remove all folders and files
 - Copy the war file to `CATALINA_HOME/webapps` folder and rename it to `ROOT.war`
-- In the `icm` directory create a script to start the server:
-
-    @echo off
-
-    rem Setting this value to 'true' will cause that the database will be created and loaded with initial data.\
-    set "DATASOURCE_POPULATE=true"
-    rem JDBC URL string used to create a connection.
-    set "DATASOURCE_URL=jdbc:sqlite:%cd%\database\icm.db
-    rem Required by Tomcat
-    set "CATALINA_HOME=%cd%\tomcat"
-    rem Passing properties to VM
-    set "JAVA_OPTS=-DdataSource.populate=true -DdataSource.url=jdbc:sqlite:%cd%\database\icm.db"
-    rem Run Tomcat
-    call %CATALINA_HOME%\bin\startup.bat
-
-- Open shell (`cmd`) and run the script
+- In the `icm` directory create a script to start the server (see `src/main/scripts/start.bat`)
 - Browse to: http://localhost:8080/
