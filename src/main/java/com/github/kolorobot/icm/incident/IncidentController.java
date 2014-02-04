@@ -1,24 +1,17 @@
 package com.github.kolorobot.icm.incident;
 
-import java.util.List;
-
-import javax.inject.Inject;
-import javax.validation.Valid;
-
 import com.github.kolorobot.icm.account.Account;
+import com.github.kolorobot.icm.account.User;
+import com.github.kolorobot.icm.support.web.MessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.github.kolorobot.icm.account.User;
-import com.github.kolorobot.icm.error.AjaxRequestException;
-import com.github.kolorobot.icm.support.web.MessageHelper;
+import javax.inject.Inject;
+import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("/incident")

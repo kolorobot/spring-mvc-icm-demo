@@ -1,7 +1,7 @@
-DROP TABLE account;
-DROP TABLE address;
-DROP TABLE incident;
-DROP TABLE audit;
+DROP TABLE IF EXISTS account;
+DROP TABLE IF EXISTS address;
+DROP TABLE IF EXISTS incident;
+DROP TABLE IF EXISTS audit;
 
 CREATE TABLE account
 (

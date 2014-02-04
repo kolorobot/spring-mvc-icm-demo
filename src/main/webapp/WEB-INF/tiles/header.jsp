@@ -26,7 +26,7 @@
 						<li><a href='<s:url value="/signin"></s:url>'><s:message code="signin" /></a></li>
 					</security:authorize>
 					<security:authorize access="isAuthenticated()">
-						<li><a href='<s:url value="/logout"></s:url>'><s:message code="logout" /> (<security:authentication property="principal.username"/>, ID:<security:authentication property="principal.accountId"/>)</a></li>
+						<li><a href='<s:url value="/logout"></s:url>' title="<security:authentication property="principal.username"/>"><s:message code="logout" /></a></li>
 					</security:authorize>
 				</ul>
 			</div>

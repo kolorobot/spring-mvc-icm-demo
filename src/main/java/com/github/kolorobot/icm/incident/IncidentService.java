@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +17,9 @@ import com.github.kolorobot.icm.incident.Incident.Status;
 
 @Service
 class IncidentService {
-	
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(IncidentService.class);
+
 	@Inject
 	private IncidentRepository incidentRepository;
 	
@@ -64,9 +68,11 @@ class IncidentService {
 		incident.setIncidentType(incidentForm.getType());
 		incident.setCreatorId(user.getAccountId());
 		incident.setCreated(randomDate());
-		
-		return incidentRepository.save(incident);
-	}
+
+        incidentRepository.save(incident);
+        LOGGER.info("Created an incident: " + incident.toString());
+        return incident;
+    }
 
 	@Transactional
 	public Audit addAudit(User user, Incident incident, AuditForm auditForm) {
@@ -90,7 +96,9 @@ class IncidentService {
 		}
 
         incidentRepository.update(incident);
-		return auditRepository.save(audit);
+		auditRepository.save(audit);
+        LOGGER.info("Created an audit: " + incident.toString());
+        return audit;
 	}
 	
 	//

@@ -1,5 +1,7 @@
 package com.github.kolorobot.icm.error;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
@@ -8,18 +10,14 @@ import com.google.common.base.Throwables;
 
 @ControllerAdvice
 class ExceptionHandler {
-	
-	@org.springframework.web.bind.annotation.ExceptionHandler(value = AjaxRequestException.class)	
-	public ModelAndView ajaxRequestException(Exception exception, WebRequest request) {
-		ModelAndView modelAndView = new ModelAndView("ajaxError");
-		addError(exception, modelAndView);
-		return modelAndView;
-	}
-	
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExceptionHandler.class);
+
 	@org.springframework.web.bind.annotation.ExceptionHandler(value = Exception.class)	
 	public ModelAndView exception(Exception exception, WebRequest request) {
 		ModelAndView modelAndView = new ModelAndView("generalError");
 		addError(exception, modelAndView);
+        LOGGER.error("An error occurred", exception);
 		return modelAndView;
 	}
 	

@@ -1,5 +1,6 @@
 package com.github.kolorobot.icm.incident;
 
+import com.google.common.base.Objects;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Size;
@@ -103,4 +104,15 @@ public class Incident {
 		this.address = address;
 	}
 
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this)
+                .add("id", id)
+                .add("creatorId", creatorId)
+                .add("incidentType", incidentType)
+                .add("created", created)
+                .add("status", status)
+                .toString();
+    }
 }

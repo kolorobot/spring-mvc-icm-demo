@@ -1,6 +1,8 @@
 package com.github.kolorobot.icm.incident;
 
 import com.github.kolorobot.icm.support.date.DateConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -12,6 +14,8 @@ import java.util.List;
 
 @Repository
 class JdbcAuditRepository implements AuditRepository {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(JdbcAuditRepository.class);
 
     private JdbcTemplate jdbcTemplate;
 
@@ -25,7 +29,9 @@ class JdbcAuditRepository implements AuditRepository {
     public Audit save(Audit audit) {
         long incidentId = jdbcTemplate.queryForLong("select id from incident where incident.id = ?", new Object[]{audit.getIncidentId()});
         long auditId = jdbcTemplate.queryForLong("select max(id) from audit") + 1;
-        jdbcTemplate.update("insert into audit (id, incident_id, creator_id, description, created, status, previous_status) values (?, ?, ?, ?, ?, ?, ?)",
+        String sql = "insert into audit (id, incident_id, creator_id, description, created, status, previous_status) values (?, ?, ?, ?, ?, ?, ?)";
+        LOGGER.debug("Running SQL query: " + sql);
+        jdbcTemplate.update(sql,
                 new Object[]{auditId, audit.getIncidentId(), audit.getCreatorId(), audit.getDescription(), DateConverter.toDateString(audit.getCreated()), audit.getStatus().ordinal(), audit.getPreviousStatus().ordinal()}
         );
         audit.setId(auditId);
@@ -34,7 +40,9 @@ class JdbcAuditRepository implements AuditRepository {
 
     @Override
     public List<Audit> findAll(Long incidentId) {
-        return jdbcTemplate.query("select * from audit where incident_id = ?", new Object[]{incidentId}, new AuditMapper());
+        String sql = "select * from audit where incident_id = ?";
+        LOGGER.debug("Running SQL query: " + sql);
+        return jdbcTemplate.query(sql, new Object[]{incidentId}, new AuditMapper());
     }
 
     private class AuditMapper implements RowMapper<Audit> {

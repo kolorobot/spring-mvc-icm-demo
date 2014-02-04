@@ -1,6 +1,8 @@
 package com.github.kolorobot.icm.incident;
 
 import com.github.kolorobot.icm.support.date.DateConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +15,8 @@ import java.util.List;
 @Repository
 public class JdbcIncidentRepository implements IncidentRepository {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(JdbcIncidentRepository.class);
+
     private JdbcTemplate jdbcTemplate;
 
     @Inject
@@ -22,26 +26,34 @@ public class JdbcIncidentRepository implements IncidentRepository {
 
     @Override
     public List<Incident> findAll() {
-        return jdbcTemplate.query("select incident.id as incident_id, incident.created, incident.incident_type, incident.description, incident.status, incident.creator_id, incident.assignee_id, address.id as address_id, address.address_line, address.city_line " +
-                "from incident inner join address on incident.address_id = address.id", new Object[] {}, new IncidentMapper());
+        String sql = "select incident.id as incident_id, incident.created, incident.incident_type, incident.description, incident.status, incident.creator_id, incident.assignee_id, address.id as address_id, address.address_line, address.city_line " +
+                "from incident inner join address on incident.address_id = address.id";
+        LOGGER.debug("Running SQL query: " + sql);
+        return jdbcTemplate.query(sql, new IncidentMapper());
     }
 
     @Override
     public Incident findOne(Long id) {
-        return jdbcTemplate.queryForObject("select incident.id as incident_id, incident.created, incident.incident_type, incident.description, incident.status, incident.creator_id, incident.assignee_id, address.id as address_id, address.address_line, address.city_line " +
-                "from incident inner join address on incident.address_id = address.id where incident.id = ?", new Object[] {id}, new IncidentMapper());
+        String sql = "select incident.id as incident_id, incident.created, incident.incident_type, incident.description, incident.status, incident.creator_id, incident.assignee_id, address.id as address_id, address.address_line, address.city_line " +
+                "from incident inner join address on incident.address_id = address.id where incident.id = ?";
+        LOGGER.debug("Running SQL query: " + sql);
+        return jdbcTemplate.queryForObject(sql, new Object[]{id}, new IncidentMapper());
     }
 
     @Override
     public Incident findOneByIdAndCreatorId(Long id, Long accountId) {
-        return jdbcTemplate.queryForObject("select incident.id as incident_id, incident.created, incident.incident_type, incident.description, incident.status, incident.creator_id, incident.assignee_id, address.id as address_id, address.address_line, address.city_line " +
-                "from incident inner join address on incident.address_id = address.id where incident.id = ? and incident.creator_id = ?", new Object[] {id, accountId}, new IncidentMapper());
+        String sql = "select incident.id as incident_id, incident.created, incident.incident_type, incident.description, incident.status, incident.creator_id, incident.assignee_id, address.id as address_id, address.address_line, address.city_line " +
+                "from incident inner join address on incident.address_id = address.id where incident.id = ? and incident.creator_id = ?";
+        LOGGER.debug("Running SQL query: " + sql);
+        return jdbcTemplate.queryForObject(sql, new Object[]{id, accountId}, new IncidentMapper());
     }
 
     @Override
     public Incident findOneByIdAndAssigneeIdOrCreatorId(Long id, Long accountId) {
-        return jdbcTemplate.queryForObject("select incident.id as incident_id, incident.created, incident.incident_type, incident.description, incident.status, incident.creator_id, incident.assignee_id, address.id as address_id, address.address_line, address.city_line " +
-                "from incident inner join address on incident.address_id = address.id where incident.id = ? and (incident.assignee_id = ? or incident.creator_id = ?)", new Object[] {id, accountId}, new IncidentMapper());
+        String sql = "select incident.id as incident_id, incident.created, incident.incident_type, incident.description, incident.status, incident.creator_id, incident.assignee_id, address.id as address_id, address.address_line, address.city_line " +
+                "from incident inner join address on incident.address_id = address.id where incident.id = ? and (incident.assignee_id = ? or incident.creator_id = ?)";
+        LOGGER.debug("Running SQL query: " + sql);
+        return jdbcTemplate.queryForObject(sql, new Object[]{id, accountId}, new IncidentMapper());
     }
 
     @Override
@@ -54,7 +66,9 @@ public class JdbcIncidentRepository implements IncidentRepository {
         );
 
         int incidentId = jdbcTemplate.queryForInt("select max(id) from incident") + 1;
-        jdbcTemplate.update("insert into incident (id, incident_type, address_id, description, created, status, creator_id) values (?, ?, ?, ?, ?, ?, ?)",
+        String sql = "insert into incident (id, incident_type, address_id, description, created, status, creator_id) values (?, ?, ?, ?, ?, ?, ?)";
+        LOGGER.debug("Running SQL query: " + sql);
+        jdbcTemplate.update(sql,
                 new Object[]{incidentId, incident.getIncidentType(), addressId, incident.getDescription(), DateConverter.toDateString(incident.getCreated()), incident.getStatus().ordinal(), incident.getCreatorId()});
 
         incident.getAddress().setId(Long.valueOf(addressId));
@@ -65,7 +79,9 @@ public class JdbcIncidentRepository implements IncidentRepository {
 
     @Override
     public Incident update(Incident incident) {
-        jdbcTemplate.update("update incident set status = ?, assignee_id = ? where incident.id = ?",
+        String sql = "update incident set status = ?, assignee_id = ? where incident.id = ?";
+        LOGGER.debug("Running SQL query: " + sql);
+        jdbcTemplate.update(sql,
                 new Object[]{incident.getStatus().ordinal(), incident.getAssigneeId(), incident.getId()});
         return incident;
     }
@@ -88,6 +104,8 @@ public class JdbcIncidentRepository implements IncidentRepository {
             incident.setCreatorId(resultSet.getLong("creator_id"));
             incident.setAssigneeId(resultSet.getLong("assignee_id"));
             return incident;
-        };
+        }
+
+        ;
     }
 }

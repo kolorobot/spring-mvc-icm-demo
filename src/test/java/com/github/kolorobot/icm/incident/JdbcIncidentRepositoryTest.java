@@ -5,11 +5,16 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import java.sql.SQLException;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -27,7 +32,7 @@ public class JdbcIncidentRepositoryTest  {
     }
 
     @Test
-    public void findOne() {
+    public void findOne() throws SQLException {
         Incident incident = jdbcIncidentRepository.findOne(1l);
         Assert.assertNotNull(incident);
     }

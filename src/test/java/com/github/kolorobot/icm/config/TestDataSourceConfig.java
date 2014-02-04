@@ -19,7 +19,7 @@ import java.sql.SQLException;
 public class TestDataSourceConfig {
 
     private String driver = "org.sqlite.JDBC";
-    private String url = "jdbc:sqlite:database/icm.db";
+    private String url = "jdbc:sqlite::memory:";
 
     @Inject
     private DataSource dataSource;

@@ -5,5 +5,9 @@
 <div class="alert alert-error alert-block">  
   <h4><s:message code="error.header" /></h4>  
   <p>[${rootCause}]</p>
-  <!-- ${stackTraceAsString} -->
+  <!--
+    Stack trace:
+
+    ${stackTraceAsString}
+  -->
 </div>

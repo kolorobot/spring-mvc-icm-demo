@@ -24,7 +24,7 @@ import java.sql.SQLException;
 @EnableTransactionManagement
 public class PersistenceConfig implements TransactionManagementConfigurer {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger("Config");
+    private static final Logger LOGGER = LoggerFactory.getLogger(PersistenceConfig.class);
 
     @Inject
     private DataSource dataSource;
@@ -32,9 +32,12 @@ public class PersistenceConfig implements TransactionManagementConfigurer {
     @PostConstruct
     public void init() throws SQLException {
         String dataSourcePopulate = System.getProperty("dataSource.populate");
-        if (Strings.isNullOrEmpty(dataSourcePopulate)) {
+        if (Strings.isNullOrEmpty(dataSourcePopulate) || !dataSourcePopulate.equals("true")) {
+            LOGGER.warn("No database schema and initial data created.");
+            LOGGER.warn("Please add 'dataSource.populate=true' system property and run the application again.");
             return;
         }
+        LOGGER.debug("Populating a database ...");
         ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
         databasePopulator.addScript(new ClassPathResource("sqlite/sqlite-schema.sql"));
         databasePopulator.addScript(new ClassPathResource("sqlite/sqlite-accounts.sql"));
@@ -45,7 +48,7 @@ public class PersistenceConfig implements TransactionManagementConfigurer {
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("org.sqlite.JDBC");
+        dataSource.setDriverClassName(org.sqlite.JDBC.class.getCanonicalName());
         dataSource.setUrl(resolveUrl());
         return dataSource;
     }

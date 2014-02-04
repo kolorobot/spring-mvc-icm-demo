@@ -1,5 +1,7 @@
 package com.github.kolorobot.icm.account;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -10,7 +12,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class UserService implements UserDetailsService {
-	
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
+
 	@Autowired
 	private AccountRepository accountRepository;
 	
@@ -31,8 +35,11 @@ public class UserService implements UserDetailsService {
 	}
 
 	public void createAccount(Account account) {
-		account.setPassword(passwordEncoder.encode(account.getPassword()));
+        String password = account.getPassword();
+        String encodedPassword = passwordEncoder.encode(password);
+        account.setPassword(encodedPassword);
 		accountRepository.save(account);
+        LOGGER.info("Created an account: [email={}, password={}]", account.getEmail(), password);
 	}
 	
 	
