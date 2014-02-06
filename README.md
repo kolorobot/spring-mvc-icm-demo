@@ -25,7 +25,7 @@ Database schema will be created and the database will be populated with some ini
 This can be disabled (e.g. at next application deployment) with 'dataSource.populate=<boolean>' system property.
 
 Run the project
-----------------
+---------------
 
 Navigate to the project folder and run the following command:
 
@@ -44,4 +44,4 @@ Deploying to Tomcat (Windows)
 - Navigate to `CATALINA_HOME/webapps` folder and remove all folders and files
 - Copy the war file to `CATALINA_HOME/webapps` folder and rename it to `ROOT.war`
 - In the `icm` directory create a script to start the server (see `src/main/scripts/start.bat`)
-- Browse to: http://localhost:8080/
+- Browse to http://localhost:8080
