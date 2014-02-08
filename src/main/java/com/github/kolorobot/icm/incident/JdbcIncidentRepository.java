@@ -1,6 +1,7 @@
 package com.github.kolorobot.icm.incident;
 
 import com.github.kolorobot.icm.support.date.DateConverter;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -29,7 +30,8 @@ public class JdbcIncidentRepository implements IncidentRepository {
         String sql = "select incident.id as incident_id, incident.created, incident.incident_type, incident.description, incident.status, incident.creator_id, incident.assignee_id, address.id as address_id, address.address_line, address.city_line " +
                 "from incident inner join address on incident.address_id = address.id";
         LOGGER.debug("Running SQL query: " + sql);
-        return jdbcTemplate.query(sql, new IncidentMapper());
+        List<Incident> incidents = jdbcTemplate.query(sql, new IncidentMapper());
+        return incidents == null ? Lists.<Incident>newArrayList() : incidents;
     }
 
     @Override

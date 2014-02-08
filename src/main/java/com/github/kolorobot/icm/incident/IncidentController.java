@@ -22,6 +22,11 @@ class IncidentController {
     @Inject
 	private AuditFormFactory auditFormFactory;
 
+    @ModelAttribute("page")
+    public String module() {
+        return "home";
+    }
+
     @RequestMapping("/create")
 	public String create(Model model) {
 		model.addAttribute(new IncidentForm());

@@ -7,7 +7,7 @@ CREATE TABLE account
 (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,
-  email TEXT NOT NULL,
+  email TEXT NOT NULL UNIQUE,
   phone TEXT,
   password TEXT NOT NULL,
   role TEXT NOT NULL

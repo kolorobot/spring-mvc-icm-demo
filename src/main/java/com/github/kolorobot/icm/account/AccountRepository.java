@@ -8,7 +8,11 @@ public interface AccountRepository {
 
 	List<Account> findAll();
 
+    List<Account> findAllByRole(String role);
+
     Account findOne(Long accountId);
 
     void save(Account account);
+
+    void delete(Long accountId);
 }

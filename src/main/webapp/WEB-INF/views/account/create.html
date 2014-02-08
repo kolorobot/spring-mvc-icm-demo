@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
+    <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+</head>
+
+<body>
+
+<form class="form-narrow form-horizontal" method="post" th:action="@{/account/create}" th:object="${accountForm}" th:fragment="content">
+    <!--/* Show general error message when form contains errors */-->
+    <th:block th:if="${#fields.hasErrors('${accountForm.*}')}">
+        <div th:replace="fragments/alert :: alert (type='danger', message='Form contains errors. Please try again.')">Alert</div>
+    </th:block>
+    <fieldset>
+        <legend th:text="#{account.create.header}">Create new account</legend>
+
+        <div class="form-group" th:classappend="${#fields.hasErrors('name')}? 'has-error'">
+            <label for="name" class="col-lg-4 control-label" th:text="#{account.name}">Name</label>
+            <div class="col-lg-8">
+                <input type="text" class="form-control" id="name" placeholder="Name" th:placeholder="#{account.name}" th:field="*{name}" />
+                <span class="help-block" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Incorrect name</span>
+            </div>
+        </div>
+
+        <div class="form-group" th:classappend="${#fields.hasErrors('email')}? 'has-error'">
+            <label for="email" class="col-lg-4 control-label" th:text="#{account.email}">Email</label>
+            <div class="col-lg-8">
+                <input type="text" class="form-control" id="email" placeholder="Email address" th:placeholder="#{account.email}" th:field="*{email}" />
+                <span class="help-block" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Incorrect email</span>
+            </div>
+        </div>
+
+        <div class="form-group" th:classappend="${#fields.hasErrors('phone')}? 'has-error'">
+            <label for="phone" class="col-lg-4 control-label" th:text="#{account.phone}">Phone</label>
+            <div class="col-lg-8">
+                <input type="text" class="form-control" id="phone" placeholder="Phone" th:placeholder="#{account.phone}" th:field="*{phone}" />
+                <span class="help-block" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Incorrect phone</span>
+            </div>
+        </div>
+
+        <div class="form-group" th:classappend="${#fields.hasErrors('password')}? 'has-error'">
+            <label for="password" class="col-lg-4 control-label" th:text="#{account.password}">Password</label>
+            <div class="col-lg-8">
+                <input type="password" class="form-control" id="password" placeholder="Password" th:placeholder="#{account.password}" th:field="*{password}"/>
+                <span class="help-block" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Incorrect password</span>
+            </div>
+        </div>
+
+        <div class="form-group" th:classappend="${#fields.hasErrors('confirmedPassword')}? 'has-error'">
+            <label for="confirmedPassword" class="col-lg-4 control-label" th:text="#{account.confirmPassword}">Confirm password</label>
+            <div class="col-lg-8">
+                <input type="password" class="form-control" id="confirmedPassword" placeholder="Confirm password" th:placeholder="#{account.confirmPassword}" th:field="*{confirmedPassword}"/>
+                <span class="help-block" th:if="${#fields.hasErrors('confirmedPassword')}" th:errors="*{confirmedPassword}">Must not be empty</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-lg-offset-4 col-lg-8">
+                <button type="submit" class="btn btn-default" th:text="#{account.create}">Add account</button>
+            </div>
+        </div>
+    </fieldset>
+</form>
+</body>
+</html>

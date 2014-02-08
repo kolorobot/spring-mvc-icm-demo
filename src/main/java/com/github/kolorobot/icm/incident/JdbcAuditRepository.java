@@ -1,6 +1,7 @@
 package com.github.kolorobot.icm.incident;
 
 import com.github.kolorobot.icm.support.date.DateConverter;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -42,7 +43,8 @@ class JdbcAuditRepository implements AuditRepository {
     public List<Audit> findAll(Long incidentId) {
         String sql = "select * from audit where incident_id = ?";
         LOGGER.debug("Running SQL query: " + sql);
-        return jdbcTemplate.query(sql, new Object[]{incidentId}, new AuditMapper());
+        List<Audit> audits = jdbcTemplate.query(sql, new Object[]{incidentId}, new AuditMapper());
+        return audits == null ? Lists.<Audit>newArrayList() : audits;
     }
 
     private class AuditMapper implements RowMapper<Audit> {

@@ -1,5 +1,6 @@
 package com.github.kolorobot.icm.account;
 
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -38,10 +39,18 @@ class JdbcAccountRepository implements AccountRepository {
 
     @Override
     public List<Account> findAll() {
-        String sql = "select * from account";
+        String sql = "select * from account order by role";
         LOGGER.debug("Running SQL query: " + sql);
         List<Account> accounts = jdbcTemplate.query(sql, new AccountMapper());
-        return accounts;
+        return accounts == null ? Lists.<Account>newArrayList() : accounts;
+    }
+
+    @Override
+    public List<Account> findAllByRole(String role) {
+        String sql = "select * from account where role = ?";
+        LOGGER.debug("Running SQL query: " + sql);
+        List<Account> accounts = jdbcTemplate.query(sql, new Object[]{role}, new AccountMapper());
+        return accounts == null ? Lists.<Account>newArrayList() : accounts;
     }
 
     @Override
@@ -64,6 +73,11 @@ class JdbcAccountRepository implements AccountRepository {
         jdbcTemplate.update(sql,
                 new Object[] {id, account.getName(), account.getEmail(), account.getPhone(), account.getPassword(), account.getRole()});
         account.setId(id);
+    }
+
+    @Override
+    public void delete(Long accountId) {
+        jdbcTemplate.update("delete from account where id = ?", accountId);
     }
 
     private static class AccountMapper implements RowMapper<Account> {
