@@ -18,8 +18,8 @@ import java.sql.SQLException;
 @Configuration
 public class TestDataSourceConfig {
 
+    private static String databaseUrl = "jdbc:sqlite:" + System.getProperty("java.io.tmpdir") + "/icm.db";
     private String driver = "org.sqlite.JDBC";
-    private String url = "jdbc:sqlite::memory:";
 
     @Inject
     private DataSource dataSource;
@@ -37,7 +37,7 @@ public class TestDataSourceConfig {
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(driver);
-        dataSource.setUrl(url);
+        dataSource.setUrl(databaseUrl);
         return dataSource;
     }
 

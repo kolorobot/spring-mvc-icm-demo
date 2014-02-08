@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Signup</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
+    <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+</head>
+
+<body>
+<div th:fragment="content">
+<h2 th:text="#{incident.incidents}">Incidents</h2>
+<table class="table table-hover">
+	<thead>
+		<tr>
+			<th th:text="#{incident.id}">Id</th>
+			<th th:text="#{incident.created}">Created</th>
+			<th th:text="#{incident.description}">Description</th>
+			<th th:text="#{incident.status}">Type</th>
+			<th th:text="#{action}">Action</th>
+		</tr>
+	</thead>
+	<tbody>
+        <tr th:unless="${!incidents.isEmpty()}">
+            <td colspan="5"><p class="text-muted" th:text="#{noRecords}">No records found</p></td>
+        </tr>
+        <tr th:each="item : ${incidents}">
+            <td th:text="${item.getId()}">1</td>
+            <td th:text="${item.getCreated()}">1/1/2014</td>
+            <td th:text="${item.getIncidentType()}">What has happened?</td>
+            <td th:text="${#messages.msg('incident.status.' + item.getStatus())}">Confirmed</td>
+            <td>
+                <div class="btn-group">
+                    <button class="btn dropdown-toggle" data-toggle="dropdown">
+                        <span th:text="#{action}">Action</span>&nbsp;<span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href='details.html' th:href="@{|/incident/${item.getId()}|}" class="" th:text="#{details}">Details</a></li>
+                        <li sec:authorize="!hasRole('ROLE_USER')">
+                            <a href="createAudit.html" th:href="@{|/incident/${item.getId()}/audit/create|}" th:text="#{incident.audit.add}">Create Audit</a>
+                        </li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+	</tbody>
+</table>
+<p class="lead"><a href='create.html' th:href="@{/incident/create}" class="btn btn-large btn-primary" th:text="#{incident.create}">Add incident</a></p>
+</div>
+</body>
+</html>

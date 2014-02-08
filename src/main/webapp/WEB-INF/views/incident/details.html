@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Signup</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
+    <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div th:fragment="content">
+<p class="lead" th:text="#{details}">Details</p>
+<table class="table table-hover">
+	<tbody>
+		<tr>
+			<th th:text="#{incident.id}">Id</th>
+			<td th:text="${incident.getId()}">1</td>
+		</tr>		
+		<tr>
+			<th th:text="#{incident.created}">Created</th>
+			<td th:text="${incident.getCreated()}">1/1/2014</td>
+		</tr>
+		<tr>
+			<th th:text="#{incident.type}">Type</th>
+			<td th:text="${incident.getIncidentType()}">-</td>
+		</tr>
+		<tr>
+			<th th:text="#{incident.description}">Description</th>
+			<td th:text="${incident.getDescription()}">Description</td>
+		</tr>
+		<tr>
+			<th th:text="#{incident.address}">Address</th>
+			<td>
+                <th:block th:unless="${incident.getAddress() != null}">
+                    <span th:text="${incident.getAddress().getAddressLine()}"></span>
+                    <span th:text="${incident.getAddress().getCityLine()}"></span>
+                </th:block>
+			</td>
+		</tr>
+		<tr>
+			<th th:text="#{incident.status}">Status</th>
+            <td th:text="${#messages.msg('incident.status.' + incident.getStatus())}">Confirmed</td>
+		</tr>
+		<tr>
+			<th th:text="#{incident.creator}">Creator</th>
+			<td>
+				<th:block th:text="#{incident.account.name}">Name</th:block>:&nbsp;<th:block th:text="${incidentCreator.getName()}">John Doe</th:block>
+				<th:block th:text="#{incident.account.email}">Email</th:block>:&nbsp;<th:block th:text="${incidentCreator.getEmail()}">john@me.com</th:block>
+				<th:block th:text="#{incident.account.phone}">Phone</th:block>: -
+			</td>
+		</tr>
+		<tr>
+			<th th:text="#{incident.assignedTo}">Assigned to</th>
+			<td>
+                <th:block th:text="#{incident.account.name}">Name</th:block>:&nbsp;<th:block th:text="${incidentAssignee != null}? ${incidentAssignee.getName()} : '-'">John Doe</th:block>
+                <th:block th:text="#{incident.account.email}">Email</th:block>:&nbsp;<th:block th:text="${incidentAssignee != null}? ${incidentAssignee.getEmail()} : '-'">john@me.com</th:block>
+                <th:block th:text="#{incident.account.phone}">Phone</th:block>: <th:block th:text="${incidentAssignee != null}? ${incidentAssignee.getPhone()} : '-'">1234567</th:block>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<p class="lead" th:text="#{incident.audits}"></p>
+<table class="table table-hover">
+	<thead>
+		<tr>
+			<th th:text="#{incident.audit.id}">Id</th>
+			<th th:text="#{incident.audit.created}">Created</th>
+			<th th:text="#{incident.audit.description}">Description</th>
+			<th th:text="#{incident.status.change}">Status change</th>
+		</tr>
+	</thead>
+	<tbody>
+        <tr th:unless="${!audits.isEmpty()}">
+            <td colspan="4"><p class="text-muted" th:text="#{noRecords}">No records</p></td>
+        </tr>
+		<c:forEach var="item" items="${audits}">
+        <tr th:each="item : ${audits}">
+            <td th:text="${item.getId()}">1</td>
+            <td th:text="${item.getCreated()}">2/1/2014</td>
+            <td th:text="${item.getDescription()}">Some text</td>
+            <td th:text="${#messages.msg('incident.status.change.message', #messages.msg('incident.status.' + item.getPreviousStatus()), #messages.msg('incident.status.' + item.getStatus()))}">
+                Status changed from Pending to Confirmed
+            </td>
+        </tr>
+		</c:forEach>
+	</tbody>
+</table>
+</div>
+</body>
+</html>

@@ -23,15 +23,16 @@ class IncidentController {
 	private AuditFormFactory auditFormFactory;
 
     @RequestMapping("/create")
-	public IncidentForm create() {
-		return new IncidentForm();
+	public String create(Model model) {
+		model.addAttribute(new IncidentForm());
+        return "incident/create";
 	}
 	
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public String create(User user, @Valid @ModelAttribute IncidentForm incidentForm, Errors errors, RedirectAttributes ra, Model model) {
 		if (errors.hasErrors()) {			
 			MessageHelper.addErrorAttribute(model, "incident.create.failed");
-			return null;
+            return "incident/create";
 		}
 		Incident incident = incidentService.create(user, incidentForm);
 		MessageHelper.addSuccessAttribute(ra, "incident.create.success", incident.getId());
@@ -39,10 +40,10 @@ class IncidentController {
 	}	
 	
 	@RequestMapping(value = "/list")
-	@ModelAttribute(value = "incidents")
-	public List<Incident> list(User user) {
-		return incidentService.getIncidents(user);	
-	}
+	public String list(User user, Model model) {
+		model.addAttribute("incidents", incidentService.getIncidents(user));
+        return "incident/list";
+    }
 	
 	@RequestMapping(value = "/{id}")
 	public String details(User user, @PathVariable("id") Long id, Model model) {
@@ -70,14 +71,14 @@ class IncidentController {
 			throw new IllegalStateException("Why, Leo, why?");
 		}
 		model.addAttribute(auditFormFactory.createAuditForm(user, incident));
-		return "incident/audit/create";
+		return "incident/createAudit";
 	}
 
 	@RequestMapping(value = "/{incidentId}/audit/create", method = RequestMethod.POST)
 	public String createAudit(User user, @PathVariable Long incidentId, @Valid @ModelAttribute AuditForm auditForm, Errors errors, RedirectAttributes ra, Model model) {
 		if (errors.hasErrors()) {
 			MessageHelper.addErrorAttribute(model, "incident.audit.create.failed");
-			return null;
+            return "incident/createAudit";
 		}
 		Incident incident = getIncident(user, incidentId);
 		Audit audit = incidentService.addAudit(user, incident, auditForm);

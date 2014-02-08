@@ -82,11 +82,15 @@ class IncidentService {
         audit.setDescription(auditForm.getDescription());
 		audit.setCreated(new Date());
 		audit.setCreatorId(user.getAccountId());
-		audit.setPreviousStatus(incident.getStatus());
+
 
 		// update the status
 		Status newStatus = auditForm.getNewStatus();
-		audit.setStatus(newStatus);
+        if (newStatus == null) {
+            newStatus = incident.getStatus();
+        }
+        audit.setPreviousStatus(incident.getStatus());
+        audit.setStatus(newStatus);
         incident.setStatus(newStatus);
 
 		// assign someone to the incident

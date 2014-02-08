@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Signup</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
+    <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+</head>
+
+<body>
+
+<form class="form-narrow form-horizontal" method="post" th:action="@{/incident/create}" th:object="${incidentForm}" th:fragment="content">
+    <!--/* Show general error message when form contains errors */-->
+    <th:block th:if="${#fields.hasErrors('${incidentForm.*}')}">
+        <div th:replace="fragments/alert :: alert (type='danger', message='Form contains errors. Please try again.')">Alert</div>
+    </th:block>
+
+    <fieldset>
+        <legend th:text="#{incident.create}">Create incident</legend>
+
+        <div class="form-group" th:classappend="${#fields.hasErrors('type')}? 'has-error'">
+            <label for="type" class="col-lg-4 control-label" th:text="#{incident.type}">Type</label>
+            <div class="col-lg-8">
+                <input type="text" class="form-control" id="type" placeholder="Type" th:placeholder="#{incident.type}" th:field="*{type}" />
+                <span class="help-block" th:if="${#fields.hasErrors('type')}" th:errors="*{type}">Incorrect</span>
+            </div>
+        </div>
+
+        <div class="form-group" th:classappend="${#fields.hasErrors('description')}? 'has-error'">
+            <label for="description" class="col-lg-4 control-label" th:text="#{incident.description}">Description</label>
+            <div class="col-lg-8">
+                <input type="text" class="form-control" id="description" placeholder="Description" th:placeholder="#{incident.description}" th:field="*{description}" />
+                <span class="help-block" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Incorrect</span>
+            </div>
+        </div>
+
+        <div class="form-group" th:classappend="${#fields.hasErrors('addressLine')}? 'has-error'">
+            <label for="addressLine" class="col-lg-4 control-label" th:text="#{incident.addressLine}">Address Line</label>
+            <div class="col-lg-8">
+                <input type="text" class="form-control" id="addressLine" placeholder="Address Line" th:placeholder="#{incident.addressLine}" th:field="*{addressLine}" />
+                <span class="help-block" th:if="${#fields.hasErrors('addressLine')}" th:errors="*{addressLine}">Incorrect</span>
+            </div>
+        </div>
+
+        <div class="form-group" th:classappend="${#fields.hasErrors('cityLine')}? 'has-error'">
+            <label for="cityLine" class="col-lg-4 control-label" th:text="#{incident.cityLine}">City Line</label>
+            <div class="col-lg-8">
+                <input type="text" class="form-control" id="cityLine" placeholder="City Line" th:placeholder="#{incident.cityLine}" th:field="*{cityLine}" />
+                <span class="help-block" th:if="${#fields.hasErrors('cityLine')}" th:errors="*{cityLine}">Incorrect</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-lg-offset-4 col-lg-8">
+                <button type="submit" class="btn btn-default" th:text="#{incident.create.submit}">Create</button>
+            </div>
+        </div>
+
+    </fieldset>
+</form>
+
+</body>
+</html>

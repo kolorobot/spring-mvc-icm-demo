@@ -1,6 +1,7 @@
 package com.github.kolorobot.icm.config;
 
 import com.github.kolorobot.icm.account.User;
+import com.github.kolorobot.icm.support.thymeleaf.ThymeleafLayoutInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
@@ -15,12 +16,17 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
-import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
-import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
+import org.thymeleaf.extras.springsecurity3.dialect.SpringSecurityDialect;
+import org.thymeleaf.spring4.SpringTemplateEngine;
+import org.thymeleaf.spring4.view.ThymeleafViewResolver;
+import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
+import org.thymeleaf.templateresolver.TemplateResolver;
 
 import java.util.List;
 
@@ -28,8 +34,7 @@ import java.util.List;
 public class WebMvcConfig extends WebMvcConfigurationSupport {
 	
 	private static final String MESSAGE_SOURCE = "/WEB-INF/i18n/messages";
-	private static final String TILES = "/WEB-INF/tiles/tiles.xml";
-	private static final String VIEWS = "/WEB-INF/views/**/views.xml";
+	private static final String VIEWS = "/WEB-INF/views/";
 	
 	private static final String RESOURCES_HANDLER = "/resources/";
 	private static final String RESOURCES_LOCATION = RESOURCES_HANDLER + "**";
@@ -52,19 +57,37 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 		return messageSource;
 	}
 	
-	@Bean
-	public TilesViewResolver configureTilesViewResolver() {
-		return new TilesViewResolver();
-	}
-	
-	@Bean
-	public TilesConfigurer configureTilesConfigurer() {
-		TilesConfigurer configurer = new TilesConfigurer();
-		configurer.setDefinitions(new String[] {TILES, VIEWS});
-		return configurer;
-	}
-	
-	
+    @Bean
+    public TemplateResolver templateResolver() {
+        TemplateResolver templateResolver = new ServletContextTemplateResolver();
+        templateResolver.setPrefix(VIEWS);
+        templateResolver.setSuffix(".html");
+        templateResolver.setTemplateMode("HTML5");
+        templateResolver.setCacheable(false);
+        return templateResolver;
+    }
+
+    @Bean
+    public SpringTemplateEngine templateEngine() {
+        SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+        templateEngine.addTemplateResolver(templateResolver());
+        templateEngine.addDialect(new SpringSecurityDialect());
+        return templateEngine;
+    }
+
+    @Bean
+    public ViewResolver thymeleafViewResolver() {
+        ThymeleafViewResolver vr = new ThymeleafViewResolver();
+        vr.setTemplateEngine(templateEngine());
+        vr.setCharacterEncoding("UTF-8");
+        return vr;
+    }
+
+    @Override
+    protected void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new ThymeleafLayoutInterceptor());
+    }
+
 	@Override
 	public Validator getValidator() {
 		LocalValidatorFactoryBean validator = new LocalValidatorFactoryBean();

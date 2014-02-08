@@ -48,4 +48,30 @@ public class JdbcIncidentRepositoryTest  {
         List<Incident> incidents = jdbcIncidentRepository.findAll();
         Assert.assertFalse(incidents.isEmpty());
     }
+
+    @Test
+    public void updateAssignee() {
+        Incident incident = new Incident();
+        incident.setId(1l);
+        incident.setAssigneeId(2l);
+        jdbcIncidentRepository.update(incident);
+    }
+
+    @Test
+    public void updateStatus() {
+        Incident incident = new Incident();
+        incident.setId(1l);
+        incident.setStatus(Incident.Status.CLOSED);
+        jdbcIncidentRepository.update(incident);
+    }
+
+    @Test
+    public void updateAssigneeAndStatus() {
+        Incident incident = new Incident();
+        incident.setId(1l);
+        incident.setAssigneeId(2l);
+        incident.setStatus(Incident.Status.CLOSED);
+        jdbcIncidentRepository.update(incident);
+    }
+
 }

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Signup</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
+    <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+</head>
+
+<body>
+<form class="form-narrow form-horizontal" method="post" th:action="@{${'/incident/' + incidentId + '/audit/create'}}" th:object="${auditForm}" th:fragment="content">
+
+    <th:block th:if="${#fields.hasErrors('${auditForm.*}')}">
+        <div th:replace="fragments/alert :: alert (type='danger', message='Form contains errors. Please try again.')">Alert</div>
+    </th:block>
+
+    <fieldset>
+        <legend th:text="#{incident.audit.add}">Add audit</legend>
+
+        <div class="form-group">
+            <label for="oldStatus" class="col-lg-4 control-label" th:text="#{incident.oldStatus}">Old status</label>
+            <div class="col-lg-8" >
+                <input type="text" class="form-control" id="oldStatus" th:value="#{${'incident.status.' + auditForm.getOldStatus()}}" value="Pending" disabled="disabled"/>
+            </div>
+        </div>
+
+        <div class="form-group" th:classappend="${#fields.hasErrors('newStatus')}? 'has-error'" th:unless="${!auditForm.canChangeStatus()}">
+            <label for="newStatus" class="col-lg-4 control-label" th:text="#{incident.newStatus}">New status</label>
+            <div class="col-lg-8">
+                <select class="form-control" id="newStatus" th:field="*{newStatus}">
+                    <option th:each="item : ${auditForm.getAvailableStatuses()}" th:value="${item}" th:label="#{${'incident.status.' + item}}">New</option>
+                </select>
+                <span class="help-block" th:if="${#fields.hasErrors('newStatus')}" th:errors="*{newStatus}">Incorrect</span>
+            </div>
+        </div>
+
+        <div class="form-group" th:classappend="${#fields.hasErrors('assigneeId')}? 'has-error'" th:unless="${!auditForm.canAssignEmployee()}">
+            <label for="assigneeId" class="col-lg-4 control-label" th:text="#{incident.assignTo}">Assignee</label>
+            <div class="col-lg-8">
+                <select class="form-control" id="assigneeId" th:field="*{assigneeId}">
+                    <option th:each="item : ${auditForm.getAvailableEmployees()}" th:value="${item.id}" th:label="${item.name}">John Doe</option>
+                </select>
+                <span class="help-block" th:if="${#fields.hasErrors('assigneeId')}" th:errors="*{assigneeId}">Incorrect</span>
+            </div>
+        </div>
+
+        <div class="form-group" th:classappend="${#fields.hasErrors('description')}? 'has-error'">
+            <label for="description" class="col-lg-4 control-label" th:text="#{incident.description}">Description</label>
+            <div class="col-lg-8">
+                <input type="text" class="form-control" id="description" placeholder="Description" th:placeholder="#{incident.description}" th:field="*{description}" />
+                <span class="help-block" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Incorrect</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-lg-offset-4 col-lg-8">
+                <button type="submit" class="btn btn-default" th:text="#{incident.audit.add}">Create</button>
+            </div>
+        </div>
+
+    </fieldset>
+</form>
+
+</body>
+</html>

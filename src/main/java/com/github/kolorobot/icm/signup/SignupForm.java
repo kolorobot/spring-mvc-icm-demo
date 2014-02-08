@@ -28,8 +28,6 @@ class SignupForm {
 	@NotBlank
 	@Size(max = 50)
 	private String confirmedPassword;
-	@NotNull
-	private Role role = Role.ROLE_USER;
 
 	public String getName() {
 		return name;
@@ -63,16 +61,8 @@ class SignupForm {
 		this.confirmedPassword = confirmedPassword;
 	}
 
-	public Role getRole() {
-		return role;
-	}
-
-	public void setRole(Role role) {
-		this.role = role;
-	}
-
-	public Account createAccount() {
-		Account account = new Account(getName(), getEmail(), getPassword(), getRole().toString());
+	public Account createUserAccount() {
+		Account account = new Account(getName(), getEmail(), getPassword(), Role.ROLE_USER.name());
 		account.setPhone(getPhone());
 		return account;
 	}

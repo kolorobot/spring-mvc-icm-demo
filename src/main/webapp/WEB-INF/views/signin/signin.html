@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Signup</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
+    <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+</head>
+
+<body>
+
+<form class="form-narrow form-horizontal" action="/j_spring_security_check" method="post" th:action="@{/j_spring_security_check}" th:fragment="content">
+    <th:block th:if="${param.error != null}">
+        <div th:replace="fragments/alert :: alert (type='danger', message='Sign in error. Please try again.')">Alert</div>
+    </th:block>
+    <fieldset>
+        <legend th:text="#{signin.header}">Please Sign In</legend>
+
+        <div class="form-group">
+            <label for="inputEmail" class="col-lg-4 control-label" th:text="#{signin.email}">Email</label>
+            <div class="col-lg-8">
+                <input type="text" class="form-control" id="inputEmail" placeholder="Email" name="j_username" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="inputPassword" class="col-lg-4 control-label" th:text="#{signin.password}">Password</label>
+            <div class="col-lg-8">
+                <input type="password" class="form-control" id="inputPassword" placeholder="Password" name="j_password" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-lg-offset-4 col-lg-8">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="_spring_security_remember_me" th:text="#{signin.rememberMe}">Remember me!</input>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-lg-offset-4 col-lg-8">
+                <button type="submit" class="btn btn-default" th:text="#{signin}">Sign in</button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-lg-offset-4 col-lg-8">
+                <p><th:block th:text="#{signin.newMember}">New here?</th:block>&nbsp;<a href="../signup/signup.html" th:href="@{/signup}" th:text="#{signup}">Sign Up</a></p>
+            </div>
+        </div>
+
+    </fieldset>
+</form>
+</body>
+</html>

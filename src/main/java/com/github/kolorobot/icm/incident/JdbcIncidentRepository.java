@@ -53,7 +53,7 @@ public class JdbcIncidentRepository implements IncidentRepository {
         String sql = "select incident.id as incident_id, incident.created, incident.incident_type, incident.description, incident.status, incident.creator_id, incident.assignee_id, address.id as address_id, address.address_line, address.city_line " +
                 "from incident inner join address on incident.address_id = address.id where incident.id = ? and (incident.assignee_id = ? or incident.creator_id = ?)";
         LOGGER.debug("Running SQL query: " + sql);
-        return jdbcTemplate.queryForObject(sql, new Object[]{id, accountId}, new IncidentMapper());
+        return jdbcTemplate.queryForObject(sql, new Object[]{id, accountId, accountId}, new IncidentMapper());
     }
 
     @Override
@@ -81,6 +81,7 @@ public class JdbcIncidentRepository implements IncidentRepository {
     public Incident update(Incident incident) {
         String sql = "update incident set status = ?, assignee_id = ? where incident.id = ?";
         LOGGER.debug("Running SQL query: " + sql);
+
         jdbcTemplate.update(sql,
                 new Object[]{incident.getStatus().ordinal(), incident.getAssigneeId(), incident.getId()});
         return incident;
