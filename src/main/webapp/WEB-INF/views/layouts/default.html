@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="fragments/header :: head" />
+<body>
+<div th:replace="fragments/header :: header">&nbsp;</div>
+<div class="container">
+    <div th:replace="${view} :: content">&nbsp;</div>
+    <div th:replace="fragments/footer :: footer">&nbsp;</div>
+</div>
+
+</body>
+</html>
