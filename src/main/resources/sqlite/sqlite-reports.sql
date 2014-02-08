@@ -8,6 +8,12 @@ select count(id) from incident where created >= date('now');
 select count(incident.id), status.value, status.ordinal from status
   left outer join incident on incident.status = status.ordinal group by status.ordinal;
 
+-- audit count
+select count(id) from audit;
+
+-- audit today
+select count(id) from audit where created >= date('now');
+
 -- audit statuses count
 select count(audit.id), status.value, status.ordinal from status
   left outer join audit on audit.status = status.ordinal group by status.ordinal;

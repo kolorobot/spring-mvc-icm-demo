@@ -10,18 +10,20 @@
 <body>
 
 <div class="container" th:fragment="content">
-    <h2>Dashboard</h2>
+    <h2 th:text="#{dashboard}">Dashboard</h2>
     <div class="row">
         <div class="col-lg-6">
 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Incidents</h3>
+                    <h3 class="panel-title" th:text="#{dashboard.incidents}">Incidents</h3>
                 </div>
                 <ul class="list-group">
-                    <li class="list-group-item"><span>Incident count</span>&nbsp;<span class="badge pull-right">42</span></li>
-                    <li class="list-group-item"><span>Incidents created today</span>&nbsp;<span class="badge pull-right">42</span></li>
-                    <li class="list-group-item"><span>Incidents with status 'Closed'</span>&nbsp;<span class="badge pull-right">42</span></li>
+                    <li class="list-group-item"><span th:text="#{dashboard.incidents.countAll}">Incident count</span>&nbsp;<span class="badge pull-right" th:text="${incidentCounts.all()}">42</span></li>
+                    <li class="list-group-item"><span th:text="#{dashboard.incidents.countCreatedToday}">Incidents created today</span>&nbsp;<span class="badge pull-right" th:text="${incidentCounts.createdToday()}">42</span></li>
+                    <th:block th:each="entry : ${incidentCounts.byStatus()}">
+                        <li class="list-group-item"><span th:text="${#messages.msg('dashboard.incidents.byStatus', #messages.msg('incident.status.' + entry.getKey()))}">Incidents with status 'Closed'</span>&nbsp;<span class="badge pull-right" th:text="${entry.getValue()}">42</span></li>
+                    </th:block>
                 </ul>
             </div>
 
@@ -29,12 +31,14 @@
         <div class="col-lg-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Audits</h3>
+                    <h3 class="panel-title" th:text="#{dashboard.audits}">Audits</h3>
                 </div>
                 <ul class="list-group">
-                    <li class="list-group-item"><span>Incident count</span>&nbsp;<span class="badge pull-right">42</span></li>
-                    <li class="list-group-item"><span>Incidents created today</span>&nbsp;<span class="badge pull-right">42</span></li>
-                    <li class="list-group-item"><span>Incidents with status 'Closed'</span>&nbsp;<span class="badge pull-right">42</span></li>
+                    <li class="list-group-item"><span th:text="#{dashboard.audits.countAll}">Incident count</span>&nbsp;<span class="badge pull-right" th:text="${auditCounts.all()}">42</span></li>
+                    <li class="list-group-item"><span th:text="#{dashboard.audits.countCreatedToday}">Incidents created today</span>&nbsp;<span class="badge pull-right" th:text="${auditCounts.createdToday()}">42</span></li>
+                    <th:block th:each="entry : ${auditCounts.byStatus()}">
+                        <li class="list-group-item"><span th:text="${#messages.msg('dashboard.audits.byStatus', #messages.msg('incident.status.' + entry.getKey()))}">Audits with status 'Closed'</span>&nbsp;<span class="badge pull-right" th:text="${entry.getValue()}">42</span></li>
+                    </th:block>
                 </ul>
             </div>
         </div>
@@ -44,21 +48,21 @@
         <div class="col-lg-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Users</h3>
+                    <h3 class="panel-title" th:text="#{dashboard.users}">Users</h3>
                 </div>
                 <ul class="list-group">
-                    <li class="list-group-item"><span>User count</span>&nbsp;<span class="badge pull-right">42</span></li>
-                    <li class="list-group-item"><span>Incidents created today</span>&nbsp;<span class="badge pull-right">42</span></li>
-                    <li class="list-group-item"><span>Users with role 'User'</span>&nbsp;<span class="badge pull-right">42</span></li>
+                    <li class="list-group-item"><span th:text="#{dashboard.users.countAll}">User count</span>&nbsp;<span class="badge pull-right" th:text="${userCounts.all()}">42</span></li>
+                    <th:block th:each="entry : ${userCounts.byRole()}">
+                        <li class="list-group-item"><span th:text="${#messages.msg('dashboard.users.byRole', entry.getKey())}">User in role ROLE_USER</span>&nbsp;<span class="badge pull-right" th:text="${entry.getValue()}">42</span></li>
+                    </th:block>
                 </ul>
-
             </div>
 
         </div>
         <div class="col-lg-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Export</h3>
+                    <h3 class="panel-title" th:text="#{dashboard.exports}">Export</h3>
                 </div>
                 <ul class="list-group">
                     <li class="list-group-item"><a href="#">Export incidents</a></li>
