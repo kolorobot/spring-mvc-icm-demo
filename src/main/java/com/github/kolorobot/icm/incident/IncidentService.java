@@ -67,7 +67,7 @@ class IncidentService {
 		incident.setDescription(incidentForm.getDescription());
 		incident.setIncidentType(incidentForm.getType());
 		incident.setCreatorId(user.getAccountId());
-		incident.setCreated(randomDate());
+		incident.setCreated(new Date());
 
         incidentRepository.save(incident);
         LOGGER.info("Created an incident: " + incident.toString());
@@ -120,14 +120,4 @@ class IncidentService {
 	private Incident getOne(User user, Long incidentId) {
 		return incidentRepository.findOne(incidentId);
 	}
-	
-	private Date randomDate() {
-		long day = 24L * 60L * 60L * 1000L;
-		long month = 30L * day;
-		long randomTime = day	+ (long) (Math.random() * ((month - day) + 1));
-		Date date = new Date(System.currentTimeMillis() - randomTime);
-		return date;
-	}
-
-
 }

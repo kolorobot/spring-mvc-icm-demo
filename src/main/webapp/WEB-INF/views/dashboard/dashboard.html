@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
+    <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+</head>
+<body>
+
+<div class="container" th:fragment="content">
+    <h2>Dashboard</h2>
+    <div class="row">
+        <div class="col-lg-6">
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Incidents</h3>
+                </div>
+                <ul class="list-group">
+                    <li class="list-group-item"><span>Incident count</span>&nbsp;<span class="badge pull-right">42</span></li>
+                    <li class="list-group-item"><span>Incidents created today</span>&nbsp;<span class="badge pull-right">42</span></li>
+                    <li class="list-group-item"><span>Incidents with status 'Closed'</span>&nbsp;<span class="badge pull-right">42</span></li>
+                </ul>
+            </div>
+
+        </div>
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Audits</h3>
+                </div>
+                <ul class="list-group">
+                    <li class="list-group-item"><span>Incident count</span>&nbsp;<span class="badge pull-right">42</span></li>
+                    <li class="list-group-item"><span>Incidents created today</span>&nbsp;<span class="badge pull-right">42</span></li>
+                    <li class="list-group-item"><span>Incidents with status 'Closed'</span>&nbsp;<span class="badge pull-right">42</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Users</h3>
+                </div>
+                <ul class="list-group">
+                    <li class="list-group-item"><span>User count</span>&nbsp;<span class="badge pull-right">42</span></li>
+                    <li class="list-group-item"><span>Incidents created today</span>&nbsp;<span class="badge pull-right">42</span></li>
+                    <li class="list-group-item"><span>Users with role 'User'</span>&nbsp;<span class="badge pull-right">42</span></li>
+                </ul>
+
+            </div>
+
+        </div>
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Export</h3>
+                </div>
+                <ul class="list-group">
+                    <li class="list-group-item"><a href="#">Export incidents</a></li>
+                    <li class="list-group-item"><a href="#">Export incidents and audits</a></li>
+                    <li class="list-group-item"><a href="#">Export users</a></li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
