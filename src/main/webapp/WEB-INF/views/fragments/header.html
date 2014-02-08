@@ -13,38 +13,39 @@
     <![endif]-->
 </head>
 <body>
-
 <!-- Navbar -->
-<div class="navbar navbar-inverse navbar-fixed-top" th:fragment="header">
+<nav class="navbar  navbar-fixed-top navbar-inverse" role="navigation" th:fragment="header">
     <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="#">ICM</a>
         </div>
-        <div class="navbar-collapse collapse">
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li sec:authorize="isAuthenticated()" th:classappend="${page == 'home' ? 'active' : ''}"><a href="#" th:href="@{/}" th:text="#{header.home}">Home</a></li>
                 <li sec:authorize="hasRole('ROLE_ADMIN')" th:classappend="${page == 'account' ? 'active' : ''}"><a href="#" th:href="@{/account/list}" th:text="#{account.list}">Accounts</a></li>
                 <li sec:authorize="hasRole('ROLE_ADMIN')" th:classappend="${page == 'dashboard' ? 'active' : ''}"><a href="#" th:href="@{/dashboard}" th:text="#{dashboard}">Dashboard</a></li>
-
-                <!-- @TODO
-                <form class="navbar-search" action="/incident/search">
-                    <div class="icon-search"></div>
-                    <input type="text" name="q" class="search-query span3" placeholder="#header.search">
-                </form>
-                -->
             </ul>
+            <form class="navbar-form navbar-left" role="search" th:action="@{/incident/search}">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="q" />
+                </div>
+                <button type="submit" class="btn btn-default" th:text="#{header.search}">Submit</button>
+            </form>
             <ul class="nav navbar-nav navbar-right">
-                <li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="../signin/signin.html" th:href="@{/signin}" th:text="#{signin}">Sign in</a></li>
-                <li th:if="${#authorization.expression('isAuthenticated()')}"><a href="#" th:href="@{/logout}">Logout</a></li>
+                <li sec:authorize="!isAuthenticated()"><a href="../signin/signin.html" th:href="@{/signin}" th:text="#{signin}">Sign in</a></li>
+                <li sec:authorize="isAuthenticated()"><a href="#" th:href="@{/logout}">Logout</a></li>
             </ul>
-        </div>
-        <!--/.nav-collapse -->
-    </div>
-</div>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
 </body>
 </html>
