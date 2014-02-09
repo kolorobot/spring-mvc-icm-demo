@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Signup</title>
+
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
     <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
@@ -36,7 +36,7 @@
             <td th:text="${item.getPhone()}">12345</td>
             <td>
                 <div class="btn-group">
-                    <button class="btn dropdown-toggle" data-toggle="dropdown">
+                    <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                         <span th:text="#{action}">Action</span>&nbsp;<span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
@@ -46,8 +46,27 @@
             </td>
         </tr>
 	</tbody>
+    <tfoot>
+    <tr>
+        <td colspan="7">
+            <div class="btn-group">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        Filter
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">ROLE_USER</a></li>
+                        <li><a href="#">ROLE_EMPLOYEE</a></li>
+                        <li><a href="#">ROLE_ADMIN</a></li>
+                    </ul>
+                </div>
+                <a href='create.html' th:href="@{/account/create}" class="btn btn-default" th:text="#{account.create}">Add account</a>
+            </div>
+        </td>
+    </tr>
+    </tfoot>
 </table>
-<p class="lead"><a href='create.html' th:href="@{/account/create}" class="btn btn-large btn-primary" th:text="#{account.create}">Add account</a></p>
 </div>
 </body>
 </html>

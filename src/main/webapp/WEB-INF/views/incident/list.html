@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Signup</title>
+
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
     <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
@@ -34,7 +34,7 @@
             <td th:text="${#messages.msg('incident.status.' + item.getStatus())}">Confirmed</td>
             <td>
                 <div class="btn-group">
-                    <button class="btn dropdown-toggle" data-toggle="dropdown">
+                    <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                         <span th:text="#{action}">Action</span>&nbsp;<span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
@@ -47,8 +47,26 @@
             </td>
         </tr>
 	</tbody>
+    <tfoot>
+        <tr>
+            <td colspan="5">
+                <div class="btn-group">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            Filter
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Closed</a></li>
+                            <li><a href="#">Open</a></li>
+                        </ul>
+                    </div>
+                    <a href='create.html' th:href="@{/incident/create}" class="btn btn-default" th:text="#{incident.create}">Add incident</a>
+                </div>
+            </td>
+        </tr>
+    </tfoot>
 </table>
-<p class="lead"><a href='create.html' th:href="@{/incident/create}" class="btn btn-large btn-primary" th:text="#{incident.create}">Add incident</a></p>
 </div>
 </body>
 </html>

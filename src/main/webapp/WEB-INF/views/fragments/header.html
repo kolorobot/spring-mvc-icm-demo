@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head th:fragment="head">
-    <title>Title</title>
+    <title>ICM</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
     <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
@@ -34,7 +34,7 @@
                 <li sec:authorize="hasRole('ROLE_ADMIN')" th:classappend="${page == 'account' ? 'active' : ''}"><a href="#" th:href="@{/account/list}" th:text="#{account.list}">Accounts</a></li>
                 <li sec:authorize="hasRole('ROLE_ADMIN')" th:classappend="${page == 'dashboard' ? 'active' : ''}"><a href="#" th:href="@{/dashboard}" th:text="#{dashboard}">Dashboard</a></li>
             </ul>
-            <form class="navbar-form navbar-left" role="search" th:action="@{/incident/search}">
+            <form class="navbar-form navbar-left" role="search" th:action="@{/incident/search}" sec:authorize="isAuthenticated()">
                 <div class="form-group">
                     <input type="text" class="form-control" name="q" />
                 </div>

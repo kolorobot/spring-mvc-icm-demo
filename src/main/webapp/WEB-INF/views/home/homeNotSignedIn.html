@@ -6,11 +6,11 @@
     <script src="../../../resources/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div class="hero-unit" th:fragment="content">
+<div class="container text-center" th:fragment="content">
     <h1 th:text="#{home.application.name}">My application</h1>
-    <p th:text="#{home.signup.message}">Welcome!</p>
+    <p th:text="#{home.signup.message}" class="lead">Welcome!</p>
     <p>
-        <a href="../signup/signup.html" th:href="@{/signup}" class="btn btn-primary btn-large" th:text="#{signup}">Signup</a>
+        <a href="../signup/signup.html" th:href="@{/signup}" class="btn btn-success btn-lg" th:text="#{signup}">Signup</a>
     </p>
 </div>
 </body>
