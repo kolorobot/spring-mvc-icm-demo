@@ -13,11 +13,6 @@
 <body>
 
 <form class="form-narrow form-horizontal" method="post" th:action="@{/incident/create}" th:object="${incidentForm}" th:fragment="content">
-    <!--/* Show general error message when form contains errors */-->
-    <th:block th:if="${#fields.hasErrors('${incidentForm.*}')}">
-        <div th:replace="fragments/alert :: alert (type='danger', message='Form contains errors. Please try again.')">Alert</div>
-    </th:block>
-
     <fieldset>
         <legend th:text="#{incident.create}">Create incident</legend>
 

@@ -12,11 +12,6 @@
 
 <body>
 <form class="form-narrow form-horizontal" method="post" th:action="@{${'/incident/' + incidentId + '/audit/create'}}" th:object="${auditForm}" th:fragment="content">
-
-    <th:block th:if="${#fields.hasErrors('${auditForm.*}')}">
-        <div th:replace="fragments/alert :: alert (type='danger', message='Form contains errors. Please try again.')">Alert</div>
-    </th:block>
-
     <fieldset>
         <legend th:text="#{incident.audit.add}">Add audit</legend>
 

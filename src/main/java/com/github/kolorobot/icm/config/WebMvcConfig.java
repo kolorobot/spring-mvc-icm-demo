@@ -10,17 +10,17 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import org.thymeleaf.extras.springsecurity3.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring4.SpringTemplateEngine;
@@ -109,8 +109,8 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 	protected void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
 		argumentResolvers.add(new UserHandlerMethodArgumentResolver());
 	}
-	
-	// custom argument resolver inner classes
+
+    // custom argument resolver inner classes
 
 	private static class UserHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
@@ -123,4 +123,11 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 			return auth != null && auth.getPrincipal() instanceof User ? auth.getPrincipal() : null;
 		}
 	}
+
+    @Controller
+    static class FaviconController {
+        @RequestMapping("favicon.ico")
+        @ResponseBody
+        void favicon() {}
+    }
 }
