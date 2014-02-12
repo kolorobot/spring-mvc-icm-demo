@@ -2,7 +2,7 @@ package com.github.kolorobot.icm.incident;
 
 import java.util.List;
 
-interface IncidentRepository {
+public interface IncidentRepository {
 
 	List<Incident> findAll();
 

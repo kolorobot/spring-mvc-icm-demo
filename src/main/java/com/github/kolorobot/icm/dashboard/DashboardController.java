@@ -12,7 +12,6 @@ import java.security.Principal;
 
 @Controller
 @RequestMapping("dashboard")
-@PreAuthorize("hasRole('ROLE_ADMIN')")
 class DashboardController {
 
     @Inject
@@ -25,12 +24,12 @@ class DashboardController {
     public String module() {
         return "dashboard";
     }
-
-	@RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
-	public String index(Model model) {
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
+    public String index(Model model) {
         model.addAttribute("incidentCounts", incidentCountsRepository.incidentCounts());
         model.addAttribute("auditCounts", incidentCountsRepository.auditCounts());
         model.addAttribute("userCounts", userCountsRepository.userCounts());
         return "dashboard/dashboard";
-	}
+    }
 }

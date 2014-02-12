@@ -4,7 +4,7 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @SuppressWarnings("serial")
-class Address implements Serializable {
+public class Address implements Serializable {
 	
 	private Long id;
 	

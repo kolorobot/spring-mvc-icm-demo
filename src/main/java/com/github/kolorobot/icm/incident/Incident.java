@@ -6,7 +6,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
-class Incident {
+public class Incident {
 	
 	public enum Status {
 		NEW, CONFIRMED, NOT_CONFIRMED, SOLVED, CLOSED;
