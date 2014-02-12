@@ -2,7 +2,7 @@ package com.github.kolorobot.icm.incident;
 
 import java.util.Date;
 
-public class Audit {
+class Audit {
 	
 	private Long id;
 	

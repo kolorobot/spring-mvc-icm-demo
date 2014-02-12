@@ -49,6 +49,12 @@ class IncidentController {
 		model.addAttribute("incidents", incidentService.getIncidents(user, status));
         return "incident/list";
     }
+
+    @RequestMapping(value = "/search")
+    public String search(@RequestParam String q, Model model) {
+        model.addAttribute("incidents", incidentService.search(q));
+        return "incident/list";
+    }
 	
 	@RequestMapping(value = "/{id}")
 	public String details(User user, @PathVariable("id") Long id, Model model) {
@@ -63,12 +69,6 @@ class IncidentController {
 		return "incident/details";
 	}
 
-    @RequestMapping(value = "search")
-	public String search(@RequestParam String q) {
-		Long incidentId = Long.valueOf(q);
-		return "forward:/incident/" + incidentId;
-	}
-	
 	@RequestMapping("/{incidentId}/audit/create")	
 	public String createAudit(User user, @PathVariable Long incidentId, Model model) {
 		Incident incident = getIncident(user, incidentId);
@@ -90,7 +90,7 @@ class IncidentController {
 		MessageHelper.addErrorAttribute(ra, "incident.audit.create.success", audit.getId());
 		return "redirect:/incident/" + incidentId;
 	}
-	
+
 	//
 	// private helpers
 	//

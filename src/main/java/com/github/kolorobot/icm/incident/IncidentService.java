@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -20,16 +21,18 @@ class IncidentService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IncidentService.class);
 
-	@Inject
 	private IncidentRepository incidentRepository;
-	
-	@Inject
 	private AccountRepository accountRepository;
-	
-	@Inject
 	private AuditRepository auditRepository;
-	
-	public List<Incident> getIncidents(User user, Status status) {
+
+    @Inject
+    IncidentService(IncidentRepository incidentRepository, AuditRepository auditRepository, AccountRepository accountRepository) {
+        this.incidentRepository = incidentRepository;
+        this.auditRepository = auditRepository;
+        this.accountRepository = accountRepository;
+    }
+
+    public List<Incident> getIncidents(User user, Status status) {
         if (status == null) {
             return incidentRepository.findAll();
         } else {
@@ -124,4 +127,13 @@ class IncidentService {
 	private Incident getOne(User user, Long incidentId) {
 		return incidentRepository.findOne(incidentId);
 	}
+
+    public List<Incident> search(String queryString) {
+        String query = queryString.replaceAll("%", "").replaceAll("_", "");
+        if (query.matches("[0-9]*")) {
+            long id = Long.parseLong(query);
+            return Lists.newArrayList(incidentRepository.findOne(id));
+        }
+        return incidentRepository.search("%" + query + "%");
+    }
 }

@@ -5,7 +5,7 @@ import java.util.List;
 import com.github.kolorobot.icm.account.Account;
 import com.github.kolorobot.icm.incident.Incident.Status;
 
-public class AuditForm {
+class AuditForm {
 	
 	private Incident.Status oldStatus;
 	private Incident.Status newStatus;

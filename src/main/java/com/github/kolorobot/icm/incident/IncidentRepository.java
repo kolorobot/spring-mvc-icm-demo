@@ -2,11 +2,13 @@ package com.github.kolorobot.icm.incident;
 
 import java.util.List;
 
-public interface IncidentRepository {
+interface IncidentRepository {
 
 	List<Incident> findAll();
 
     List<Incident> findAllByStatus(Incident.Status status);
+
+    List<Incident> search(String queryString);
 
 	Incident findOne(Long id);
 

@@ -3,6 +3,7 @@ package com.github.kolorobot.icm.incident;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -15,13 +16,17 @@ import com.github.kolorobot.icm.account.User;
 @RunWith(MockitoJUnitRunner.class)
 public class GetIncidentTest {
 	
-	@InjectMocks
-	private IncidentService service = new IncidentService();
+	private IncidentService service;
 	
 	@Mock
 	private IncidentRepository incidentRepository ;
-	
-	@Test
+
+    @Before
+    public void setUp() throws Exception {
+        service = new IncidentService(incidentRepository, null, null);
+    }
+
+    @Test
 	public void shouldFindIncidentByIdAndCreatorIdWhenUserIsInRoleUser() {
 		// arrange
 		Account account = createAccount(Account.ROLE_USER);

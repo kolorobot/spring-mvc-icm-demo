@@ -17,6 +17,8 @@ import javax.inject.Inject;
 import java.sql.SQLException;
 import java.util.List;
 
+import static org.fest.assertions.Assertions.assertThat;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestDataSourceConfig.class)
 public class JdbcIncidentRepositoryTest  {
@@ -53,6 +55,12 @@ public class JdbcIncidentRepositoryTest  {
     public void findAllByStatus() {
         List<Incident> incidents = jdbcIncidentRepository.findAllByStatus(Incident.Status.NEW);
         Assert.assertFalse(incidents.isEmpty());
+    }
+
+    @Test
+    public void searchNoWildcards() {
+        List<Incident> foundIncidents = jdbcIncidentRepository.search("Lorem");
+        assertThat(foundIncidents).hasSize(3);
     }
 
     @Test
