@@ -50,6 +50,12 @@ public class JdbcIncidentRepositoryTest  {
     }
 
     @Test
+    public void findAllByStatus() {
+        List<Incident> incidents = jdbcIncidentRepository.findAllByStatus(Incident.Status.NEW);
+        Assert.assertFalse(incidents.isEmpty());
+    }
+
+    @Test
     public void updateAssignee() {
         Incident incident = new Incident();
         incident.setId(1l);

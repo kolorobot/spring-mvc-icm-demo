@@ -9,11 +9,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Random;
 
 @Controller
@@ -62,9 +64,29 @@ class AccountController {
     }
 
     @RequestMapping("/list")
-    public String list(Model model) {
-        model.addAttribute("accounts", userRepository.findAll());
+    public String list(@RequestParam(required = false) String role, Model model) {
+        if (!isRoleValid(role)) {
+            throw new IllegalArgumentException("Invalid role");
+        }
+        model.addAttribute("accounts", getAccounts(role));
         return "account/list";
+    }
+
+    private List<Account> getAccounts(String role) {
+        if (StringUtils.isEmpty(role)) {
+            return userRepository.findAll();
+        }
+        return userRepository.findAllByRole(role);
+    }
+
+    private boolean isRoleValid(String role) {
+        if (StringUtils.isEmpty(role)) {
+            return true;
+        }
+        if (Account.ROLE_USER.equals(role) || Account.ROLE_EMPLOYEE.equals(role)) {
+            return true;
+        }
+        return false;
     }
 
     @RequestMapping("/{accountId}/delete")

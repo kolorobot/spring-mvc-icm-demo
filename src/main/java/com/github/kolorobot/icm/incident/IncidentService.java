@@ -29,11 +29,15 @@ class IncidentService {
 	@Inject
 	private AuditRepository auditRepository;
 	
-	public List<Incident> getIncidents(User user) {
-		return incidentRepository.findAll();
-	}
-	
-	public Incident getIncident(User user, Long incidentId) {
+	public List<Incident> getIncidents(User user, Status status) {
+        if (status == null) {
+            return incidentRepository.findAll();
+        } else {
+            return incidentRepository.findAllByStatus(status);
+        }
+    }
+
+    public Incident getIncident(User user, Long incidentId) {
 		if (user.isInRole(Account.ROLE_USER)) {
 			return getUserIncident(user, incidentId);
 		} 

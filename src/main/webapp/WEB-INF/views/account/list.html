@@ -56,9 +56,18 @@
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a href="#">ROLE_USER</a></li>
-                        <li><a href="#">ROLE_EMPLOYEE</a></li>
-                        <li><a href="#">ROLE_ADMIN</a></li>
+                        <li>
+                            <a href="#" th:href="@{/account/list?role=ROLE_USER}">ROLE_USER</a>
+                        </li>
+                        <li>
+                            <a href="#" th:href="@{/account/list?role=ROLE_EMPLOYEE}">ROLE_EMPLOYEE</a>
+                        </li>
+                        <li>
+                            <a href="#" th:href="@{/account/list?role=ROLE_ADMIN}">ROLE_ADMIN</a>
+                        </li>
+                        <li>
+                            <a href="#" th:href="@{/account/list}">All</a>
+                        </li>
                     </ul>
                 </div>
                 <a href='create.html' th:href="@{/account/create}" class="btn btn-default" th:text="#{account.create}">Add account</a>

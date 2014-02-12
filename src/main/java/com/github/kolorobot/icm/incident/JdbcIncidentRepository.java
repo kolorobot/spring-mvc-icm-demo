@@ -27,11 +27,23 @@ public class JdbcIncidentRepository implements IncidentRepository {
 
     @Override
     public List<Incident> findAll() {
-        String sql = "select incident.id as incident_id, incident.created, incident.incident_type, incident.description, incident.status, incident.creator_id, incident.assignee_id, address.id as address_id, address.address_line, address.city_line " +
-                "from incident inner join address on incident.address_id = address.id";
+        String sql = findAllQuery();
         LOGGER.debug("Running SQL query: " + sql);
         List<Incident> incidents = jdbcTemplate.query(sql, new IncidentMapper());
         return incidents == null ? Lists.<Incident>newArrayList() : incidents;
+    }
+
+    @Override
+    public List<Incident> findAllByStatus(Incident.Status status) {
+        String sql = findAllQuery().concat(" where incident.status = :status order by incident.id desc");
+        LOGGER.debug("Running SQL query: " + sql);
+        List<Incident> incidents = jdbcTemplate.query(sql, new Object[] {status.ordinal()}, new IncidentMapper());
+        return incidents == null ? Lists.<Incident>newArrayList() : incidents;
+    }
+
+    private String findAllQuery() {
+        return "select incident.id as incident_id, incident.created, incident.incident_type, incident.description, incident.status, incident.creator_id, incident.assignee_id, address.id as address_id, address.address_line, address.city_line " +
+                "from incident inner join address on incident.address_id = address.id";
     }
 
     @Override

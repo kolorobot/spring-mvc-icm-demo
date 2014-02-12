@@ -45,8 +45,8 @@ class IncidentController {
 	}	
 	
 	@RequestMapping(value = "/list")
-	public String list(User user, Model model) {
-		model.addAttribute("incidents", incidentService.getIncidents(user));
+	public String list(@RequestParam(required = false) Incident.Status status, User user, Model model) {
+		model.addAttribute("incidents", incidentService.getIncidents(user, status));
         return "incident/list";
     }
 	

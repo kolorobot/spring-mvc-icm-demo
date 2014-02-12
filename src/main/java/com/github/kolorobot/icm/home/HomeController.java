@@ -17,7 +17,7 @@ class HomeController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index(Principal principal) {
-		return principal != null ? "redirect:/incident/list" : "home/homeNotSignedIn";
+		return principal != null ? "forward:/incident/list" : "home/homeNotSignedIn";
 	}
 	
 }

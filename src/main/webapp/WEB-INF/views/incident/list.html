@@ -57,8 +57,12 @@
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Closed</a></li>
-                            <li><a href="#">Open</a></li>
+                            <li th:each="item : ${T(com.github.kolorobot.icm.incident.Incident$Status).values()}">
+                                <a href="#" th:href="@{${'/incident/list?status=' + item}}" th:text="#{${'incident.status.' + item}}">Open</a>
+                            </li>
+                            <li>
+                                <a href="#" th:href="@{/incident/list}">All</a>
+                            </li>
                         </ul>
                     </div>
                     <a href='create.html' th:href="@{/incident/create}" class="btn btn-default" th:text="#{incident.create}">Add incident</a>

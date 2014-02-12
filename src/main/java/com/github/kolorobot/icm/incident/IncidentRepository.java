@@ -5,9 +5,11 @@ import java.util.List;
 public interface IncidentRepository {
 
 	List<Incident> findAll();
-	
+
+    List<Incident> findAllByStatus(Incident.Status status);
+
 	Incident findOne(Long id);
-	
+
 	Incident findOneByIdAndCreatorId(Long id, Long accountId);
 
 	Incident findOneByIdAndAssigneeIdOrCreatorId(Long id, Long accountId);
