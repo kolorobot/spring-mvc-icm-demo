@@ -34,9 +34,9 @@ public class IncidentCountsRepositoryTest {
         assertThat(result.all()).as("Count all").isEqualTo(3);
         assertThat(result.createdToday()).as("Count by today").isEqualTo(0);
         assertThat(result.byStatus()).as("Count by status")
-                .includes(entry(Incident.Status.NEW, 2))
+                .includes(entry(Incident.Status.NEW, 1))
                 .includes(entry(Incident.Status.CONFIRMED, 1))
-                .includes(entry(Incident.Status.NOT_CONFIRMED, 0))
+                .includes(entry(Incident.Status.NOT_CONFIRMED, 1))
                 .includes(entry(Incident.Status.SOLVED, 0))
                 .includes(entry(Incident.Status.CLOSED, 0));
     }
@@ -44,12 +44,12 @@ public class IncidentCountsRepositoryTest {
     @Test
     public void auditCounts() {
         IncidentCounts result = incidentCountsRepository.auditCounts();
-        assertThat(result.all()).as("Count all").isEqualTo(0);
+        assertThat(result.all()).as("Count all").isEqualTo(3);
         assertThat(result.createdToday()).as("Count by today").isEqualTo(0);
         assertThat(result.byStatus()).as("Count by status")
                 .includes(entry(Incident.Status.NEW, 0))
-                .includes(entry(Incident.Status.CONFIRMED, 0))
-                .includes(entry(Incident.Status.NOT_CONFIRMED, 0))
+                .includes(entry(Incident.Status.CONFIRMED, 2))
+                .includes(entry(Incident.Status.NOT_CONFIRMED, 1))
                 .includes(entry(Incident.Status.SOLVED, 0))
                 .includes(entry(Incident.Status.CLOSED, 0));
     }

@@ -48,10 +48,10 @@ public class JdbcIncidentRepository implements IncidentRepository {
 
     public List<Incident> search(String query) {
         String sql = "select incident.id as incident_id, incident.created, incident.incident_type, incident.description, incident.status, incident.creator_id, incident.assignee_id, address.id as address_id, address.address_line, address.city_line " +
-                "from incident join address on incident.address_id = address.id left outer join audit on incident_id = audit.incident_id " +
-                "where incident.incident_type like ? or incident.description like ? or audit.description like ? " +
+                "from incident join address on incident.address_id = address.id " +
+                "where incident.incident_type like ? or incident.description like ? " +
                 "order by incident.id desc";
-        List<Incident> result = jdbcTemplate.query(sql, new Object[]{query, query, query}, new IncidentMapper());
+        List<Incident> result = jdbcTemplate.query(sql, new Object[]{query, query}, new IncidentMapper());
         return result == null ? Lists.<Incident>newArrayList() : result;
     }
 

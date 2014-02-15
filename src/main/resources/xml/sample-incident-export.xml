@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<incidents>
+	<incident id="1" created="Wed Jan 01 23:00:00 CET 2014" status="NEW">
+		<type>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis.</type>
+		<description>Rozszczelnione okno</description>
+		<address id="1">
+			<cityLine>ul. Bruska 61</cityLine>
+			<addressLine>85-422 Bydgoszcz</addressLine>
+		</address>
+	</incident>
+	<incident id="2" created="Thu Jan 02 22:01:00 CET 2014" status="NEW">
+		<type>Lorem ipsum dolor sit amet, consectetur adipiscing elit. </type>
+		<description>Wyciek</description>
+		<address id="2">
+			<cityLine>ul. Metalowa 82</cityLine>
+			<addressLine>70-745 Szczecin</addressLine>
+		</address>
+	</incident>
+	<incident id="3" created="Thu Jan 02 23:01:00 CET 2014" status="CONFIRMED">
+		<type>Lorem ipsum dolor sit amet, consectetur adipiscing elit. </type>
+		<description>Zapach gazu w kuchni</description>
+		<address id="3">
+			<cityLine>ul. Wtorkowa 86</cityLine>
+			<addressLine>70-535 Szczecin</addressLine>
+		</address>
+	</incident>
+</incidents>

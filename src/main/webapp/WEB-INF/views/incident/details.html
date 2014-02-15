@@ -109,6 +109,15 @@
                             </td>
                         </tr>
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4">
+                                <div class="btn-group">
+                                    <a href="#" th:href="@{${'/incident/' + incident.id + '/audit/create'}}" class="btn btn-default" th:text="#{incident.audit.add}">Add audit</a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
