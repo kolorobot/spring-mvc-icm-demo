@@ -34,14 +34,3 @@ Navigate to the project folder and run the following command:
 Open the browser and navigate to:
 
     http://localhost:8080/icm
-
-Deploying to Tomcat (Windows)
------------------------------
-
-- Create a war file with `mvn clean package`
-- Somewhere on disk create `icm` directory and `database` folder inside
-- Download a Tomcat 7 server and extract to previously created directory
-- Navigate to `CATALINA_HOME/webapps` folder and remove all folders and files
-- Copy the war file to `CATALINA_HOME/webapps` folder and rename it to `ROOT.war`
-- In the `icm` directory create a script to start the server (see `src/main/scripts/start.bat`)
-- Browse to http://localhost:8080

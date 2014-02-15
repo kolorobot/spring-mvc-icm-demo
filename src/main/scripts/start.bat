@@ -1,5 +1,6 @@
 @echo off
-
+rem JAVA_HOME property is required
+set "JAVA_HOME=%cd%\jdk1.7.0_51"
 rem Setting this value to 'true' will cause that the database will be created and loaded with initial data.
 set "DATASOURCE_POPULATE=true"
 rem JDBC URL string used to create a connection.
