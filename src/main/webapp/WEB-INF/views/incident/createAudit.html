@@ -26,7 +26,7 @@
             <label for="newStatus" class="col-lg-4 control-label" th:text="#{incident.newStatus}">New status</label>
             <div class="col-lg-8">
                 <select class="form-control" id="newStatus" th:field="*{newStatus}">
-                    <option th:each="item : ${auditForm.getAvailableStatuses()}" th:value="${item}" th:label="#{${'incident.status.' + item}}">New</option>
+                    <option th:each="item : ${auditForm.getAvailableStatuses()}" th:value="${item}" th:label="#{${'incident.status.' + item}}"><span th:text="#{${'incident.status.' + item}}">New</span></option>
                 </select>
                 <span class="help-block" th:if="${#fields.hasErrors('newStatus')}" th:errors="*{newStatus}">Incorrect</span>
             </div>
@@ -36,7 +36,7 @@
             <label for="assigneeId" class="col-lg-4 control-label" th:text="#{incident.assignTo}">Assignee</label>
             <div class="col-lg-8">
                 <select class="form-control" id="assigneeId" th:field="*{assigneeId}">
-                    <option th:each="item : ${auditForm.getAvailableEmployees()}" th:value="${item.id}" th:label="${item.name}">John Doe</option>
+                    <option th:each="item : ${auditForm.getAvailableEmployees()}" th:value="${item.id}" th:label="${item.name}"><span th:text="${item.name}">John Doe</span></option>
                 </select>
                 <span class="help-block" th:if="${#fields.hasErrors('assigneeId')}" th:errors="*{assigneeId}">Incorrect</span>
             </div>

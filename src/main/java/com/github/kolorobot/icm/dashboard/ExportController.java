@@ -11,9 +11,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.TimeZone;
 
 @Controller
 @RequestMapping("export")
@@ -50,7 +55,7 @@ class ExportController {
         StringBuilder out = new StringBuilder("<?xml version=\"1.0\"?>\n");
         out.append("<incidents>\n");
         for (Incident i : incidents) {
-            out.append(String.format("\t<incident id=\"%d\" created=\"%s\" status=\"%s\">\n", i.getId(), i.getCreated(), i.getStatus()));
+            out.append(String.format("\t<incident id=\"%d\" created=\"%s\" status=\"%s\">\n", i.getId(), toXSDate(i.getCreated()), i.getStatus()));
             out.append(String.format("\t\t<type>%s</type>\n", i.getDescription()));
             out.append(String.format("\t\t<description>%s</description>\n", i.getIncidentType()));
             out.append(String.format("\t\t<address id=\"%d\">\n", i.getAddress().getId()));
@@ -66,9 +71,19 @@ class ExportController {
     private void writeIncidentsAsCsv(List<Incident> incidents, BufferedWriter writer) throws IOException {
         for (Incident i : incidents) {
             writer.write(String.format("%d;%s;%s;%s",
-                    i.getId(), i.getStatus(), i.getCreated(), i.getIncidentType())
+                    i.getId(), i.getStatus(), toXSDate(i.getCreated()), i.getIncidentType())
             );
             writer.newLine();
+        }
+    }
+
+    private String toXSDate(Date date) {
+        GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
+        calendar.setTime(date);
+        try {
+            return DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar).toString();
+        } catch (DatatypeConfigurationException e) {
+            return date.toString();
         }
     }
 
