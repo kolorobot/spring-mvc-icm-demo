@@ -58,8 +58,8 @@ public class JdbcIncidentRepositoryTest  {
     }
 
     @Test
-    public void searchNoWildcards() {
-        List<Incident> foundIncidents = jdbcIncidentRepository.search("Lorem");
+    public void search() {
+        List<Incident> foundIncidents = jdbcIncidentRepository.search("%Lorem%");
         assertThat(foundIncidents).hasSize(3);
     }
 

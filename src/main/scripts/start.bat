@@ -8,6 +8,6 @@ set "DATASOURCE_URL=jdbc:sqlite:%cd%\database\icm.db
 rem Required to run Tomcat
 set "CATALINA_HOME=%cd%\tomcat"
 rem Passing properties to VM
-set "JAVA_OPTS=-DdataSource.populate=true -DdataSource.url=jdbc:sqlite:%cd%\database\icm.db"
+set "JAVA_OPTS=-DdataSource.populate=%DATASOURCE_POPULATE% -DdataSource.url=%DATASOURCE_URL%"
 rem Run Tomcat
 call %CATALINA_HOME%\bin\startup.bat
