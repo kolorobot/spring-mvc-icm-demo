@@ -149,7 +149,12 @@
 			<artifactId>logback-classic</artifactId>
 			<version>${ch.qos.logback-version}</version>
 		</dependency>
-		<!-- @Inject -->
+        <dependency>
+            <groupId>org.fusesource.jansi</groupId>
+            <artifactId>jansi</artifactId>
+            <version>1.11</version>
+        </dependency>
+        <!-- @Inject -->
 		<dependency>
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
