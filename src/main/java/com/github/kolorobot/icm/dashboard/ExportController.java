@@ -89,7 +89,7 @@ class ExportController {
     }
 
     @RequestMapping("/accounts")
-    // @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void exportAccountsAsCsv(@RequestParam(required = false, defaultValue = "csv") OutputFormat format, HttpServletResponse response) throws IOException {
         List<Account> accounts = accountRepository.findAll();
         BufferedWriter writer = new BufferedWriter(response.getWriter());
