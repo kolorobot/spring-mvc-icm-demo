@@ -27,7 +27,7 @@ public class JdbcIncidentRepository implements IncidentRepository {
 
     @Override
     public List<Incident> findAll() {
-        String sql = findAllQuery();
+        String sql = findAllQuery() + " order by incident.status asc, incident.created desc";
         LOGGER.debug("Running SQL query: " + sql);
         List<Incident> incidents = jdbcTemplate.query(sql, new IncidentMapper());
         return incidents == null ? Lists.<Incident>newArrayList() : incidents;

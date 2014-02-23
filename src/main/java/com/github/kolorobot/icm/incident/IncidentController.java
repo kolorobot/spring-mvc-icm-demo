@@ -52,7 +52,11 @@ class IncidentController {
 
     @RequestMapping(value = "/search")
     public String search(@RequestParam String q, Model model) {
-        model.addAttribute("incidents", incidentService.search(q));
+        List<Incident> incidents = incidentService.search(q);
+        if (incidents.size() == 1) {
+            return "redirect:/incident/" + incidents.get(0).getId();
+        }
+        model.addAttribute("incidents", incidents);
         return "incident/list";
     }
 	

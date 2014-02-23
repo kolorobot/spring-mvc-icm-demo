@@ -48,6 +48,7 @@ public class JdbcIncidentRepositoryTest  {
     @Test
     public void findAll() {
         List<Incident> incidents = jdbcIncidentRepository.findAll();
+
         Assert.assertFalse(incidents.isEmpty());
     }
 
