@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 public class AccountForm {
 
 	@NotBlank
-	@Size(max = 49)
+	@Size(max = 50)
 	private String name;
 	@NotBlank
 	@Email
