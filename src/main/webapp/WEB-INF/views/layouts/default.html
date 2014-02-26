@@ -7,7 +7,7 @@
     <!--/* Handle the flash message */-->
     <th:block th:if="${message != null}">
         <!--/* The message code is returned from the @Controller */-->
-        <div th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)}, message=#{${message.message}})">Flash message</div>
+        <div th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)}, message=${#messages.msgWithParams(message.message, message.args)})">Flash message</div>
     </th:block>
     <div th:replace="${view} :: content">&nbsp;</div>
     <div th:replace="fragments/footer :: footer">&nbsp;</div>

@@ -87,7 +87,7 @@ class IncidentController {
 		}
 		Incident incident = getIncident(user, incidentId);
 		Audit audit = incidentService.addAudit(user, incident, auditForm);
-		MessageHelper.addErrorAttribute(ra, "incident.audit.create.success", audit.getId());
+		MessageHelper.addInfoAttribute(ra, "incident.audit.create.success", audit.getId());
 		return "redirect:/incident/" + incidentId;
 	}
 

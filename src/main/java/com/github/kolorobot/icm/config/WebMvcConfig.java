@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.MethodParameter;
@@ -33,6 +34,7 @@ import org.thymeleaf.templateresolver.TemplateResolver;
 import java.util.List;
 
 @Configuration
+@ComponentScan(basePackages = { "com.github.kolorobot.icm" }, includeFilters = @ComponentScan.Filter(Controller.class), useDefaultFilters = false)
 public class WebMvcConfig extends WebMvcConfigurationSupport {
 	
 	private static final String MESSAGE_SOURCE = "/WEB-INF/i18n/messages";
