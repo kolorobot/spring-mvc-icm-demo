@@ -8,6 +8,14 @@ public interface IncidentRepository {
 
     List<Incident> findAllByStatus(Incident.Status status);
 
+    List<Incident> findAllByCreatorIdAndStatus(Long accountId, Incident.Status status);
+
+    List<Incident> findAllByCreatorId(Long accountId);
+
+    List<Incident> findAllByAssigneeIdOrCreatorId(Long accountId);
+
+    List<Incident> findAllByAssigneeIdOrCreatorIdAndStatus(Long accountId, Incident.Status status);
+
     List<Incident> search(String queryString);
 
 	Incident findOne(Long id);

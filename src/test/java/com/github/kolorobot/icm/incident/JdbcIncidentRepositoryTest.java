@@ -58,6 +58,30 @@ public class JdbcIncidentRepositoryTest  {
     }
 
     @Test
+    public void findAllByCreatorId() {
+        List<Incident> incidents = jdbcIncidentRepository.findAllByCreatorId(3l);
+        Assert.assertEquals(2, incidents.size());
+    }
+
+    @Test
+    public void findAllByCreatorIdAndStatus() {
+        List<Incident> incidents = jdbcIncidentRepository.findAllByCreatorIdAndStatus(3l, Incident.Status.NEW);
+        Assert.assertEquals(1, incidents.size());
+    }
+
+    @Test
+    public void findAllByAssigneeIdOrCreatorId() {
+        List<Incident> incidents = jdbcIncidentRepository.findAllByAssigneeIdOrCreatorId(2l);
+        Assert.assertEquals(1, incidents.size());
+    }
+
+    @Test
+    public void findAllByAssigneeIdOrCreatorIdAndStatus() {
+        List<Incident> incidents = jdbcIncidentRepository.findAllByAssigneeIdOrCreatorIdAndStatus(2l, Incident.Status.CONFIRMED);
+        Assert.assertEquals(1, incidents.size());
+    }
+
+    @Test
     public void search() {
         List<Incident> foundIncidents = jdbcIncidentRepository.search("%Lorem%");
         assertThat(foundIncidents).hasSize(3);

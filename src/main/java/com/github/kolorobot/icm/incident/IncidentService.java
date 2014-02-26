@@ -21,9 +21,9 @@ class IncidentService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IncidentService.class);
 
-	private IncidentRepository incidentRepository;
-	private AccountRepository accountRepository;
-	private AuditRepository auditRepository;
+    private IncidentRepository incidentRepository;
+    private AccountRepository accountRepository;
+    private AuditRepository auditRepository;
 
     @Inject
     IncidentService(IncidentRepository incidentRepository, AuditRepository auditRepository, AccountRepository accountRepository) {
@@ -33,22 +33,27 @@ class IncidentService {
     }
 
     public List<Incident> getIncidents(User user, Status status) {
-        if (status == null) {
-            return incidentRepository.findAll();
-        } else {
+        if (user.isInRole(Account.ROLE_USER)) {
+            return incidentRepository.findAllByCreatorIdAndStatus(user.getAccountId(), status);
+        }
+        if (user.isInRole(Account.ROLE_EMPLOYEE)) {
+            return incidentRepository.findAllByAssigneeIdOrCreatorIdAndStatus(user.getAccountId(), status);
+        }
+        if (user.isInRole(Account.ROLE_ADMIN)) {
             return incidentRepository.findAllByStatus(status);
         }
+        return Lists.newArrayList();
     }
 
     public Incident getIncident(User user, Long incidentId) {
-		if (user.isInRole(Account.ROLE_USER)) {
-			return getUserIncident(user, incidentId);
-		} 
-		if (user.isInRole(Account.ROLE_EMPLOYEE)) {
-			return getEmployeeIncident(user, incidentId);
-		} 
-		return getOne(user, incidentId);
-	}
+        if (user.isInRole(Account.ROLE_USER)) {
+            return getUserIncident(user, incidentId);
+        }
+        if (user.isInRole(Account.ROLE_EMPLOYEE)) {
+            return getEmployeeIncident(user, incidentId);
+        }
+        return getOne(user, incidentId);
+    }
 
     public List<Audit> getAudits(Incident incident) {
         return auditRepository.findAll(incident.getId());
@@ -62,37 +67,37 @@ class IncidentService {
         return accountRepository.findOne(incident.getAssigneeId());
     }
 
-	@Transactional
-	public Incident create(User user, IncidentForm incidentForm)  {
-		
-		Address incidentAddress = new Address();
-		incidentAddress.setCityLine(incidentForm.getCityLine());
-		incidentAddress.setAddressLine(incidentForm.getAddressLine());
-		
-		Incident incident = new Incident();
-		incident.setAddress(incidentAddress);
-		incident.setDescription(incidentForm.getDescription());
-		incident.setIncidentType(incidentForm.getType());
-		incident.setCreatorId(user.getAccountId());
-		incident.setCreated(new Date());
+    @Transactional
+    public Incident create(User user, IncidentForm incidentForm) {
+
+        Address incidentAddress = new Address();
+        incidentAddress.setCityLine(incidentForm.getCityLine());
+        incidentAddress.setAddressLine(incidentForm.getAddressLine());
+
+        Incident incident = new Incident();
+        incident.setAddress(incidentAddress);
+        incident.setDescription(incidentForm.getDescription());
+        incident.setIncidentType(incidentForm.getType());
+        incident.setCreatorId(user.getAccountId());
+        incident.setCreated(new Date());
 
         incidentRepository.save(incident);
         LOGGER.info("Created an incident: " + incident.toString());
         return incident;
     }
 
-	@Transactional
-	public Audit addAudit(User user, Incident incident, AuditForm auditForm) {
-		
-		Audit audit = new Audit();
+    @Transactional
+    public Audit addAudit(User user, Incident incident, AuditForm auditForm) {
+
+        Audit audit = new Audit();
         audit.setIncidentId(incident.getId());
         audit.setDescription(auditForm.getDescription());
-		audit.setCreated(new Date());
-		audit.setCreatorId(user.getAccountId());
+        audit.setCreated(new Date());
+        audit.setCreatorId(user.getAccountId());
 
 
-		// update the status
-		Status newStatus = auditForm.getNewStatus();
+        // update the status
+        Status newStatus = auditForm.getNewStatus();
         if (newStatus == null) {
             newStatus = incident.getStatus();
         }
@@ -100,33 +105,33 @@ class IncidentService {
         audit.setStatus(newStatus);
         incident.setStatus(newStatus);
 
-		// assign someone to the incident
-		Long assigneeId = auditForm.getAssigneeId();
-		if (assigneeId != null) {
-			incident.setAssigneeId(assigneeId);
-		}
+        // assign someone to the incident
+        Long assigneeId = auditForm.getAssigneeId();
+        if (assigneeId != null) {
+            incident.setAssigneeId(assigneeId);
+        }
 
         incidentRepository.update(incident);
-		auditRepository.save(audit);
+        auditRepository.save(audit);
         LOGGER.info("Created an audit: " + incident.toString());
         return audit;
-	}
-	
-	//
-	// internal helpers
-	//
-	
-	private Incident getUserIncident(User user, Long incidentId) {
-		return incidentRepository.findOneByIdAndCreatorId(incidentId, user.getAccountId());
-	}
-	
-	private Incident getEmployeeIncident(User user, Long incidentId) {
-		return incidentRepository.findOneByIdAndAssigneeIdOrCreatorId(incidentId, user.getAccountId());
-	}
-	
-	private Incident getOne(User user, Long incidentId) {
-		return incidentRepository.findOne(incidentId);
-	}
+    }
+
+    //
+    // internal helpers
+    //
+
+    private Incident getUserIncident(User user, Long incidentId) {
+        return incidentRepository.findOneByIdAndCreatorId(incidentId, user.getAccountId());
+    }
+
+    private Incident getEmployeeIncident(User user, Long incidentId) {
+        return incidentRepository.findOneByIdAndAssigneeIdOrCreatorId(incidentId, user.getAccountId());
+    }
+
+    private Incident getOne(User user, Long incidentId) {
+        return incidentRepository.findOne(incidentId);
+    }
 
     public List<Incident> search(String queryString) {
         String query = queryString.replaceAll("%", "").replaceAll("_", "");

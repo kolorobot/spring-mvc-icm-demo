@@ -35,9 +35,50 @@ public class JdbcIncidentRepository implements IncidentRepository {
 
     @Override
     public List<Incident> findAllByStatus(Incident.Status status) {
+        if (status == null) {
+            return findAll();
+        }
         String sql = findAllQuery().concat(" where incident.status = :status order by incident.id desc");
         LOGGER.debug("Running SQL query: " + sql);
         List<Incident> incidents = jdbcTemplate.query(sql, new Object[] {status.ordinal()}, new IncidentMapper());
+        return incidents == null ? Lists.<Incident>newArrayList() : incidents;
+    }
+
+    @Override
+    public List<Incident> findAllByCreatorIdAndStatus(Long creatorId, Incident.Status status) {
+        if (status == null) {
+            return findAllByCreatorId(creatorId);
+        }
+        String sql = findAllQuery().concat(" where incident.creator_id = ? and incident.status = :status order by incident.id desc");
+        LOGGER.debug("Running SQL query: " + sql);
+        List<Incident> incidents = jdbcTemplate.query(sql, new Object[]{creatorId, status.ordinal()}, new IncidentMapper());
+        return incidents == null ? Lists.<Incident>newArrayList() : incidents;
+    }
+
+    @Override
+    public List<Incident> findAllByCreatorId(Long accountId) {
+        String sql = findAllQuery().concat(" where incident.creator_id = ?");
+        LOGGER.debug("Running SQL query: " + sql);
+        List<Incident> incidents = jdbcTemplate.query(sql, new Object[] {accountId}, new IncidentMapper());
+        return incidents == null ? Lists.<Incident>newArrayList() : incidents;
+    }
+
+    @Override
+    public List<Incident> findAllByAssigneeIdOrCreatorId(Long accountId) {
+        String sql = findAllQuery().concat(" where incident.assignee_id = ? or incident.creator_id = ?");
+        LOGGER.debug("Running SQL query: " + sql);
+        List<Incident> incidents = jdbcTemplate.query(sql, new Object[] {accountId, accountId}, new IncidentMapper());
+        return incidents == null ? Lists.<Incident>newArrayList() : incidents;
+    }
+
+    @Override
+    public List<Incident> findAllByAssigneeIdOrCreatorIdAndStatus(Long accountId, Incident.Status status) {
+        if (status == null) {
+            return findAllByAssigneeIdOrCreatorId(accountId);
+        }
+        String sql = findAllQuery().concat(" where (incident.assignee_id = ? or incident.creator_id = ?) and status = ?");
+        LOGGER.debug("Running SQL query: " + sql);
+        List<Incident> incidents = jdbcTemplate.query(sql, new Object[] {accountId, accountId, status.ordinal()}, new IncidentMapper());
         return incidents == null ? Lists.<Incident>newArrayList() : incidents;
     }
 
