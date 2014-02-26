@@ -66,7 +66,7 @@ class IncidentService {
 	public Incident create(User user, IncidentForm incidentForm)  {
 		
 		Address incidentAddress = new Address();
-		incidentAddress.setCityLine(incidentForm.getAddressLine());
+		incidentAddress.setCityLine(incidentForm.getCityLine());
 		incidentAddress.setAddressLine(incidentForm.getAddressLine());
 		
 		Incident incident = new Incident();
