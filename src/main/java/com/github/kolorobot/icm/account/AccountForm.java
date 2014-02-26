@@ -1,10 +1,13 @@
 package com.github.kolorobot.icm.account;
 
+import com.github.kolorobot.icm.account.validator.UniqueEmail;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Size;
 
+@UniqueEmail
 public class AccountForm {
 
 	@NotBlank
@@ -54,6 +57,14 @@ public class AccountForm {
 	public void setConfirmedPassword(String confirmedPassword) {
 		this.confirmedPassword = confirmedPassword;
 	}
+
+    @AssertTrue(message =  "{com.github.kolorobot.icm.PasswordsMatch}")
+    public boolean isPasswordsMatch() {
+        if (getPassword() == null) {
+            return false;
+        }
+        return getPassword().equals(getConfirmedPassword());
+    }
 
     public String getPhone() {
         if (phone != null && phone.isEmpty()) {

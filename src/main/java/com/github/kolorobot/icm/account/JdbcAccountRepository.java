@@ -1,6 +1,7 @@
 package com.github.kolorobot.icm.account;
 
 import com.google.common.collect.Lists;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -24,6 +25,13 @@ class JdbcAccountRepository implements AccountRepository {
     @Inject
     public JdbcAccountRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @Override
+    public boolean hasEmail(String email) {
+        String sql = "select count(*) as result from account where account.email = ?";
+        LOGGER.debug("Running SQL query: " + sql);
+        return jdbcTemplate.queryForObject(sql, new Object[] {email} , Integer.class) == 0 ? false : true;
     }
 
     @Override

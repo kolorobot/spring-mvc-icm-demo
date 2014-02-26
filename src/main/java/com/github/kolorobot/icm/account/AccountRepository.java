@@ -4,6 +4,8 @@ import java.util.List;
 
 public interface AccountRepository {
 
+    boolean hasEmail(String email);
+
 	Account findByEmail(String email);
 
 	List<Account> findAll();
