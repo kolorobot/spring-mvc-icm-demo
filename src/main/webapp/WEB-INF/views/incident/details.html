@@ -102,7 +102,7 @@
                             <td th:text="${item.getId()}">1</td>
                             <td th:text="${item.getCreated()}">2/1/2014</td>
                             <td>
-                                <button type="button" class="btn btn-default" data-container="body" data-toggle="popover" data-placement="right" data-content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sapien dui, dictum tempus justo non, congue pharetra elit. Curabitur tempus, neque nec interdum dignissim, urna leo ultrices diam, in gravida mauris diam vel elit. Praesent et justo scelerisque, rhoncus justo quis, sodales massa." th:attr="data-content=${incident.getDescription()}">Click to see the description</button>
+                                <button type="button" class="btn btn-default" data-container="body" data-toggle="popover" data-placement="right" data-content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sapien dui, dictum tempus justo non, congue pharetra elit. Curabitur tempus, neque nec interdum dignissim, urna leo ultrices diam, in gravida mauris diam vel elit. Praesent et justo scelerisque, rhoncus justo quis, sodales massa." th:attr="data-content=${item.getDescription()}">Click to see the description</button>
                             </td>
                             <td th:text="${#messages.msg('incident.status.change.message', #messages.msg('incident.status.' + item.getPreviousStatus()), #messages.msg('incident.status.' + item.getStatus()))}">
                                 Status changed from Pending to Confirmed
