@@ -35,11 +35,9 @@ public class UserService implements UserDetailsService {
 	}
 
 	public void createAccount(Account account) {
-        String password = account.getPassword();
-        String encodedPassword = passwordEncoder.encode(password);
-        account.setPassword(encodedPassword);
+        account.setPassword(passwordEncoder.encode(account.getPassword()));
 		accountRepository.save(account);
-        LOGGER.info("Created an account: [email={}, password={}]", account.getEmail(), password);
+        LOGGER.info("Created an account: [email={}, password=******]", account.getEmail());
 	}
 	
 	
