@@ -3,9 +3,11 @@ package com.github.kolorobot.icm.incident;
 import com.github.kolorobot.icm.account.Account;
 import com.github.kolorobot.icm.account.User;
 import com.github.kolorobot.icm.support.web.MessageHelper;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -21,6 +23,12 @@ class IncidentController {
 	private IncidentService incidentService;
     @Inject
 	private AuditFormFactory auditFormFactory;
+
+
+    @InitBinder
+    public void initStringEditor(WebDataBinder binder) {
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+    }
 
     @ModelAttribute("page")
     public String module() {
@@ -51,12 +59,20 @@ class IncidentController {
     }
 
     @RequestMapping(value = "/search")
-    public String search(@RequestParam String q, Model model) {
-        model.addAttribute("incidents", incidentService.search(q));
+    public String search(@RequestParam String q, Model model, RedirectAttributes ra) {
+        if (q == null) {
+            MessageHelper.addErrorAttribute(ra, "incident.search.emptyQuery");
+            return "redirect:list";
+        }
+        List<Incident> incidents = incidentService.search(q);
+        if (incidents.size() == 1) {
+            return "redirect:/incident/" + incidents.get(0).getId();
+        }
+        model.addAttribute("incidents", incidents);
         return "incident/list";
     }
-	
-	@RequestMapping(value = "/{id}")
+
+    @RequestMapping(value = "/{id}")
 	public String details(User user, @PathVariable("id") Long id, Model model) {
 		Incident incident = getIncident(user, id);
 		if (incident == null) {			

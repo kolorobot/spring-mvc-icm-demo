@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -137,7 +138,11 @@ class IncidentService {
         String query = queryString.replaceAll("%", "").replaceAll("_", "");
         if (query.matches("[0-9]*")) {
             long id = Long.parseLong(query);
-            return Lists.newArrayList(incidentRepository.findOne(id));
+            try {
+                return Lists.newArrayList(incidentRepository.findOne(id));
+            } catch (EmptyResultDataAccessException e) {
+                return Lists.newArrayList();
+            }
         }
         return incidentRepository.search("%" + query + "%");
     }

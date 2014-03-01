@@ -69,9 +69,10 @@ class ExportController {
     }
 
     private void writeIncidentsAsCsv(List<Incident> incidents, BufferedWriter writer) throws IOException {
+        writer.write("id;status;created;type;description;address_id");
         for (Incident i : incidents) {
-            writer.write(String.format("%d;%s;%s;%s",
-                    i.getId(), i.getStatus(), toXSDate(i.getCreated()), i.getIncidentType())
+            writer.write(String.format("%d;%s;%s;%s;%s;%d",
+                    i.getId(), i.getStatus(), toXSDate(i.getCreated()), i.getIncidentType(), i.getDescription(), i.getAddress().getId())
             );
             writer.newLine();
         }
@@ -88,7 +89,7 @@ class ExportController {
     }
 
     @RequestMapping("/accounts")
-    // @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void exportAccountsAsCsv(@RequestParam(required = false, defaultValue = "csv") OutputFormat format, HttpServletResponse response) throws IOException {
         List<Account> accounts = accountRepository.findAll();
         BufferedWriter writer = new BufferedWriter(response.getWriter());

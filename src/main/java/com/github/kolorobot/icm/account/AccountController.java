@@ -92,14 +92,8 @@ class AccountController {
     @RequestMapping("/{accountId}/delete")
     public String delete(@PathVariable Long accountId, Model model, RedirectAttributes ra) {
         Account account = userRepository.findOne(accountId);
-        if (shouldDelete()) {
-            userRepository.delete(accountId);
-        }
+        userRepository.delete(account.getId());
         MessageHelper.addSuccessAttribute(ra, "account.delete.success");
         return "redirect:/account/list";
-    }
-
-    private boolean shouldDelete() {
-        return new Random().nextInt(2) == 0;
     }
 }
