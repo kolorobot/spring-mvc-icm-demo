@@ -39,7 +39,7 @@ CREATE TABLE audit
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   incident_id INTEGER NOT NULL,
   creator_id INTEGER NOT NULL,
-  description TEXT NOT NULL,
+  description TEXT,
   created TEXT NOT NULL,
   status INTEGER NOT NULL,
   previous_status INTEGER NOT NULL
