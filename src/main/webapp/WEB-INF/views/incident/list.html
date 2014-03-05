@@ -29,7 +29,7 @@
         </tr>
         <tr th:each="item : ${incidents}">
             <td th:text="${item.getId()}">1</td>
-            <td th:text="${item.getCreated()}">1/1/2014</td>
+            <td th:text="${#dates.format(item.getCreated())}">1/1/2014</td>
             <td th:text="${item.getIncidentType()}">What has happened?</td>
             <td th:text="${#messages.msg('incident.status.' + item.getStatus())}">Confirmed</td>
             <td>
