@@ -17,14 +17,14 @@ public class WebAppInitializer implements WebApplicationInitializer {
 
 		AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
 		context.setConfigLocation("com.github.kolorobot.icm.config");
-		
+
+        FilterRegistration.Dynamic characterEncodingFilter = servletContext.addFilter("characterEncodingFilter", new CharacterEncodingFilter());
+        characterEncodingFilter.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
+        characterEncodingFilter.setInitParameter("encoding", "UTF-8");
+        characterEncodingFilter.setInitParameter("forceEncoding", "true");
+
 		FilterRegistration.Dynamic securityFilter = servletContext.addFilter("securityFilter", new DelegatingFilterProxy("springSecurityFilterChain"));
 		securityFilter.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
-		
-		FilterRegistration.Dynamic characterEncodingFilter = servletContext.addFilter("characterEncodingFilter", new CharacterEncodingFilter());
-		characterEncodingFilter.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
-		characterEncodingFilter.setInitParameter("encoding", "UTF-8");
-		characterEncodingFilter.setInitParameter("forceEncoding", "true");
 
 		servletContext.addListener(new ContextLoaderListener(context));
 		servletContext.setInitParameter("defaultHtmlEscape", "true");
