@@ -38,7 +38,7 @@
                 <div class="form-group">
                     <input type="text" class="form-control" name="q" />
                 </div>
-                <button type="submit" class="btn btn-default" th:text="#{header.search}">Submit</button>
+                <button id="search" type="submit" class="btn btn-default" th:text="#{header.search}">Submit</button>
             </form>
             <ul class="nav navbar-nav navbar-right">
                 <li sec:authorize="!isAuthenticated()"><a href="../signin/signin.html" th:href="@{/signin}" th:text="#{signin}">Sign in</a></li>

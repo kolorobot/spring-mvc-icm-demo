@@ -28,7 +28,7 @@
         <tr th:unless="${!accounts.isEmpty()}">
             <td colspan="7"><p class="text-muted" th:text="#{noRecords}">No records found</p></td>
         </tr>
-        <tr th:each="item : ${accounts}">
+        <tr th:each="item : ${accounts}" data-th-attr="data-user-email=${item.getEmail()}">
             <td th:text="${item.getId()}">1</td>
             <td th:text="${item.getName()}">John Doe</td>
             <td th:text="${item.getEmail()}">john@doe.com</td>
@@ -39,7 +39,7 @@
                     <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                         <span th:text="#{action}">Action</span>&nbsp;<span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu">
+                    <ul id="action-menu" th:id="${'action-menu-' + item.getId()}" class="dropdown-menu">
                         <li><a href='#' th:href="@{|/account/${item.getId()}/delete|}" class="" th:text="#{delete}">Delete</a></li>
                     </ul>
                 </div>
@@ -55,7 +55,7 @@
                         Filter
                         <span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu">
+                    <ul id="filter-menu" class="dropdown-menu">
                         <li>
                             <a href="#" th:href="@{/account/list?role=ROLE_USER}">ROLE_USER</a>
                         </li>
