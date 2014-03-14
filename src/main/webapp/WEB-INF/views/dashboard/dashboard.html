@@ -65,10 +65,9 @@
                     <h3 class="panel-title" th:text="#{dashboard.exports}">Export</h3>
                 </div>
                 <ul class="list-group">
-                    <li class="list-group-item">Export incidents <span class="pull-right"><a href="#" th:href="@{/export/incidents}">CSV</a>, <a href="#" th:href="@{/export/incidents?format=xml}">XML</a></span></li>
-                    <li class="list-group-item">Export users <span class="pull-right"><a href="#" th:href="@{/export/accounts}">CSV</a>, <a href="#" th:href="@{/export/accounts?format=xml}">XML</a></span></li>
+                    <li class="list-group-item">Export incidents <span class="pull-right"><a id="export-incidents-csv" href="#" th:href="@{/export/incidents}">CSV</a>, <a id="export-incidents-xml" href="#" th:href="@{/export/incidents?format=xml}">XML</a></span></li>
+                    <li class="list-group-item">Export users <span class="pull-right"><a id="export-accounts-csv" href="#" th:href="@{/export/accounts}">CSV</a>, <a id="export-accounts-xml" href="#" th:href="@{/export/accounts?format=xml}">XML</a></span></li>
                 </ul>
-
             </div>
         </div>
     </div>

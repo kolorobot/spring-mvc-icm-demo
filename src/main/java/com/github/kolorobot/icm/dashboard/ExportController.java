@@ -41,11 +41,11 @@ class ExportController {
         String file = "";
         if (format.equals(OutputFormat.csv)) {
             writeIncidentsAsCsv(incidents, writer);
-            file = "export.csv";
+            file = "incidents.csv";
         }
         if (format.equals(OutputFormat.xml)) {
             writeIncidentsAsXml(incidents, writer);
-            file = "export.xml";
+            file = "incidents.xml";
         }
         setHeader(response, file);
         writer.flush();
@@ -96,11 +96,11 @@ class ExportController {
         String file = "";
         if (format.equals(OutputFormat.csv)) {
             writeAccountsAsCsv(accounts, writer);
-            file = "export.csv";
+            file = "accounts.csv";
         }
         if (format.equals(OutputFormat.xml)) {
             writeAccountsAsXml(accounts, writer);
-            file = "export.xml";
+            file = "accounts.xml";
         }
         setHeader(response, file);
         writer.flush();
