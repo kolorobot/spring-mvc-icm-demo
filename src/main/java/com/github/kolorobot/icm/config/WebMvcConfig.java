@@ -34,6 +34,7 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import org.thymeleaf.templateresolver.TemplateResolver;
 
 import java.util.List;
+import java.util.Locale;
 
 @Configuration
 @ComponentScan(basePackages = { "com.github.kolorobot.icm" }, includeFilters = @ComponentScan.Filter(Controller.class), useDefaultFilters = false)
@@ -66,7 +67,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 
     @Bean
     public LocaleResolver localeResolver() {
-        return new FixedLocaleResolver();
+        return new FixedLocaleResolver(new Locale("pl", "PL"));
     }
 	
     @Bean
