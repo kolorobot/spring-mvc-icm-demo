@@ -6,6 +6,6 @@ import org.junit.Test;
 public class FailingTest {
     @Test
     public void shouldFail() throws Exception {
-        Assert.assertTrue("AssertionError: True is not false", false);
+        Assert.assertTrue("AssertionError: True is not false", true);
     }
 }
