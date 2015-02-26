@@ -2,7 +2,7 @@ package com.github.kolorobot.icm.dashboard;
 
 import com.github.kolorobot.icm.account.Account;
 import com.github.kolorobot.icm.config.TestDataSourceConfig;
-import org.fest.assertions.MapAssert;
+import org.assertj.core.data.MapEntry;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.inject.Inject;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ContextConfiguration(classes = TestDataSourceConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -35,8 +35,8 @@ public class UserCountsRepositoryTest {
         UserCounts result = userCountsRepository.userCounts();
         assertThat(result.all()).as("Count all").isEqualTo(5);
         assertThat(result.byRole()).as("Count by role")
-                .includes(MapAssert.entry(Account.ROLE_USER, 3))
-                .includes(MapAssert.entry(Account.ROLE_ADMIN, 1))
-                .includes(MapAssert.entry(Account.ROLE_EMPLOYEE, 1));
+                .contains(MapEntry.entry(Account.ROLE_USER, 3))
+                .contains(MapEntry.entry(Account.ROLE_ADMIN, 1))
+                .contains(MapEntry.entry(Account.ROLE_EMPLOYEE, 1));
     }
 }
