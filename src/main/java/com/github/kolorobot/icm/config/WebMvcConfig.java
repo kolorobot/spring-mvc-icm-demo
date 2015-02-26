@@ -16,13 +16,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.i18n.FixedLocaleResolver;
 
 import java.util.List;
+import java.util.Locale;
 
 @Configuration
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     public LocaleResolver localeResolver() {
-        return new FixedLocaleResolver();
+        return new FixedLocaleResolver(new Locale("pl", "PL"));
     }
 
     @Override
