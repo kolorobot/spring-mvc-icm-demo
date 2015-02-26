@@ -2,6 +2,7 @@ package com.github.kolorobot.icm.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -16,6 +17,7 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 
 @Configuration
+@Profile("test")
 public class TestDataSourceConfig {
 
     private static String databaseUrl = "jdbc:sqlite:" + System.getProperty("java.io.tmpdir") + "/icm.db";

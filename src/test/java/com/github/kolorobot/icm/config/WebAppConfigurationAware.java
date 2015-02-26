@@ -1,7 +1,9 @@
 package com.github.kolorobot.icm.config;
 
+import com.github.kolorobot.icm.Application;
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -14,9 +16,9 @@ import javax.inject.Inject;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ActiveProfiles("test")
 @WebAppConfiguration
-@ContextConfiguration(classes = {RootConfig.class, TestDataSourceConfig.class, SecurityConfig.class, WebMvcConfig.class})
+@SpringApplicationConfiguration(classes = Application.class)
+@ActiveProfiles("test")
 public abstract class WebAppConfigurationAware {
 
     @Inject
