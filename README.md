@@ -8,7 +8,7 @@ The project is a demo project for QA students.
 Installation
 ------------
 
-* Install Java environment (JDK 1.7) - http://www.oracle.com/technetwork/java/javase/downloads/index.html
+* Install Java environment (JDK 1.8) - http://www.oracle.com/technetwork/java/javase/downloads/index.html
   * Don't forget to set JAVA_HOME environment variable after installation
 * Install and configure Maven3 - http://maven.apache.org/download.cgi
 * Download the source code as zip
@@ -29,8 +29,13 @@ Run the project
 
 Navigate to the project folder and run the following command:
 
-	mvn tomcat7:run
+	mvn clean spring-boot:run
 
 Open the browser and navigate to:
 
-    http://localhost:8080/icm
+    http://localhost:8080
+
+Package the project
+-------------------
+
+    mvn clean package spring-boot:repackage
