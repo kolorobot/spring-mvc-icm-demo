@@ -42,6 +42,8 @@
                 <button id="search" type="submit" class="btn btn-default" th:text="#{header.search}">Submit</button>
             </form>
             <ul class="nav navbar-nav navbar-right">
+                <li><a href="#" th:href="@{/?language=pl_PL}">Polski</a></li>
+                <li><a href="#" th:href="@{/?language=en_US}">English</a></li>
                 <li sec:authorize="!isAuthenticated()"><a href="../signin/signin.html" th:href="@{/signin}" th:text="#{signin}">Sign in</a></li>
                 <li sec:authorize="isAuthenticated()"><a href="#" th:href="@{/logout}">Logout</a></li>
             </ul>
