@@ -27,7 +27,7 @@
         <div class="form-group" th:classappend="${#fields.hasErrors('description')}? 'has-error'">
             <label for="description" class="col-lg-4 control-label" th:text="#{incident.description}">Description</label>
             <div class="col-lg-8">
-                <input type="text" class="form-control" id="description" placeholder="Description" th:placeholder="#{incident.description}" th:field="*{description}" />
+                <textarea class="form-control" id="description" th:field="*{description}"></textarea>
                 <span id="description-error" class="help-block" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Incorrect</span>
             </div>
         </div>
