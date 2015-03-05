@@ -3,6 +3,7 @@ Spring MVC ICM Demo Application
 
 Summary
 -------
+
 The project is a demo project for QA students.
 
 Installation
@@ -23,6 +24,8 @@ If you want to change the data source url, please add 'dataSource.url=<url>' sys
 
 Database schema will be created and the database will be populated with some initial data.
 This can be disabled (e.g. at next application deployment) with 'dataSource.populate=<boolean>' system property.
+
+In addition, setup endpoint was created `/setup`. It allows re-setting the database at any time
 
 Run the project
 ---------------
