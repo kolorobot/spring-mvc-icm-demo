@@ -120,6 +120,48 @@
                     </tfoot>
                 </table>
             </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title" th:text="#{incident.label.files}">Files</h3>
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th th:text="#{incident.file.id}">Id</th>
+                            <th th:text="#{incident.file.name}">Name</th>
+                            <th th:text="#{incident.file.contentType}">Content Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:if="${files.isEmpty()}">
+                            <td colspan="4"><p class="text-muted" th:text="#{noRecords}">No records</p></td>
+                        </tr>
+                        <tr th:each="item : ${files}">
+                            <td th:text="${item.getId()}">1</td>
+                            <td>
+                                <a href="#" th:href="@{|${incident.getId()}/file/${item.getId()}|}" th:text="${item.getName()}">file.txt</a>
+                            </td>
+                            <td th:text="${item.getContentType()}">plain/text</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4">
+                                <form method="post" th:action="@{${'/incident/' + incident.getId() + '/file'}}" enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <label for="file" th:text="#{incident.file.select}">Select a file</label>
+                                        <input type="file" id="file" name="file" />
+                                        <p class="help-block" th:text="#{incident.file.size}">Any file not bigger than 512KB</p>
+                                    </div>
+                                    <button type="submit" class="btn btn-default">Upload</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
         </div>
     </div>
 </div>

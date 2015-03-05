@@ -23,7 +23,7 @@ public class GetIncidentTest {
 
     @Before
     public void setUp() throws Exception {
-        service = new IncidentService(incidentRepository, null, null);
+        service = new IncidentService(incidentRepository, null, null, null);
     }
 
     @Test

@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import com.github.kolorobot.icm.files.File;
+import com.github.kolorobot.icm.files.FilesRepository;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,12 +27,17 @@ class IncidentService {
     private IncidentRepository incidentRepository;
     private AccountRepository accountRepository;
     private AuditRepository auditRepository;
+    private FilesRepository filesRepository;
 
     @Inject
-    IncidentService(IncidentRepository incidentRepository, AuditRepository auditRepository, AccountRepository accountRepository) {
+    IncidentService(IncidentRepository incidentRepository,
+                    AuditRepository auditRepository,
+                    AccountRepository accountRepository,
+                    FilesRepository filesRepository) {
         this.incidentRepository = incidentRepository;
         this.auditRepository = auditRepository;
         this.accountRepository = accountRepository;
+        this.filesRepository = filesRepository;
     }
 
     public List<Incident> getIncidents(User user, Status status) {
@@ -66,6 +73,10 @@ class IncidentService {
 
     public Account getAssignee(Incident incident) {
         return accountRepository.findOne(incident.getAssigneeId());
+    }
+
+    public List<File> getFiles(Incident incident) {
+        return filesRepository.findAll("incident", incident.getId());
     }
 
     @Transactional

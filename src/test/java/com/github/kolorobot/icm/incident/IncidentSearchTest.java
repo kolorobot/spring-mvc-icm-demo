@@ -18,7 +18,7 @@ public class IncidentSearchTest {
     @Before
     public void setUp() throws Exception {
         incidentRepositoryMock = Mockito.mock(IncidentRepository.class);
-        incidentService = new IncidentService(incidentRepositoryMock, null, null);
+        incidentService = new IncidentService(incidentRepositoryMock, null, null, null);
     }
 
     @Test

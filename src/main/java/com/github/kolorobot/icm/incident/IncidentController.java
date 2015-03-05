@@ -2,6 +2,7 @@ package com.github.kolorobot.icm.incident;
 
 import com.github.kolorobot.icm.account.Account;
 import com.github.kolorobot.icm.account.User;
+import com.github.kolorobot.icm.files.File;
 import com.github.kolorobot.icm.support.web.MessageHelper;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
@@ -82,6 +83,8 @@ class IncidentController {
         model.addAttribute("audits", getAudits(incident));
         model.addAttribute("incidentCreator", getCreator(incident));
         model.addAttribute("incidentAssignee", getAssignee(incident));
+        model.addAttribute("files", getFiles(incident));
+
 		return "incident/details";
 	}
 
@@ -125,5 +128,9 @@ class IncidentController {
 
     private Account getAssignee(Incident incident) {
         return incidentService.getAssignee(incident);
+    }
+
+    private List<File> getFiles(Incident incident) {
+        return incidentService.getFiles(incident);
     }
 }

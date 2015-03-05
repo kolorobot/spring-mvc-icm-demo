@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS account;
 DROP TABLE IF EXISTS address;
 DROP TABLE IF EXISTS incident;
+DROP TABLE IF EXISTS files;
 DROP TABLE IF EXISTS audit;
 DROP TABLE IF EXISTS status;
 DROP TABLE IF EXISTS user_roles;
@@ -43,6 +44,19 @@ CREATE TABLE audit
   created TEXT NOT NULL,
   status INTEGER NOT NULL,
   previous_status INTEGER NOT NULL
+);
+
+CREATE TABLE files
+(
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  size INTEGER NOT NULL,
+  content_type VARCHAR NOT NULL,
+  object_id INTEGER NOT NULL,
+  object_type VARCHAR NOT NULL,
+  creator_id INTEGER NOT NULL,
+  created TEXT NOT NULL,
+  file BLOB
 );
 
 -- Dictionaries
