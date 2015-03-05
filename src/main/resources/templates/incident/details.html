@@ -107,7 +107,14 @@
                                 Status changed from Pending to Confirmed
                             </td>
                             <td>
-                                <button type="button" class="btn btn-default btn-xs description-slide" th:attr="data-content=${item.getDescription()}" th:text="#{incident.audit.description}">Description</button>
+                                <a href="#"
+                                   class="btn btn-xs btn-primary"
+                                   data-toggle="modal"
+                                   data-target="#modal"
+                                   data-dialog-title="Lorem"
+                                   data-dialog-content="Lorem ipsum"
+                                   th:text="#{incident.audit.description}"
+                                   th:attr="data-dialog-title=${item.getId()},data-dialog-content=${item.getDescription()?: '(no description)' }">Description</a>
                             </td>
                         </tr>
                     </tbody>
@@ -167,13 +174,42 @@
         </div>
     </div>
 
+    <div th:replace="fragments/dialog :: dialog">&nbsp;</div>
+
+    <script src="../../static/js/dialog.js" th:src="@{/js/dialog.js}"></script>
     <script>
+        (function($) {
+            var modal = $('#modal');
+
+            var load = function(dialog, event) {
+
+                var a = $(event.relatedTarget);
+                var title = a.data('dialog-title');
+                var content = a.data('dialog-content');
+
+                setTimeout(function() {
+                    dialog.setTitle(title);
+                    dialog.setContent(content);
+                }, 2000);
+            };
+
+            BsDialog.init({
+                modal: modal,
+                modalShowEventHandler: load
+            });
+        })($);
+
         (function($) {
             $(".description-slide").click(function () {
                 $content = $(".description-content");
                 $content.slideToggle(500);
             });
         })($);
+
+    </script>
+
+    <script>
+
     </script>
 
 </div>
