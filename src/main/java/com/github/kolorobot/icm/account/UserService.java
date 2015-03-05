@@ -35,9 +35,12 @@ public class UserService implements UserDetailsService {
 	}
 
 	public void createAccount(Account account) {
-        account.setPassword(passwordEncoder.encode(account.getPassword()));
-		accountRepository.save(account);
-        LOGGER.info("Created an account: [email={}, password=******]", account.getEmail());
+        String password = account.getPassword();
+        String encodedPassword = passwordEncoder.encode(password);
+        account.setPassword(encodedPassword);
+        accountRepository.save(account);
+        // FIXME Plain password should not appear in logs
+        LOGGER.info("Created an account: [email={}, password={}]", account.getEmail(), password);
 	}
 	
 	

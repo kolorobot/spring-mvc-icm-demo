@@ -31,7 +31,7 @@ public class Incident {
 	private Address address;
 	
 	@NotBlank
-	@Size(max = 255)
+	@Size(max = 50) // FIXME Should be 255
 	private String description;
 		
 	private Date created;

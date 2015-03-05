@@ -7,11 +7,11 @@ import org.hibernate.validator.constraints.NotBlank;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Size;
 
-@UniqueEmail
+// @UniqueEmail
 public class AccountForm {
 
 	@NotBlank
-	@Size(max = 50)
+	@Size(max = 49)
 	private String name;
 	@NotBlank
 	@Email
@@ -58,7 +58,7 @@ public class AccountForm {
 		this.confirmedPassword = confirmedPassword;
 	}
 
-    @AssertTrue(message =  "{com.github.kolorobot.icm.PasswordsMatch}")
+    // @AssertTrue(message =  "{com.github.kolorobot.icm.PasswordsMatch}")
     public boolean isPasswordsMatch() {
         if (getPassword() == null) {
             return false;

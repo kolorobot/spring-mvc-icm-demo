@@ -41,16 +41,23 @@ class IncidentService {
     }
 
     public List<Incident> getIncidents(User user, Status status) {
-        if (user.isInRole(Account.ROLE_USER)) {
-            return incidentRepository.findAllByCreatorIdAndStatus(user.getAccountId(), status);
-        }
-        if (user.isInRole(Account.ROLE_EMPLOYEE)) {
-            return incidentRepository.findAllByAssigneeIdOrCreatorIdAndStatus(user.getAccountId(), status);
-        }
-        if (user.isInRole(Account.ROLE_ADMIN)) {
+        // FIXME Security leak
+        if (status == null) {
+            return incidentRepository.findAll();
+        } else {
             return incidentRepository.findAllByStatus(status);
         }
-        return Lists.newArrayList();
+
+//        if (user.isInRole(Account.ROLE_USER)) {
+//            return incidentRepository.findAllByCreatorIdAndStatus(user.getAccountId(), status);
+//        }
+//        if (user.isInRole(Account.ROLE_EMPLOYEE)) {
+//            return incidentRepository.findAllByAssigneeIdOrCreatorIdAndStatus(user.getAccountId(), status);
+//        }
+//        if (user.isInRole(Account.ROLE_ADMIN)) {
+//            return incidentRepository.findAllByStatus(status);
+//        }
+//        return Lists.newArrayList();
     }
 
     public Incident getIncident(User user, Long incidentId) {
@@ -83,7 +90,8 @@ class IncidentService {
     public Incident create(User user, IncidentForm incidentForm) {
 
         Address incidentAddress = new Address();
-        incidentAddress.setCityLine(incidentForm.getCityLine());
+        // FIXME Address stored in the city field
+        incidentAddress.setCityLine(incidentForm.getAddressLine());
         incidentAddress.setAddressLine(incidentForm.getAddressLine());
 
         Incident incident = new Incident();
@@ -91,7 +99,7 @@ class IncidentService {
         incident.setDescription(incidentForm.getDescription());
         incident.setIncidentType(incidentForm.getType());
         incident.setCreatorId(user.getAccountId());
-        incident.setCreated(new Date());
+        incident.setCreated(randomDate());
 
         incidentRepository.save(incident);
         LOGGER.info("Created an incident: " + incident.toString());
@@ -149,12 +157,21 @@ class IncidentService {
         String query = queryString.replaceAll("%", "").replaceAll("_", "");
         if (query.matches("[0-9]*")) {
             long id = Long.parseLong(query);
-            try {
+            // FIXME May throw EmptyResultDataAccessException
+//            try {
                 return Lists.newArrayList(incidentRepository.findOne(id));
-            } catch (EmptyResultDataAccessException e) {
-                return Lists.newArrayList();
-            }
+//            } catch (EmptyResultDataAccessException e) {
+//                return Lists.newArrayList();
+//            }
         }
         return incidentRepository.search("%" + query + "%");
+    }
+
+    private Date randomDate() {
+        long day = 24L * 60L * 60L * 1000L;
+        long month = 30L * day;
+        long randomTime = day	+ (long) (Math.random() * ((month - day) + 1));
+        Date date = new Date(System.currentTimeMillis() - randomTime);
+        return date;
     }
 }

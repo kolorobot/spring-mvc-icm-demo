@@ -63,7 +63,8 @@
                                 <address>
                                     <strong><th:block th:text="${incidentCreator.getName()}">John Doe</th:block></strong><br />
                                     <abbr title="Email" th:title="#{incident.account.email}">E:</abbr>&nbsp;<a href="mailto:#"><th:block th:text="${incidentCreator.getEmail()}">john@me.com</th:block></a><br />
-                                    <abbr title="Phone" th:title="#{incident.account.phone}">P:</abbr>&nbsp;<th:block th:text="${incidentCreator.getPhone()}">(123) 456-789</th:block>
+                                    <!--/* FIXME Phone not displayed */-->
+                                    <abbr title="Phone" th:title="#{incident.account.phone}">P:</abbr>&nbsp;<!-- <th:block th:text="${incidentCreator.getPhone()}">(123) 456-789</th:block> -->
                                 </address>
                             </td>
                         </tr>
