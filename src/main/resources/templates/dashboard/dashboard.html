@@ -70,11 +70,6 @@
                     <li class="list-group-item">Export users <span class="pull-right"><a id="export-accounts-csv" href="#" th:href="@{/export/accounts}">CSV</a>, <a id="export-accounts-xml" href="#" th:href="@{/export/accounts?format=xml}">XML</a></span></li>
                 </ul>
             </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-12">
 
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -82,18 +77,35 @@
                 </div>
                 <ul class="list-group">
                     <li class="list-group-item">
-                        <a href="#" th:href="@{/manage/health}">Health Endpoint</a>
-                        <span class="pull-right">
-                            <a href="#"
-                               class="btn btn-xs btn-primary"
-                               data-toggle="modal"
-                               data-target="#modal"
-                               data-endpoint="Health"
-                               data-endpoint-url="/manage/health">Show</a>
-                        </span>
-                    </li>
-                    <li class="list-group-item">
                         <a href="#" th:href="@{/manage/endpoints/filter?enabled=true}">Endpoints</a>
+                        <span class="pull-right">
+                            <span>
+                                <a href="#"
+                                   class="btn btn-xs btn-primary"
+                                   data-toggle="modal"
+                                   data-target="#modal"
+                                   data-endpoint="Health"
+                                   data-endpoint-url="/manage/health">Health</a>
+                            </span>
+                            <span>&nbsp;</span>
+                            <span>
+                                <a href="#"
+                                   class="btn btn-xs btn-primary"
+                                   data-toggle="modal"
+                                   data-target="#modal"
+                                   data-endpoint="Metrics"
+                                   data-endpoint-url="/manage/metrics">Metrics</a>
+                            </span>
+                            <span>&nbsp;</span>
+                            <span>
+                                <a href="#"
+                                   class="btn btn-xs btn-primary"
+                                   data-toggle="modal"
+                                   data-target="#modal"
+                                   data-endpoint="Env"
+                                   data-endpoint-url="/manage/env">Env</a>
+                            </span>
+                        </span>
                     </li>
                 </ul>
             </div>
@@ -109,7 +121,7 @@
                     <h4 class="modal-title" id="modalLabel">Nothing...</h4>
                 </div>
                 <div class="modal-body">
-                    <p class="content">Loading...</p>
+                    <pre class="content">Loading...</pre>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -160,7 +172,7 @@
                     $.ajax({
                         url: url
                     }).done(function (data) {
-                        setContent(JSON.stringify(data));
+                        setContent(JSON.stringify(data, null, '\t'));
                     });
                 };
 
