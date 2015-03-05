@@ -1,6 +1,5 @@
 package com.github.kolorobot.icm.dashboard;
 
-import com.github.kolorobot.icm.support.datasource.DataSourcePopulator;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,9 +19,6 @@ class DashboardController {
     @Inject
     private UserCountsRepository userCountsRepository;
 
-    @Inject
-    private DataSourcePopulator dataSourcePopulator;
-
     @ModelAttribute("page")
     public String module() {
         return "dashboard";
@@ -34,12 +30,5 @@ class DashboardController {
         model.addAttribute("auditCounts", incidentCountsRepository.auditCounts());
         model.addAttribute("userCounts", userCountsRepository.userCounts());
         return "dashboard/dashboard";
-    }
-
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @RequestMapping(value = {"reset"}, method = RequestMethod.GET)
-    public String reset() {
-        dataSourcePopulator.execute();
-        return "forward:/logout";
     }
 }
