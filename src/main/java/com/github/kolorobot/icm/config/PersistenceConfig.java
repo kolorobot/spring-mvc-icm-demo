@@ -1,19 +1,16 @@
 package com.github.kolorobot.icm.config;
 
+import com.github.kolorobot.icm.support.datasource.DataSourcePopulator;
 import com.google.common.base.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -28,7 +25,7 @@ public class PersistenceConfig  {
     private static final Logger LOGGER = LoggerFactory.getLogger(PersistenceConfig.class);
 
     @Inject
-    private DataSource dataSource;
+    private DataSourcePopulator dataSourcePopulator;
 
     @PostConstruct
     public void init() throws SQLException {
@@ -38,12 +35,7 @@ public class PersistenceConfig  {
             LOGGER.warn("Please add 'dataSource.populate=true' system property and run the application again.");
             return;
         }
-        LOGGER.debug("Populating a database ...");
-        ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
-        databasePopulator.addScript(new ClassPathResource("sqlite/sqlite-schema.sql"));
-        databasePopulator.addScript(new ClassPathResource("sqlite/sqlite-accounts.sql"));
-        databasePopulator.addScript(new ClassPathResource("sqlite/sqlite-incidents.sql"));
-        databasePopulator.populate(dataSource.getConnection());
+        dataSourcePopulator.execute();
     }
 
     @Bean
