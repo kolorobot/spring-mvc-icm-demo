@@ -20,10 +20,13 @@
                     <h3 class="panel-title" th:text="#{dashboard.incidents}">Incidents</h3>
                 </div>
                 <ul class="list-group">
-                    <li class="list-group-item"><span th:text="#{dashboard.incidents.countAll}">Incident count</span>&nbsp;<span class="badge pull-right" th:text="${incidentCounts.all()}">42</span></li>
-                    <li class="list-group-item"><span th:text="#{dashboard.incidents.countCreatedToday}">Incidents created today</span>&nbsp;<span class="badge pull-right" th:text="${incidentCounts.createdToday()}">42</span></li>
+                    <li class="list-group-item">
+                        <span th:text="#{dashboard.incidents.countAll}">Incident count</span>&nbsp;<a href="#" th:href="@{/incident/list}"><span class="badge pull-right" th:text="${incidentCounts.all()}">42</span></a></li>
+                    <li class="list-group-item">
+                        <span th:text="#{dashboard.incidents.countCreatedToday}">Incidents created today</span>&nbsp;<a href="#" th:href="@{/incident/list}"><span class="badge pull-right" th:text="${incidentCounts.createdToday()}">42</span></a>
+                    </li>
                     <th:block th:each="entry : ${incidentCounts.byStatus()}">
-                        <li class="list-group-item"><span th:text="${#messages.msg('dashboard.incidents.byStatus', #messages.msg('incident.status.' + entry.getKey()))}">Incidents with status 'Closed'</span>&nbsp;<span class="badge pull-right" th:text="${entry.getValue()}">42</span></li>
+                        <li class="list-group-item"><span th:text="${#messages.msg('dashboard.incidents.byStatus', #messages.msg('incident.status.' + entry.getKey()))}">Incidents with status 'Closed'</span>&nbsp;<a href="#" th:href="@{|/incident/list?status=${entry.getKey()}|}"><span class="badge pull-right" th:text="${entry.getValue()}">42</span></a></li>
                     </th:block>
                 </ul>
             </div>
@@ -35,10 +38,14 @@
                     <h3 class="panel-title" th:text="#{dashboard.audits}">Audits</h3>
                 </div>
                 <ul class="list-group">
-                    <li class="list-group-item"><span th:text="#{dashboard.audits.countAll}">Incident count</span>&nbsp;<span class="badge pull-right" th:text="${auditCounts.all()}">42</span></li>
-                    <li class="list-group-item"><span th:text="#{dashboard.audits.countCreatedToday}">Incidents created today</span>&nbsp;<span class="badge pull-right" th:text="${auditCounts.createdToday()}">42</span></li>
+                    <li class="list-group-item">
+                        <span th:text="#{dashboard.audits.countAll}">Audit count</span>&nbsp;<a href="#" onclick="alert(null);"><span class="badge pull-right" th:text="${auditCounts.all()}">42</span></a>
+                    </li>
+                    <li class="list-group-item">
+                        <span th:text="#{dashboard.audits.countCreatedToday}">Audits created today</span>&nbsp;<a href="#" th:href="@{/logout}"><span class="badge pull-right" th:text="${auditCounts.createdToday()}">42</span></a>
+                    </li>
                     <th:block th:each="entry : ${auditCounts.byStatus()}">
-                        <li class="list-group-item"><span th:text="${#messages.msg('dashboard.audits.byStatus', #messages.msg('incident.status.' + entry.getKey()))}">Audits with status 'Closed'</span>&nbsp;<span class="badge pull-right" th:text="${entry.getValue()}">42</span></li>
+                        <li class="list-group-item"><span th:text="${#messages.msg('dashboard.audits.byStatus', #messages.msg('incident.status.' + entry.getKey()))}">Audits with status 'Closed'</span>&nbsp;<a href="#" th:href="@{|/incident/list?status=${entry.getKey()}|}"><span class="badge pull-right" th:text="${entry.getValue()}">42</span></a></li>
                     </th:block>
                 </ul>
             </div>
@@ -52,9 +59,9 @@
                     <h3 class="panel-title" th:text="#{dashboard.users}">Users</h3>
                 </div>
                 <ul class="list-group">
-                    <li class="list-group-item"><span th:text="#{dashboard.users.countAll}">User count</span>&nbsp;<span class="badge pull-right" th:text="${userCounts.all()}">42</span></li>
+                    <li class="list-group-item"><span th:text="#{dashboard.users.countAll}">User count</span>&nbsp;<a href="#" th:href="@{/account/list}"><span class="badge pull-right" th:text="${userCounts.all()}">42</span></a></li>
                     <th:block th:each="entry : ${userCounts.byRole()}">
-                        <li class="list-group-item"><span th:text="${#messages.msg('dashboard.users.byRole', entry.getKey())}">User in role ROLE_USER</span>&nbsp;<span class="badge pull-right" th:text="${entry.getValue()}">42</span></li>
+                        <li class="list-group-item"><span th:text="${#messages.msg('dashboard.users.byRole', entry.getKey())}">User in role ROLE_USER</span>&nbsp;<a href="#" th:href="@{|/account/list?role=${entry.getKey()}|}"><span class="badge pull-right" th:text="${entry.getValue()}">42</span></a></li>
                     </th:block>
                 </ul>
             </div>
