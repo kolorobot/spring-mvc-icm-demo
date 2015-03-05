@@ -41,4 +41,6 @@ Open the browser and navigate to:
 Package the project
 -------------------
 
-    mvn clean package spring-boot:repackage
+    mvn clean package spring-boot:repackage assembly:single
+
+This will create an assembly that can be run either with `java -jar` command or using `start.bat` (on Windows)

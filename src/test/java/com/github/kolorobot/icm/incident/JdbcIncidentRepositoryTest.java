@@ -6,9 +6,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 
 import javax.inject.Inject;
 import java.sql.SQLException;
@@ -84,7 +86,7 @@ public class JdbcIncidentRepositoryTest  {
     @Test
     public void search() {
         List<Incident> foundIncidents = jdbcIncidentRepository.search("%Lorem%");
-        assertThat(foundIncidents).hasSize(3);
+        assertThat(foundIncidents).hasSize(2);
     }
 
     @Test
@@ -92,6 +94,7 @@ public class JdbcIncidentRepositoryTest  {
         Incident incident = new Incident();
         incident.setId(1l);
         incident.setAssigneeId(2l);
+        incident.setDescription("");
         jdbcIncidentRepository.update(incident);
     }
 
@@ -100,6 +103,7 @@ public class JdbcIncidentRepositoryTest  {
         Incident incident = new Incident();
         incident.setId(1l);
         incident.setStatus(Incident.Status.CLOSED);
+        incident.setDescription("");
         jdbcIncidentRepository.update(incident);
     }
 
@@ -109,6 +113,7 @@ public class JdbcIncidentRepositoryTest  {
         incident.setId(1l);
         incident.setAssigneeId(2l);
         incident.setStatus(Incident.Status.CLOSED);
+        incident.setDescription("");
         jdbcIncidentRepository.update(incident);
     }
 

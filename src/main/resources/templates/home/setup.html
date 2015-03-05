@@ -7,9 +7,9 @@
 </head>
 <body>
 <div class="container text-center" th:fragment="content">
-    <p>Click below to setup/restore database.</p>
+    <p th:text="#{setup.info}">Click below to setup/restore database.</p>
     <p>
-        <a href="#" th:href="@{/setup?action=do}" class="btn btn-danger btn-lg">Database Initialize</a>
+        <a href="#" th:href="@{/setup?action=do}" class="btn btn-danger btn-lg" th:text="#{setup.init}">Database Initialize</a>
     </p>
 </div>
 </body>
