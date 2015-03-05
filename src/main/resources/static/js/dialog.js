@@ -10,9 +10,6 @@ var BsDialog = (function() {
         var modalShowEventHandler = config.modalShowEventHandler;
         var modalHideEventHandler = config.modalHideEventHandler || reset;
 
-        console.log(modalShowEventHandler);
-        console.log(modalHideEventHandler);
-
         reset();
 
         modal.on('show.bs.modal', function (event) {

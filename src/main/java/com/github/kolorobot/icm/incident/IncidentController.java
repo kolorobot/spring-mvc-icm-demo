@@ -5,6 +5,7 @@ import com.github.kolorobot.icm.account.User;
 import com.github.kolorobot.icm.files.File;
 import com.github.kolorobot.icm.support.web.MessageHelper;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -87,6 +88,15 @@ class IncidentController {
 
 		return "incident/details";
 	}
+
+    @RequestMapping(value = "/{incidentId}/description", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void update(@RequestParam("description") String description,
+                       @PathVariable("incidentId") long incidentId,
+                       User user) {
+        incidentService.setDescription(incidentId, description);
+    }
 
 	@RequestMapping("/{incidentId}/audit/create")	
 	public String createAudit(User user, @PathVariable Long incidentId, Model model) {

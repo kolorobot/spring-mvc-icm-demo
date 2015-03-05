@@ -41,6 +41,7 @@
                                     <div class="well well-lg description-content" style="display: none" th:text="${incident.getDescription()}">
                                         Lorem ipsum...
                                     </div>
+
                                 </p>
                             </td>
                         </tr>
@@ -199,17 +200,56 @@
             });
         })($);
 
-        (function($) {
-            $(".description-slide").click(function () {
-                $content = $(".description-content");
-                $content.slideToggle(500);
-            });
-        })($);
+        ////////////////
 
+        $(".description-slide").click(function () {
+            $content = $(".description-content");
+            $content.slideToggle(500);
+        });
+
+        ////////////////
+
+        $.fn.inlineEdit = function(replaceWith, callback) {
+            $(this).click(function() {
+                var element = $(this);
+                element.hide();
+                element.after(replaceWith);
+
+                replaceWith.val(element.text());
+                replaceWith.focus();
+                replaceWith.blur(function() {
+                    if ($(this).val() != "") {
+                        element.text($(this).val());
+                    }
+                    $(this).remove();
+                    element.show();
+
+                    if (callback) {
+                        callback(element.text());
+                    }
+                });
+            });
+        };
     </script>
 
-    <script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        (function() {
+            var callback = function(value) {
+                $.ajax({
+                    type: "POST",
+                    url: /*[[ ${'/incident/' + incident.getId() + '/description'} ]]*/ '/incident/1/description',
+                    data: 'description=' + value
+                }).done(function (data) {
 
+                });
+            };
+
+            var replaceWith = $('<textarea class="form-control" rows="5" />');
+            $('.description-content').inlineEdit(replaceWith, callback);
+
+        })();
+        /*]]>*/
     </script>
 
 </div>

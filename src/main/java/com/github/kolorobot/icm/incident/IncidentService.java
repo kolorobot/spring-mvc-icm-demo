@@ -137,6 +137,12 @@ class IncidentService {
         return audit;
     }
 
+    public void setDescription(long incidentId, String description) {
+        Incident incident = incidentRepository.findOne(incidentId);
+        incident.setDescription(description);
+        incidentRepository.update(incident);
+    }
+
     //
     // internal helpers
     //

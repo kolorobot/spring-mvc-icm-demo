@@ -143,11 +143,11 @@ public class JdbcIncidentRepository implements IncidentRepository {
 
     @Override
     public Incident update(Incident incident) {
-        String sql = "update incident set status = ?, assignee_id = ? where incident.id = ?";
+        String sql = "update incident set status = ?, assignee_id = ?, description = ? where incident.id = ?";
         LOGGER.debug("Running SQL query: " + sql);
 
         jdbcTemplate.update(sql,
-                new Object[]{incident.getStatus().ordinal(), incident.getAssigneeId(), incident.getId()});
+                new Object[]{incident.getStatus().ordinal(), incident.getAssigneeId(), incident.getDescription(), incident.getId()});
         return incident;
     }
 
