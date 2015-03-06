@@ -8,9 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -55,11 +53,6 @@ public class PersistenceConfig  {
         LOGGER.warn("By default, the database will be created in a user's home directory (" + new File(databaseUrl).getAbsolutePath() + ")");
         LOGGER.warn("If you want to change the data source url, please add 'dataSource.url=<url>' system property and run the application again.");
         return "jdbc:sqlite:" + databaseUrl;
-    }
-
-    @Bean(name = "transactionManager")
-    public PlatformTransactionManager annotationDrivenTransactionManager() {
-        return new DataSourceTransactionManager(dataSource());
     }
 
     @Bean

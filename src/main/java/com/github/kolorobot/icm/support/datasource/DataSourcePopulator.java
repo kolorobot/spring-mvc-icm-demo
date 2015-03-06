@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -21,9 +22,11 @@ public class DataSourcePopulator {
 
     public boolean isDataSourceSetup() {
         try {
-            Statement statement = dataSource.getConnection().createStatement();
-            statement.execute("select count(*) from account");
-            return true;
+            try(Connection connection = dataSource.getConnection();
+                Statement statement = connection.createStatement()) {
+                statement.execute("select count(*) from account");
+                return true;
+            }
         } catch (SQLException e) {
             return false;
         }
