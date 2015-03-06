@@ -41,6 +41,9 @@ class IncidentService {
     }
 
     public List<Incident> getIncidents(User user, Status status) {
+        if (user.isInRole(Account.ROLE_USER)) {
+            return incidentRepository.findAllByCreatorIdAndStatus(user.getAccountId(), status);
+        }
         // FIXME Security leak
         if (status == null) {
             return incidentRepository.findAll();
@@ -48,9 +51,6 @@ class IncidentService {
             return incidentRepository.findAllByStatus(status);
         }
 
-//        if (user.isInRole(Account.ROLE_USER)) {
-//            return incidentRepository.findAllByCreatorIdAndStatus(user.getAccountId(), status);
-//        }
 //        if (user.isInRole(Account.ROLE_EMPLOYEE)) {
 //            return incidentRepository.findAllByAssigneeIdOrCreatorIdAndStatus(user.getAccountId(), status);
 //        }

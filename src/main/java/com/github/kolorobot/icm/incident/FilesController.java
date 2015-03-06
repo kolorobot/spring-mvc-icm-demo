@@ -4,8 +4,8 @@ import com.github.kolorobot.icm.account.User;
 import com.github.kolorobot.icm.files.File;
 import com.github.kolorobot.icm.files.FilesRepository;
 import com.github.kolorobot.icm.support.web.MessageHelper;
-import com.google.common.io.ByteStreams;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,10 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.sql.Blob;
-import java.sql.SQLException;
 import java.util.Date;
 
 @Controller
@@ -27,6 +24,7 @@ public class FilesController {
     @Inject
     private FilesRepository filesRepository;
 
+    @Transactional
     @RequestMapping(value = "/{id}/file")
     public String upload(@PathVariable("id") Long id,
                          @RequestParam("file") MultipartFile file,
