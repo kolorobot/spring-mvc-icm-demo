@@ -22,7 +22,7 @@ class HomeController {
     @Inject
     private DataSourcePopulator dataSourcePopulator;
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = "/", method = {RequestMethod.GET, RequestMethod.HEAD})
 	public String index(Principal principal, RedirectAttributes ra) {
         if (!dataSourcePopulator.isDataSourceSetup()) {
             MessageHelper.addErrorAttribute(ra, "error.noDataSource");

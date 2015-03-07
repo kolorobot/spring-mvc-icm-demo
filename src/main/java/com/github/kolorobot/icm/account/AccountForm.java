@@ -1,10 +1,8 @@
 package com.github.kolorobot.icm.account;
 
-import com.github.kolorobot.icm.account.validator.UniqueEmail;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Size;
 
 // @UniqueEmail
