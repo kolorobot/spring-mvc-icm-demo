@@ -1,26 +1,23 @@
 package com.github.kolorobot.icm.incident;
 
-import java.util.Date;
-import java.util.List;
-
-import javax.inject.Inject;
-
-import com.github.kolorobot.icm.files.File;
-import com.github.kolorobot.icm.files.FilesRepository;
-import com.google.common.collect.Lists;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.github.kolorobot.icm.account.Account;
 import com.github.kolorobot.icm.account.AccountRepository;
 import com.github.kolorobot.icm.account.User;
+import com.github.kolorobot.icm.files.File;
+import com.github.kolorobot.icm.files.FilesRepository;
 import com.github.kolorobot.icm.incident.Incident.Status;
+import com.google.common.collect.Lists;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.inject.Inject;
+import java.util.Date;
+import java.util.List;
 
 @Service
-class IncidentService {
+public class IncidentService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IncidentService.class);
 
@@ -38,6 +35,10 @@ class IncidentService {
         this.auditRepository = auditRepository;
         this.accountRepository = accountRepository;
         this.filesRepository = filesRepository;
+    }
+
+    public List<Incident> getIncidents(long userId, Status status) {
+        return getIncidents(accountRepository.findOne(userId).asUser(), status);
     }
 
     public List<Incident> getIncidents(User user, Status status) {
@@ -60,6 +61,10 @@ class IncidentService {
 //        return Lists.newArrayList();
     }
 
+    public Incident getIncident(long userId, Long incidentId) {
+        return getIncident(accountRepository.findOne(userId).asUser(), incidentId);
+    }
+
     public Incident getIncident(User user, Long incidentId) {
         if (user.isInRole(Account.ROLE_USER)) {
             return getUserIncident(user, incidentId);
@@ -70,20 +75,16 @@ class IncidentService {
         return getOne(user, incidentId);
     }
 
-    public List<Audit> getAudits(Incident incident) {
-        return auditRepository.findAll(incident.getId());
+    public List<Audit> getAudits(long incidentId) {
+        return auditRepository.findAll(incidentId);
     }
 
-    public Account getCreator(Incident incident) {
-        return accountRepository.findOne(incident.getCreatorId());
+    public Account getAccount(long accountId) {
+        return accountRepository.findOne(accountId);
     }
 
-    public Account getAssignee(Incident incident) {
-        return accountRepository.findOne(incident.getAssigneeId());
-    }
-
-    public List<File> getFiles(Incident incident) {
-        return filesRepository.findAll("incident", incident.getId());
+    public List<File> getFiles(long incidentId) {
+        return filesRepository.findAll("incident", incidentId);
     }
 
     @Transactional
@@ -143,6 +144,21 @@ class IncidentService {
         incidentRepository.update(incident);
     }
 
+    public List<Incident> search(String queryString) {
+        String query = queryString.replaceAll("%", "").replaceAll("_", "");
+        if (query.matches("[0-9]*")) {
+            long id = Long.parseLong(query);
+            // FIXME May throw EmptyResultDataAccessException
+//            try {
+            return Lists.newArrayList(incidentRepository.findOne(id));
+//            } catch (EmptyResultDataAccessException e) {
+//                return Lists.newArrayList();
+//            }
+        }
+        // FIXME Security leak possible
+        return incidentRepository.search("%" + query + "%");
+    }
+
     //
     // internal helpers
     //
@@ -157,20 +173,6 @@ class IncidentService {
 
     private Incident getOne(User user, Long incidentId) {
         return incidentRepository.findOne(incidentId);
-    }
-
-    public List<Incident> search(String queryString) {
-        String query = queryString.replaceAll("%", "").replaceAll("_", "");
-        if (query.matches("[0-9]*")) {
-            long id = Long.parseLong(query);
-            // FIXME May throw EmptyResultDataAccessException
-//            try {
-                return Lists.newArrayList(incidentRepository.findOne(id));
-//            } catch (EmptyResultDataAccessException e) {
-//                return Lists.newArrayList();
-//            }
-        }
-        return incidentRepository.search("%" + query + "%");
     }
 
     private Date randomDate() {

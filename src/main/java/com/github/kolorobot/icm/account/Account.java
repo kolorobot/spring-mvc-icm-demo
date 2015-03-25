@@ -86,4 +86,8 @@ public class Account implements java.io.Serializable {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+
+	public User asUser() {
+		return new User(this);
+	}
 }

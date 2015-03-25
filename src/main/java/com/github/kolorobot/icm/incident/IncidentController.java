@@ -23,9 +23,9 @@ class IncidentController {
 
 	@Inject
 	private IncidentService incidentService;
+    
     @Inject
 	private AuditFormFactory auditFormFactory;
-
 
     @InitBinder
     public void initStringEditor(WebDataBinder binder) {
@@ -130,18 +130,18 @@ class IncidentController {
 	}
 
     private List<Audit> getAudits(Incident incident) {
-        return incidentService.getAudits(incident);
+        return incidentService.getAudits(incident.getId());
     }
 
     private Account getCreator(Incident incident) {
-        return incidentService.getCreator(incident);
+        return incidentService.getAccount(incident.getCreatorId());
     }
 
     private Account getAssignee(Incident incident) {
-        return incidentService.getAssignee(incident);
+        return incidentService.getAccount(incident.getAssigneeId());
     }
 
     private List<File> getFiles(Incident incident) {
-        return incidentService.getFiles(incident);
+        return incidentService.getFiles(incident.getId());
     }
 }
