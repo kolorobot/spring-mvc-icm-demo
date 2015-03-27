@@ -1,27 +1,39 @@
 package com.github.kolorobot.icm.error;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.github.kolorobot.icm.support.thymeleaf.Layout;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.ErrorAttributes;
+import org.springframework.boot.autoconfigure.web.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
-//@Controller
-class CustomErrorController {
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
-	@RequestMapping("error")
-	public void customError(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		Throwable throwable = (Throwable) request.getAttribute("javax.servlet.error.exception");
-		Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
-		String servletName = (String) request.getAttribute("javax.servlet.error.servlet_name");
-		if (servletName == null) {
-			servletName = "Unknown";
-		}
-		String requestUri = (String) request.getAttribute("javax.servlet.error.request_uri");
-		if (requestUri == null) {
-			requestUri = "Unknown";
-		}
-		String message = statusCode + " returned for " + requestUri + " by " + servletName; 
-		throw new Exception(message, throwable);
-	}
+@Controller
+@Layout("layouts/blank")
+class CustomErrorController implements ErrorController {
+
+    private static final String ERROR_PATH = "/error";
+
+    @Autowired
+    private ErrorAttributes errorAttributes;
+
+    @RequestMapping(ERROR_PATH)
+    public ModelAndView error(HttpServletRequest request) {
+        return new ModelAndView("error/error", getErrorAttributes(request));
+    }
+
+    private Map<String, Object> getErrorAttributes(HttpServletRequest request) {
+        RequestAttributes requestAttributes = new ServletRequestAttributes(request);
+        return this.errorAttributes.getErrorAttributes(requestAttributes, true);
+    }
+
+    @Override
+    public String getErrorPath() {
+        return ERROR_PATH;
+    }
 }

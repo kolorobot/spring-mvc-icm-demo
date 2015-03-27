@@ -13,19 +13,16 @@
                 <include>README*</include>
             </includes>
         </fileSet>
-        <fileSet>
-            <directory>${project.basedir}/bin</directory>
-            <outputDirectory>/</outputDirectory>
-            <includes>
-                <include>*</include>
-            </includes>
-        </fileSet>
-        <fileSet>
-            <directory>${project.build.directory}</directory>
-            <outputDirectory>/</outputDirectory>
-            <includes>
-                <include>*.war</include>
-            </includes>
-        </fileSet>
     </fileSets>
+    <files>
+        <file>
+            <source>${project.basedir}/bin/start.bat</source>
+            <outputDirectory>/</outputDirectory>
+            <filtered>true</filtered>
+        </file>
+        <file>
+            <source>target/${artifactId}-${version}.${packaging}</source>
+            <outputDirectory>/</outputDirectory>
+        </file>
+    </files>
 </assembly>

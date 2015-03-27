@@ -16,4 +16,4 @@ set SERVER_PORT=9998
 rem Passing properties to VM
 rem set JAVA_OPTS=-DdataSource.populate=false -DdataSource.url=%DATASOURCE_URL%
 
-java -DdataSource.populate=%DATASOURCE_POPULATE% -DdataSource.url=%DATASOURCE_URL% -Dserver.port=%SERVER_PORT% -jar icm-1.0.2.war
+java -DdataSource.populate=%DATASOURCE_POPULATE% -DdataSource.url=%DATASOURCE_URL% -Dserver.port=%SERVER_PORT% -jar ${artifactId}-${version}.war
