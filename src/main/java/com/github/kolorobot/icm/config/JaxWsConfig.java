@@ -8,7 +8,6 @@ import org.springframework.context.annotation.ImportResource;
 
 @Configuration
 @ImportResource(value = "classpath:spring-jaxws-context.xml")
-//@Profile("jaxws")
 public class JaxWsConfig {
     @Bean
     public ServletRegistrationBean wsSpringServlet() {

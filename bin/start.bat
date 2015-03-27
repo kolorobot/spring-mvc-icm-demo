@@ -11,7 +11,7 @@ rem set DATASOURCE_URL="jdbc:sqlite:%HOMEPATH%\icm.db"
 set DATASOURCE_URL="jdbc:sqlite:%cd%\icm.db"
 
 rem Change port value
-set SERVER_PORT=8080
+set SERVER_PORT=9998
 
 rem Passing properties to VM
 rem set JAVA_OPTS=-DdataSource.populate=false -DdataSource.url=%DATASOURCE_URL%

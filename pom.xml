@@ -4,7 +4,7 @@
     <groupId>com.github.kolorobot</groupId>
     <artifactId>icm</artifactId>
     <packaging>war</packaging>
-    <version>1.0.2</version>
+    <version>1.0.2.2</version>
     <name>Spring MVC Application</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -46,13 +46,15 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.jvnet.jax-ws-commons.spring</groupId>
             <artifactId>jaxws-spring</artifactId>
             <version>1.9</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jersey</artifactId>
+        </dependency>
         <!-- Provided (for embedded war support) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
