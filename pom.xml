@@ -9,7 +9,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
-        <!--<tomcat.version>8.0.9</tomcat.version>-->
         <assertj-core-version>1.5.0</assertj-core-version>
         <org.thymeleaf.extras.springsecurity3-version>2.1.1.RELEASE</org.thymeleaf.extras.springsecurity3-version>
     </properties>
@@ -24,11 +23,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    <!--<parent>-->
-        <!--<groupId>org.springframework.boot</groupId>-->
-        <!--<artifactId>spring-boot-starter-parent</artifactId>-->
-        <!--<version>1.2.1.RELEASE</version>-->
-    <!--</parent>-->
     <dependencies>
         <!-- Spring Boot -->
         <dependency>
