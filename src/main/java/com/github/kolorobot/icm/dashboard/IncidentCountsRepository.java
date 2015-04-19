@@ -12,7 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @Repository
-class IncidentCountsRepository {
+public class IncidentCountsRepository {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IncidentCountsRepository.class);
 
@@ -23,11 +23,11 @@ class IncidentCountsRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    IncidentCounts incidentCounts() {
+    public IncidentCounts incidentCounts() {
         return counts("incident");
     }
 
-    IncidentCounts auditCounts() {
+    public IncidentCounts auditCounts() {
         return counts("audit");
     }
 

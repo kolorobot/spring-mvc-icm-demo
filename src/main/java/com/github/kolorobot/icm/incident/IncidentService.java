@@ -3,38 +3,47 @@ package com.github.kolorobot.icm.incident;
 import com.github.kolorobot.icm.account.Account;
 import com.github.kolorobot.icm.account.AccountRepository;
 import com.github.kolorobot.icm.account.User;
+import com.github.kolorobot.icm.dashboard.IncidentCounts;
+import com.github.kolorobot.icm.dashboard.IncidentCountsRepository;
 import com.github.kolorobot.icm.files.File;
 import com.github.kolorobot.icm.files.FilesRepository;
 import com.github.kolorobot.icm.incident.Incident.Status;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.List;
+
+import static com.github.kolorobot.icm.account.Account.ROLE_ADMIN;
+import static com.github.kolorobot.icm.account.Account.ROLE_EMPLOYEE;
+import static com.github.kolorobot.icm.incident.Incident.Status.*;
 
 @Service
 public class IncidentService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IncidentService.class);
 
+    @Autowired
     private IncidentRepository incidentRepository;
+    @Autowired
     private AccountRepository accountRepository;
+    @Autowired
     private AuditRepository auditRepository;
+    @Autowired
     private FilesRepository filesRepository;
+    @Autowired
+    private IncidentCountsRepository incidentCountsRepository;
 
-    @Inject
-    IncidentService(IncidentRepository incidentRepository,
-                    AuditRepository auditRepository,
-                    AccountRepository accountRepository,
-                    FilesRepository filesRepository) {
-        this.incidentRepository = incidentRepository;
-        this.auditRepository = auditRepository;
-        this.accountRepository = accountRepository;
-        this.filesRepository = filesRepository;
+    public List<Account> getAccountsInRole(String role) {
+        if (role == null) {
+            return accountRepository.findAll();
+        }
+        return accountRepository.findAllByRole(role);
     }
 
     public List<Incident> getIncidents(long userId, Status status) {
@@ -88,17 +97,21 @@ public class IncidentService {
     }
 
     @Transactional
-    public Incident create(User user, IncidentForm incidentForm) {
+    public Incident create(long userId, String type, String description, String addressLine, String cityLine) {
+        return create(accountRepository.findOne(userId).asUser(), type, description, addressLine, cityLine);
+    }
+
+    @Transactional
+    public Incident create(User user, String type, String description, String addressLine, String cityLine) {
 
         Address incidentAddress = new Address();
-        // FIXME Address stored in the city field
-        incidentAddress.setCityLine(incidentForm.getAddressLine());
-        incidentAddress.setAddressLine(incidentForm.getAddressLine());
+        incidentAddress.setCityLine(cityLine);
+        incidentAddress.setAddressLine(addressLine);
 
         Incident incident = new Incident();
         incident.setAddress(incidentAddress);
-        incident.setDescription(incidentForm.getDescription());
-        incident.setIncidentType(incidentForm.getType());
+        incident.setDescription(description);
+        incident.setIncidentType(description);
         incident.setCreatorId(user.getAccountId());
         incident.setCreated(randomDate());
 
@@ -107,18 +120,63 @@ public class IncidentService {
         return incident;
     }
 
+    public List<Status> getAvailableTransitions(long userId, long incidentId) {
+        return getAvailableTransitions(accountRepository.findOne(userId).asUser(), incidentRepository.findOne(incidentId));
+    }
+
+    public List<Status> getAvailableTransitions(User user, Incident incident) {
+        Status status = incident.getStatus();
+        if (user.isInRole(ROLE_ADMIN)) {
+            if (EnumSet.of(NOT_CONFIRMED, SOLVED).contains(status)) {
+                return Lists.newArrayList(CLOSED, NEW);
+            }
+        } else if (user.isInRole(ROLE_EMPLOYEE)) {
+            switch (status) {
+                case NEW:
+                    return Lists.newArrayList(CONFIRMED, NOT_CONFIRMED, SOLVED);
+                case CONFIRMED:
+                    return Lists.newArrayList(NEW, NOT_CONFIRMED, SOLVED);
+                case NOT_CONFIRMED:
+                    return Lists.newArrayList(NEW, CONFIRMED, SOLVED);
+                case SOLVED:
+                    return Lists.newArrayList(NEW, CONFIRMED, NOT_CONFIRMED);
+                default:
+                    break;
+            }
+        } else {
+            throw new IllegalAccessError();
+        }
+        return null;
+    }
+
+    public List<Account> getAvailableAssignees(long userId, long incidentId) {
+        return getAvailableAssignees(accountRepository.findOne(userId).asUser(), incidentRepository.findOne(incidentId));
+    }
+
+    public List<Account> getAvailableAssignees(User user, Incident incident) {
+        if (user.isInRole(ROLE_ADMIN)
+                && EnumSet.of(NEW, NOT_CONFIRMED, SOLVED).contains(incident.getStatus())) {
+            return accountRepository.findAll();
+        }
+        return null;
+    }
+
     @Transactional
-    public Audit addAudit(User user, Incident incident, AuditForm auditForm) {
+    public Audit addAudit(Long userId, Long incidentId, Long assigneeId, Status newStatus, String description) {
+        return addAudit(accountRepository.findOne(userId).asUser(), incidentRepository.findOne(incidentId), assigneeId, newStatus, description);
+    }
+
+    @Transactional
+    public Audit addAudit(User user, Incident incident, Long assigneeId, Status newStatus, String description) {
 
         Audit audit = new Audit();
         audit.setIncidentId(incident.getId());
-        audit.setDescription(auditForm.getDescription());
+        audit.setDescription(description);
         audit.setCreated(new Date());
         audit.setCreatorId(user.getAccountId());
 
 
         // update the status
-        Status newStatus = auditForm.getNewStatus();
         if (newStatus == null) {
             newStatus = incident.getStatus();
         }
@@ -127,7 +185,6 @@ public class IncidentService {
         incident.setStatus(newStatus);
 
         // assign someone to the incident
-        Long assigneeId = auditForm.getAssigneeId();
         if (assigneeId != null) {
             incident.setAssigneeId(assigneeId);
         }
@@ -159,6 +216,10 @@ public class IncidentService {
         return incidentRepository.search("%" + query + "%");
     }
 
+    public IncidentCounts getIncidentCounts() {
+        return incidentCountsRepository.incidentCounts();
+    }
+
     //
     // internal helpers
     //
@@ -178,7 +239,7 @@ public class IncidentService {
     private Date randomDate() {
         long day = 24L * 60L * 60L * 1000L;
         long month = 30L * day;
-        long randomTime = day	+ (long) (Math.random() * ((month - day) + 1));
+        long randomTime = day + (long) (Math.random() * ((month - day) + 1));
         Date date = new Date(System.currentTimeMillis() - randomTime);
         return date;
     }

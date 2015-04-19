@@ -1,4 +1,4 @@
-package com.github.kolorobot.icm.webservice;
+package com.github.kolorobot.icm.api;
 
 import com.github.kolorobot.icm.incident.Incident;
 import com.github.kolorobot.icm.incident.IncidentService;
@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v30")
-public class SpringIncidentManagementService {
+public class SpringApi30 {
 
     @Autowired
     private IncidentService incidentService;

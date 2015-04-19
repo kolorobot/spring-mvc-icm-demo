@@ -49,7 +49,8 @@ class IncidentController {
 			MessageHelper.addErrorAttribute(model, "incident.create.failed");
             return "incident/create";
 		}
-		Incident incident = incidentService.create(user, incidentForm);
+		Incident incident = incidentService.create(user,
+                incidentForm.getType(), incidentForm.getDescription(), incidentForm.getAddressLine(), incidentForm.getAddressLine());
 		MessageHelper.addSuccessAttribute(ra, "incident.create.success", incident.getId());
 		return "redirect:/incident/list";
 	}	
@@ -115,7 +116,8 @@ class IncidentController {
             return "incident/createAudit";
 		}
 		Incident incident = getIncident(user, incidentId);
-		Audit audit = incidentService.addAudit(user, incident, auditForm);
+		Audit audit = incidentService.addAudit(user, incident,
+                auditForm.getAssigneeId(), auditForm.getNewStatus(), auditForm.getDescription());
 		// FIXME Error shown, but info should be shown
         MessageHelper.addErrorAttribute(ra, "incident.audit.create.success", audit.getId());
 		return "redirect:/incident/" + incidentId;

@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
 @SuppressWarnings("serial")
 public class Account implements java.io.Serializable {
@@ -42,7 +46,8 @@ public class Account implements java.io.Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
+	@XmlAttribute
 	public Long getId() {
 		return id;
 	}
@@ -63,6 +68,7 @@ public class Account implements java.io.Serializable {
 		this.email = email;
 	}
 
+	@XmlTransient
 	public String getPassword() {
 		return password;
 	}
@@ -71,6 +77,7 @@ public class Account implements java.io.Serializable {
 		this.password = password;
 	}
 
+	@XmlAttribute
 	public String getRole() {
 		return role;
 	}

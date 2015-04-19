@@ -8,11 +8,9 @@
        http://jax-ws.dev.java.net/spring/core http://jax-ws.java.net/spring/core.xsd
        http://jax-ws.dev.java.net/spring/servlet  http://jax-ws.java.net/spring/servlet.xsd">
 
-    <!-- @FIXME Impossible to bind to /api/v10 ? -->
     <wss:binding url="/api/v10">
         <wss:service >
-            <!-- see com.github.kolorobot.icm.webservice.JaxWsIncidentManagementService -->
-            <ws:service bean="#jaxWsIncidentManagementService"  />
+            <ws:service bean="#jaxWsApi10"  />
         </wss:service>
     </wss:binding>
 
