@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import javax.ws.rs.ApplicationPath;
 
 @Configuration
-@ApplicationPath("/rest")
+@ApplicationPath("/api/v20")
 public class JerseyConfig extends ResourceConfig {
     public JerseyConfig() {
         register(JerseyIncidentManagamentService.class);

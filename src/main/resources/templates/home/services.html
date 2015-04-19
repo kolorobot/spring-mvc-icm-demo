@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="../../static/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/css/bootstrap.min.css}"/>
+    <script src="../../static/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container" th:fragment="content">
+    <h1>Services</h1>
+
+    <div>
+        <h2>API v1.0 - Soap / WSDL</h2>
+        <table>
+            <tr>
+                <td>Endpoint</td>
+                <td><a href="/api/v10">/api/v10</a></td>
+            </tr>
+            <tr>
+                <td>WSDL</td>
+                <td><a href="/api/v10?wsdl">/api/v10?wsdl</a></td>
+            </tr>
+        </table>
+    </div>
+
+    <div>
+        <h2>API v2.0 - Rest / WSDL</h2>
+        <table>
+            <tr>
+                <td>Endpoint</td>
+                <td>/api/v20/*</td>
+            </tr>
+            <tr>
+                <td>WADL (Basic)</td>
+                <td><a href="/api/v20/application.wadl">/api/v20/application.wadl</a></td>
+            </tr>
+            <tr>
+                <td>WADL (Detailed)</td>
+                <td><a href="/api/v20/application.wadl">/api/v20/application.wadl?detail=true</a></td>
+            </tr>
+            <tr>
+                <td>Representations</td>
+                <td>application/json, application/xml</td>
+            </tr>
+        </table>
+    </div>
+
+    <div>
+        <h2>API v3.0 - Rest</h2>
+        <table>
+            <tr>
+                <td>Endpoint</td>
+                <td>/api/v30/*</td>
+            </tr>
+            <tr>
+                <td>Representations</td>
+                <td>application/json, application/xml</td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+</body>
+</html>

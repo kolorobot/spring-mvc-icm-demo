@@ -22,8 +22,12 @@ http://www.springframework.org/schema/security/spring-security-3.2.xsd">
         <security:intercept-url pattern="/signin" access="permitAll"/>
         <security:intercept-url pattern="/signup" access="permitAll"/>
         <security:intercept-url pattern="/" access="permitAll"/>
-        <security:intercept-url pattern="/soap/**" access="permitAll"/>
-        <security:intercept-url pattern="/rest/**" access="permitAll"/>
+
+        <security:intercept-url pattern="/services" access="permitAll"/>
+        <security:intercept-url pattern="/api/v10/**" access="permitAll"/>
+        <security:intercept-url pattern="/api/v20/**" access="permitAll"/>
+        <security:intercept-url pattern="/api/v30/**" access="permitAll"/>
+
         <security:intercept-url pattern="/**" access="isAuthenticated()"/>
     </security:http>
 

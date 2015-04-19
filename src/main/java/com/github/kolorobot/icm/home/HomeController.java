@@ -14,22 +14,22 @@ import java.security.Principal;
 @Controller
 class HomeController {
 
+    @Inject
+    private DataSourcePopulator dataSourcePopulator;
+
     @ModelAttribute("page")
     public String module() {
         return "home";
     }
 
-    @Inject
-    private DataSourcePopulator dataSourcePopulator;
-
-	@RequestMapping(value = "/", method = {RequestMethod.GET, RequestMethod.HEAD})
-	public String index(Principal principal, RedirectAttributes ra) {
+    @RequestMapping(value = "/", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public String index(Principal principal, RedirectAttributes ra) {
         if (!dataSourcePopulator.isDataSourceSetup()) {
             MessageHelper.addErrorAttribute(ra, "error.noDataSource");
             return "redirect:/setup";
         }
-		return principal != null ? "redirect:/incident/list" : "home/homeNotSignedIn";
-	}
+        return principal != null ? "redirect:/incident/list" : "home/homeNotSignedIn";
+    }
 
     @RequestMapping(value = "/setup", method = RequestMethod.GET)
     public String setupView() {
@@ -40,5 +40,10 @@ class HomeController {
     public String setup(Principal principal) {
         dataSourcePopulator.execute();
         return principal != null ? "redirect:/logout" : "redirect:/";
+    }
+
+    @RequestMapping(value = "/services")
+    public String services() {
+        return "home/services";
     }
 }

@@ -11,6 +11,6 @@ import org.springframework.context.annotation.ImportResource;
 public class JaxWsConfig {
     @Bean
     public ServletRegistrationBean wsSpringServlet() {
-        return new ServletRegistrationBean(new WSSpringServlet(), "/soap");
+        return new ServletRegistrationBean(new WSSpringServlet(), "/api/v10");
     }
 }

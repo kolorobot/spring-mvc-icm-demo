@@ -19,7 +19,7 @@ public class JerseyIncidentManagamentService {
     private long userId;
 
     @GET
-    @Produces("application/json")
+    @Produces({"application/json", "application/xml"})
     public List<Incident> getIncidents(@QueryParam("status") Incident.Status status) {
         return incidentService.getIncidents(userId, status);
     }
