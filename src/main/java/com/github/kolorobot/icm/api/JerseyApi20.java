@@ -18,19 +18,9 @@ public class JerseyApi20 {
     @Autowired
     private IncidentService incidentService;
 
-    @Autowired
-    private IncidentCountsRepository incidentCountsRepository;
-
-    @WebMethod
-    @Produces({"application/json", "application/xml"})
-    public IncidentStatistics getIncidentStatistics() {
-        return new IncidentStatistics(incidentCountsRepository.incidentCounts());
-    }
-
-    @Path("/user/{userId}/incident")
     @GET
     @Produces({"application/json", "application/xml"})
-    public List<Incident> getIncidents(@PathParam("userId") long userId, @QueryParam("status") Incident.Status status) {
-        return incidentService.getIncidents(userId, status);
+    public IncidentStatistics getIncidentStatistics() {
+        return new IncidentStatistics(incidentService.getIncidentCounts());
     }
 }

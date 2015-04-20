@@ -1,9 +1,11 @@
 package com.github.kolorobot.icm.incident;
 
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.mockito.Mockito;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.List;
@@ -11,47 +13,46 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
+@RunWith(MockitoJUnitRunner.class)
 public class IncidentSearchTest {
 
-    private IncidentService incidentService;
-    private IncidentRepository incidentRepositoryMock;
+    @InjectMocks
+    private IncidentService incidentService = new IncidentService();
 
-    @Before
-    public void setUp() throws Exception {
-        incidentRepositoryMock = Mockito.mock(IncidentRepository.class);
-        incidentService = new IncidentService();
-    }
+    @Mock
+    private IncidentRepository incidentRepository;
+
 
     @Test
     public void searchesById() {
-        when(incidentRepositoryMock.findOne(1l)).thenReturn(null);
+        when(incidentRepository.findOne(1l)).thenReturn(null);
         incidentService.search("1");
-        verify(incidentRepositoryMock).findOne(1l);
-        verifyNoMoreInteractions(incidentRepositoryMock);
+        verify(incidentRepository).findOne(1l);
+        verifyNoMoreInteractions(incidentRepository);
     }
 
     @Ignore
     public void searcheByIdOfNoneExistingIncidentReturnsEmptyResult() {
-        when(incidentRepositoryMock.findOne(1l)).thenThrow(EmptyResultDataAccessException.class);
+        when(incidentRepository.findOne(1l)).thenThrow(EmptyResultDataAccessException.class);
         List<Incident> incidents = incidentService.search("1");
         assertThat(incidents).isEmpty();
-        verify(incidentRepositoryMock).findOne(1l);
-        verifyNoMoreInteractions(incidentRepositoryMock);
+        verify(incidentRepository).findOne(1l);
+        verifyNoMoreInteractions(incidentRepository);
     }
 
     @Test
     public void searchesByText() {
-        when(incidentRepositoryMock.search("%Test%")).thenReturn(null);
+        when(incidentRepository.search("%Test%")).thenReturn(null);
         incidentService.search("Test");
-        verify(incidentRepositoryMock).search("%Test%");
-        verifyNoMoreInteractions(incidentRepositoryMock);
+        verify(incidentRepository).search("%Test%");
+        verifyNoMoreInteractions(incidentRepository);
     }
 
     @Test
     public void specialCharactersAreStrippedOut() {
-        when(incidentRepositoryMock.search("%Test%")).thenReturn(null);
+        when(incidentRepository.search("%Test%")).thenReturn(null);
         incidentService.search("%T%_e_s%t%");
-        verify(incidentRepositoryMock).search("%Test%");
-        verifyNoMoreInteractions(incidentRepositoryMock);
+        verify(incidentRepository).search("%Test%");
+        verifyNoMoreInteractions(incidentRepository);
     }
 }

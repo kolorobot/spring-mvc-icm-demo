@@ -15,16 +15,12 @@ import com.github.kolorobot.icm.account.User;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GetIncidentTest {
-	
-	private IncidentService service;
+
+	@InjectMocks
+	private IncidentService service = new IncidentService();
 	
 	@Mock
-	private IncidentRepository incidentRepository ;
-
-    @Before
-    public void setUp() throws Exception {
-        service = new IncidentService();
-    }
+	private IncidentRepository incidentRepository;
 
     @Test
 	public void shouldFindIncidentByIdAndCreatorIdWhenUserIsInRoleUser() {
