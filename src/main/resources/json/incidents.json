@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "creatorId": 3,
+    "incidentType": "Rozszczelnione okno",
+    "address": {
+      "id": 1,
+      "addressLine": "ul. Bruska 61",
+      "cityLine": "85-422 Bydgoszcz"
+    },
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis.",
+    "created": 1388613600000,
+    "status": "NEW",
+    "assigneeId": 0
+  },
+  {
+    "id": 2,
+    "creatorId": 3,
+    "incidentType": "Wyciek",
+    "address": {
+      "id": 2,
+      "addressLine": "ul. Metalowa 82",
+      "cityLine": "70-745 Szczecin"
+    },
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
+    "created": 1388696460000,
+    "status": "NOT_CONFIRMED",
+    "assigneeId": 0
+  }
+]

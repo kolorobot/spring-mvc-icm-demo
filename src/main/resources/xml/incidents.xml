@@ -1,0 +1,34 @@
+<ArrayList>
+    <item>
+        <id>1</id>
+        <creatorId>3</creatorId>
+        <incidentType>Rozszczelnione okno</incidentType>
+        <address>
+            <id>1</id>
+            <addressLine>ul. Bruska 61</addressLine>
+            <cityLine>85-422 Bydgoszcz</cityLine>
+        </address>
+        <description>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis.
+        </description>
+        <created>1388613600000</created>
+        <status>NEW</status>
+        <assigneeId>0</assigneeId>
+    </item>
+    <item>
+        <id>2</id>
+        <creatorId>3</creatorId>
+        <incidentType>Wyciek</incidentType>
+        <address>
+            <id>2</id>
+            <addressLine>ul. Metalowa 82</addressLine>
+            <cityLine>70-745 Szczecin</cityLine>
+        </address>
+        <description>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        </description>
+        <created>1388696460000</created>
+        <status>NOT_CONFIRMED</status>
+        <assigneeId>0</assigneeId>
+    </item>
+</ArrayList>

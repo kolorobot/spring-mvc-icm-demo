@@ -12,11 +12,13 @@ import org.springframework.stereotype.Service;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import java.util.List;
 
 @Service
 @Path("/")
+@Produces({"application/json", "application/xml"})
 public class JerseyApi20 {
 
     @Autowired
@@ -24,30 +26,24 @@ public class JerseyApi20 {
 
     @GET
     @Path("/")
-    @Produces({"application/json", "application/xml"})
     public IncidentStatistics getIncidentStatistics() {
         return new IncidentStatistics(incidentService.getIncidentCounts());
     }
 
     @GET
     @Path("user")
-    @Produces({"application/json", "application/xml"})
-    @XmlElementWrapper
     public List<Account> getUsers(@QueryParam("role") String role) {
         return incidentService.getAccountsInRole(role);
     }
 
     @GET
     @Path("user/{userId}")
-    @Produces({"application/json", "application/xml"})
     public Account getUsers(@PathParam("userId") long userId) {
         return incidentService.getAccount(userId);
     }
 
     @GET
     @Path("user/{userId}/incident")
-    @Produces({"application/json", "application/xml"})
-    @XmlElementWrapper
     public List<Incident> getUserIncidents(@PathParam("userId") long userId,
                                            @QueryParam("status") Incident.Status status) {
         return incidentService.getUserIncidents(userId, status);
@@ -55,7 +51,6 @@ public class JerseyApi20 {
 
     @POST
     @Path("user/{userId}/incident")
-    @Produces({"application/json", "application/xml"})
     public Incident createUserIncident(@PathParam("userId") long userId,
                                         NewIncident incident) {
 
@@ -72,7 +67,6 @@ public class JerseyApi20 {
 
     @GET
     @Path("user/{userId}/incident/{incidentId}")
-    @Produces({"application/json", "application/xml"})
     public Incident getUserIncident(@PathParam("userId") long userId,
                                      @PathParam("incidentId") long incidentId) {
         return incidentService.getUserIncident(userId, incidentId);
@@ -80,7 +74,6 @@ public class JerseyApi20 {
 
     @DELETE
     @Path("user/{userId}/incident/{incidentId}")
-    @Produces({"application/json", "application/xml"})
     public Response deleteUserIncident(@PathParam("userId") long userId,
                                      @PathParam("incidentId") long incidentId) {
         return Response.noContent().build();
@@ -88,7 +81,6 @@ public class JerseyApi20 {
 
     @POST
     @Path("user/{userId}/incident/{incidentId}/audit")
-    @Produces({"application/json", "application/xml"})
     public Audit getUserIncidentAudits(@PathParam("userId") long userId,
                                        @PathParam("incidentId") long incidentId,
                                        NewAudit audit) {
@@ -107,15 +99,12 @@ public class JerseyApi20 {
 
     @GET
     @Path("incident")
-    @Produces({"application/json", "application/xml"})
-    @XmlElementWrapper
     public List<Incident> getIncidents(@QueryParam("status") Incident.Status status) {
         return incidentService.getIncidents(status);
     }
 
     @POST
     @Path("incident")
-    @Produces({"application/json", "application/xml"})
     public Incident createIncident(NewIncident incident) {
 
         return incidentService.createIncident(
@@ -128,22 +117,18 @@ public class JerseyApi20 {
 
     @GET
     @Path("incident/{incidentId}")
-    @Produces({"application/json", "application/xml"})
     public Incident getIncident(@PathParam("incidentId") long incidentId) {
         return incidentService.getIncident(incidentId);
     }
 
     @GET
     @Path("incident/{incidentId}/audit")
-    @Produces({"application/json", "application/xml"})
-    @XmlElementWrapper
     public List<Audit> getIncidentAudits(@PathParam("incidentId") long incidentId) {
         return incidentService.getIncidentAudits(incidentId);
     }
 
     @POST
     @Path("incident/{incidentId}/audit")
-    @Produces({"application/json", "application/xml"})
     public Audit getUserIncidentAudits(@PathParam("incidentId") long incidentId,
                                        NewAudit audit) {
         return incidentService.addUserIncidentAudit(
