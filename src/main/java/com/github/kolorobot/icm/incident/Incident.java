@@ -4,8 +4,11 @@ import com.google.common.base.Objects;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.*;
 import java.util.Date;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Incident {
 	
 	public enum Status {
@@ -20,6 +23,7 @@ public class Incident {
         }
     }
 
+	@XmlAttribute
 	private Long id;
 	
 	private Long creatorId;
@@ -37,7 +41,7 @@ public class Incident {
 	private Date created;
 	
 	private Status status = Status.NEW;
-	
+
 	private Long assigneeId;
 	
 	public Long getId() {

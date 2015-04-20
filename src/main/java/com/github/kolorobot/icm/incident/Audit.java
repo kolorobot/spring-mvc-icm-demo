@@ -1,21 +1,28 @@
 package com.github.kolorobot.icm.incident;
 
+import javax.xml.bind.annotation.*;
 import java.util.Date;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Audit {
-	
+
+	@XmlAttribute
 	private Long id;
-	
+
+	@XmlAttribute
 	private Long incidentId;
-	
+
 	private Long creatorId;
-	
+
 	private Date created;
-	
+
+	@XmlElement(nillable = true)
 	private String description;
 	
 	private Incident.Status status;
-		
+
+	@XmlElement(nillable = true)
 	private Incident.Status previousStatus;
 
 	public Long getId() {

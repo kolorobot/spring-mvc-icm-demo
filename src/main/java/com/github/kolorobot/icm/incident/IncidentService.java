@@ -46,11 +46,22 @@ public class IncidentService {
         return accountRepository.findAllByRole(role);
     }
 
-    public List<Incident> getIncidents(long userId, Status status) {
-        return getIncidents(accountRepository.findOne(userId).asUser(), status);
+    public List<Incident> getIncidents(Status status) {
+        if (status != null) {
+            return incidentRepository.findAllByStatus(status);
+        }
+        return incidentRepository.findAll();
     }
 
-    public List<Incident> getIncidents(User user, Status status) {
+    public Incident getIncident(long incidentId) {
+        return incidentRepository.findOne(incidentId);
+    }
+
+    public List<Incident> getUserIncidents(long userId, Status status) {
+        return getUserIncidents(accountRepository.findOne(userId).asUser(), status);
+    }
+
+    public List<Incident> getUserIncidents(User user, Status status) {
         if (user.isInRole(Account.ROLE_USER)) {
             return incidentRepository.findAllByCreatorIdAndStatus(user.getAccountId(), status);
         }
@@ -70,21 +81,21 @@ public class IncidentService {
 //        return Lists.newArrayList();
     }
 
-    public Incident getIncident(long userId, Long incidentId) {
-        return getIncident(accountRepository.findOne(userId).asUser(), incidentId);
+    public Incident getUserIncident(long userId, Long incidentId) {
+        return incidentRepository.findOneByIdAndCreatorId(incidentId, accountRepository.findOne(userId).asUser().getAccountId());
     }
 
-    public Incident getIncident(User user, Long incidentId) {
+    public Incident getUserIncident(User user, Long incidentId) {
         if (user.isInRole(Account.ROLE_USER)) {
-            return getUserIncident(user, incidentId);
+            return incidentRepository.findOneByIdAndCreatorId(incidentId, user.getAccountId());
         }
         if (user.isInRole(Account.ROLE_EMPLOYEE)) {
-            return getEmployeeIncident(user, incidentId);
+            return incidentRepository.findOneByIdAndAssigneeIdOrCreatorId(incidentId, user.getAccountId());
         }
-        return getOne(user, incidentId);
+        return incidentRepository.findOne(incidentId);
     }
 
-    public List<Audit> getAudits(long incidentId) {
+    public List<Audit> getIncidentAudits(long incidentId) {
         return auditRepository.findAll(incidentId);
     }
 
@@ -92,17 +103,17 @@ public class IncidentService {
         return accountRepository.findOne(accountId);
     }
 
-    public List<File> getFiles(long incidentId) {
+    public List<File> getIncidentFiles(long incidentId) {
         return filesRepository.findAll("incident", incidentId);
     }
 
     @Transactional
-    public Incident create(long userId, String type, String description, String addressLine, String cityLine) {
-        return create(accountRepository.findOne(userId).asUser(), type, description, addressLine, cityLine);
+    public Incident createIncident(long userId, String type, String description, String addressLine, String cityLine) {
+        return createIncident(accountRepository.findOne(userId).asUser(), type, description, addressLine, cityLine);
     }
 
     @Transactional
-    public Incident create(User user, String type, String description, String addressLine, String cityLine) {
+    public Incident createIncident(User user, String type, String description, String addressLine, String cityLine) {
 
         Address incidentAddress = new Address();
         incidentAddress.setCityLine(cityLine);
@@ -110,8 +121,8 @@ public class IncidentService {
 
         Incident incident = new Incident();
         incident.setAddress(incidentAddress);
+        incident.setIncidentType(type);
         incident.setDescription(description);
-        incident.setIncidentType(description);
         incident.setCreatorId(user.getAccountId());
         incident.setCreated(randomDate());
 
@@ -120,11 +131,11 @@ public class IncidentService {
         return incident;
     }
 
-    public List<Status> getAvailableTransitions(long userId, long incidentId) {
-        return getAvailableTransitions(accountRepository.findOne(userId).asUser(), incidentRepository.findOne(incidentId));
+    public List<Status> getAvailableUserIncidentTransitions(long userId, long incidentId) {
+        return getAvailableUserIncidentTransitions(accountRepository.findOne(userId).asUser(), incidentRepository.findOne(incidentId));
     }
 
-    public List<Status> getAvailableTransitions(User user, Incident incident) {
+    public List<Status> getAvailableUserIncidentTransitions(User user, Incident incident) {
         Status status = incident.getStatus();
         if (user.isInRole(ROLE_ADMIN)) {
             if (EnumSet.of(NOT_CONFIRMED, SOLVED).contains(status)) {
@@ -149,11 +160,11 @@ public class IncidentService {
         return null;
     }
 
-    public List<Account> getAvailableAssignees(long userId, long incidentId) {
-        return getAvailableAssignees(accountRepository.findOne(userId).asUser(), incidentRepository.findOne(incidentId));
+    public List<Account> getAvailableUserIncidentAssignees(long userId, long incidentId) {
+        return getAvailableUserIncidentAssignees(accountRepository.findOne(userId).asUser(), incidentRepository.findOne(incidentId));
     }
 
-    public List<Account> getAvailableAssignees(User user, Incident incident) {
+    public List<Account> getAvailableUserIncidentAssignees(User user, Incident incident) {
         if (user.isInRole(ROLE_ADMIN)
                 && EnumSet.of(NEW, NOT_CONFIRMED, SOLVED).contains(incident.getStatus())) {
             return accountRepository.findAll();
@@ -162,12 +173,12 @@ public class IncidentService {
     }
 
     @Transactional
-    public Audit addAudit(Long userId, Long incidentId, Long assigneeId, Status newStatus, String description) {
-        return addAudit(accountRepository.findOne(userId).asUser(), incidentRepository.findOne(incidentId), assigneeId, newStatus, description);
+    public Audit addUserIncidentAudit(Long userId, Long incidentId, Long assigneeId, Status newStatus, String description) {
+        return addUserIncidentAudit(accountRepository.findOne(userId).asUser(), incidentRepository.findOne(incidentId), assigneeId, newStatus, description);
     }
 
     @Transactional
-    public Audit addAudit(User user, Incident incident, Long assigneeId, Status newStatus, String description) {
+    public Audit addUserIncidentAudit(User user, Incident incident, Long assigneeId, Status newStatus, String description) {
 
         Audit audit = new Audit();
         audit.setIncidentId(incident.getId());
@@ -195,7 +206,7 @@ public class IncidentService {
         return audit;
     }
 
-    public void setDescription(long incidentId, String description) {
+    public void setIncidentDescription(long incidentId, String description) {
         Incident incident = incidentRepository.findOne(incidentId);
         incident.setDescription(description);
         incidentRepository.update(incident);
@@ -223,18 +234,6 @@ public class IncidentService {
     //
     // internal helpers
     //
-
-    private Incident getUserIncident(User user, Long incidentId) {
-        return incidentRepository.findOneByIdAndCreatorId(incidentId, user.getAccountId());
-    }
-
-    private Incident getEmployeeIncident(User user, Long incidentId) {
-        return incidentRepository.findOneByIdAndAssigneeIdOrCreatorId(incidentId, user.getAccountId());
-    }
-
-    private Incident getOne(User user, Long incidentId) {
-        return incidentRepository.findOne(incidentId);
-    }
 
     private Date randomDate() {
         long day = 24L * 60L * 60L * 1000L;

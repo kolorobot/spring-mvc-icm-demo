@@ -46,53 +46,53 @@ public class JaxWsApi10 {
     @XmlElement(name = "incident")
     public List<Incident> getIncidents(@WebParam(name = "userId") long userId,
                                        @WebParam(name = "status") Incident.Status status) {
-        return incidentService.getIncidents(userId, status);
+        return incidentService.getUserIncidents(userId, status);
     }
 
     @WebMethod
     @XmlElement(name = "incident")
     public Incident getIncident(@WebParam(name = "userId") long userId,
                                 @WebParam(name = "incidentId") long incidentId) {
-        return incidentService.getIncident(userId, incidentId);
+        return incidentService.getUserIncident(userId, incidentId);
     }
 
     @WebMethod
     @XmlElement(name = "incident")
     public Incident addIncident(@WebParam(name = "incident", targetNamespace = "http://api.icm.com/incident") NewIncident incident) {
-        return incidentService.create(incident.getUserId(), incident.getType(), incident.getDescription(), incident.getAddressLine(), incident.getCityLine());
+        return incidentService.createIncident(incident.getUserId(), incident.getType(), incident.getDescription(), incident.getAddressLine(), incident.getCityLine());
     }
 
     @WebMethod
     @XmlElement(name = "audit")
     public List<Audit> getIncidentAudits(@WebParam(name = "userId") long userId,
                                          @WebParam(name = "incidentId") long incidentId) {
-        return incidentService.getAudits(incidentService.getIncident(userId, incidentId).getId());
+        return incidentService.getIncidentAudits(incidentService.getUserIncident(userId, incidentId).getId());
     }
 
     @WebMethod
     @XmlElement(name = "assignee")
     public List<Account> getAvailableIncidentAssignees(@WebParam(name = "userId") long userId,
                                                 @WebParam(name = "incidentId") long incidentId) {
-        return incidentService.getAvailableAssignees(userId, incidentId);
+        return incidentService.getAvailableUserIncidentAssignees(userId, incidentId);
     }
 
     @WebMethod
     @XmlElement(name = "transition")
     public List<Incident.Status> getAvailableIncidentTransitions(@WebParam(name = "userId") long userId,
                                                                  @WebParam(name = "incidentId") long incidentId) {
-        return incidentService.getAvailableTransitions(userId, incidentId);
+        return incidentService.getAvailableUserIncidentTransitions(userId, incidentId);
     }
 
     @WebMethod
     @XmlElement(name = "audit")
     public Audit addIncidentAudit(@WebParam(name = "audit", mode = WebParam.Mode.IN) NewAudit audit) {
-        return incidentService.addAudit(audit.getUserId(), audit.getIncidentId(), audit.getAssigneeId(), audit.getNewStatus(), audit.getDescription());
+        return incidentService.addUserIncidentAudit(audit.getUserId(), audit.getIncidentId(), audit.getAssigneeId(), audit.getNewStatus(), audit.getDescription());
     }
 
     @WebMethod
     @XmlElement(name = "file")
     public List<File> getIncidentFiles(@WebParam(name = "userId") long userId,
                                        @WebParam(name = "incidentId") long incidentId) {
-        return incidentService.getFiles(incidentService.getIncident(userId, incidentId).getId());
+        return incidentService.getIncidentFiles(incidentService.getUserIncident(userId, incidentId).getId());
     }
 }

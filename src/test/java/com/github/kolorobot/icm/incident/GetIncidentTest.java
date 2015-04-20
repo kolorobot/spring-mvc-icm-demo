@@ -3,7 +3,6 @@ package com.github.kolorobot.icm.incident;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -28,7 +27,7 @@ public class GetIncidentTest {
 		Account account = createAccount(Account.ROLE_USER);
 		User user = new User(account);
 		// act
-		service.getIncident(user, 1L);
+		service.getUserIncident(user, 1L);
 		// assert
 		verify(incidentRepository, times(1)).findOneByIdAndCreatorId(1L, 1L);
 	}
@@ -39,7 +38,7 @@ public class GetIncidentTest {
 		Account account = createAccount(Account.ROLE_EMPLOYEE);
 		User user = new User(account);
 		// act
-		service.getIncident(user, 1L);
+		service.getUserIncident(user, 1L);
 		// assert
 		verify(incidentRepository, times(1)).findOneByIdAndAssigneeIdOrCreatorId(1L, 1L);
 	}
@@ -50,7 +49,7 @@ public class GetIncidentTest {
 		Account account = createAccount(Account.ROLE_ADMIN);
 		User user = new User(account);
 		// act
-		service.getIncident(user, 1L);
+		service.getUserIncident(user, 1L);
 		// assert
 		verify(incidentRepository, times(1)).findOne(1L);
 	}

@@ -14,8 +14,8 @@ class AuditFormFactory {
 	public AuditForm createAuditForm(User user, Incident incident) {
 		AuditForm form = new AuditForm();
 		form.setOldStatus(incident.getStatus());
-		form.setAvailableStatuses(incidentService.getAvailableTransitions(user, incident));
-		form.setAvailableEmployees(incidentService.getAvailableAssignees(user, incident));
+		form.setAvailableStatuses(incidentService.getAvailableUserIncidentTransitions(user, incident));
+		form.setAvailableEmployees(incidentService.getAvailableUserIncidentAssignees(user, incident));
 		return form;
 	}
 	

@@ -49,7 +49,7 @@ class IncidentController {
 			MessageHelper.addErrorAttribute(model, "incident.create.failed");
             return "incident/create";
 		}
-		Incident incident = incidentService.create(user,
+		Incident incident = incidentService.createIncident(user,
                 incidentForm.getType(), incidentForm.getDescription(), incidentForm.getAddressLine(), incidentForm.getAddressLine());
 		MessageHelper.addSuccessAttribute(ra, "incident.create.success", incident.getId());
 		return "redirect:/incident/list";
@@ -57,7 +57,7 @@ class IncidentController {
 	
 	@RequestMapping(value = "/list")
 	public String list(@RequestParam(required = false) Incident.Status status, User user, Model model) {
-		model.addAttribute("incidents", incidentService.getIncidents(user, status));
+		model.addAttribute("incidents", incidentService.getUserIncidents(user, status));
         return "incident/list";
     }
 
@@ -96,7 +96,7 @@ class IncidentController {
     public void update(@RequestParam("description") String description,
                        @PathVariable("incidentId") long incidentId,
                        User user) {
-        incidentService.setDescription(incidentId, description);
+        incidentService.setIncidentDescription(incidentId, description);
     }
 
 	@RequestMapping("/{incidentId}/audit/create")	
@@ -116,7 +116,7 @@ class IncidentController {
             return "incident/createAudit";
 		}
 		Incident incident = getIncident(user, incidentId);
-		Audit audit = incidentService.addAudit(user, incident,
+		Audit audit = incidentService.addUserIncidentAudit(user, incident,
                 auditForm.getAssigneeId(), auditForm.getNewStatus(), auditForm.getDescription());
 		// FIXME Error shown, but info should be shown
         MessageHelper.addErrorAttribute(ra, "incident.audit.create.success", audit.getId());
@@ -128,11 +128,11 @@ class IncidentController {
 	//
 	
 	private Incident getIncident(User user, Long incidentId) {
-		return incidentService.getIncident(user, incidentId);
+		return incidentService.getUserIncident(user, incidentId);
 	}
 
     private List<Audit> getAudits(Incident incident) {
-        return incidentService.getAudits(incident.getId());
+        return incidentService.getIncidentAudits(incident.getId());
     }
 
     private Account getCreator(Incident incident) {
@@ -144,6 +144,6 @@ class IncidentController {
     }
 
     private List<File> getFiles(Incident incident) {
-        return incidentService.getFiles(incident.getId());
+        return incidentService.getIncidentFiles(incident.getId());
     }
 }

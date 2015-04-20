@@ -1,11 +1,18 @@
 package com.github.kolorobot.icm.incident;
 
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 
 @SuppressWarnings("serial")
+@XmlType
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Address implements Serializable {
-	
+
+	@XmlAttribute
 	private Long id;
 	
 	@Size(max = 255)
