@@ -81,7 +81,7 @@ public class JerseyApi20 {
 
     @POST
     @Path("user/{userId}/incident/{incidentId}/audit")
-    public Audit getUserIncidentAudits(@PathParam("userId") long userId,
+    public Audit addUserIncidentAudits(@PathParam("userId") long userId,
                                        @PathParam("incidentId") long incidentId,
                                        NewAudit audit) {
 

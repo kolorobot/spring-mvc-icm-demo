@@ -66,7 +66,8 @@ public class JaxWsApi10 {
     @XmlElement(name = "audit")
     public List<Audit> getIncidentAudits(@WebParam(name = "userId") long userId,
                                          @WebParam(name = "incidentId") long incidentId) {
-        return incidentService.getIncidentAudits(incidentService.getUserIncident(userId, incidentId).getId());
+        // FIXME User not used, possible security leak?
+        return incidentService.getIncidentAudits(incidentId);
     }
 
     @WebMethod
