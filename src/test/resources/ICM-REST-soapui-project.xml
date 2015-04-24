@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="ec7182ae-f237-4709-ad1a-1cc2c2aa5025" activeEnvironment="Default" name="ICM (REST/WADL)" resourceRoot="" soapui-version="5.1.3" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:RestService" id="c1db0ee7-5f48-4576-af12-07130d24d836" wadlVersion="http://wadl.dev.java.net/2009/02" name="application" type="rest" basePath="/api/v20/" definitionUrl="http://localhost:9998/api/v20/application.wadl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:9998/api/v20/application.wadl"><con:part><con:url>http://localhost:9998/api/v20/application.wadl</con:url><con:content><![CDATA[<application xmlns="http://wadl.dev.java.net/2009/02">
+  <doc jersey:generatedBy="Jersey: 2.14 2014-12-11 07:22:06" xmlns:jersey="http://jersey.java.net/"/>
+  <doc jersey:hint="This is simplified WADL with user and core resources only. To get full WADL with extended resources use the query parameter detail. Link: http://localhost:9998/api/v20/application.wadl?detail=true" xmlns:jersey="http://jersey.java.net/"/>
+  <grammars>
+    <include href="application.wadl/xsd0.xsd">
+      <doc title="Generated" xml:lang="en"/>
+    </include>
+  </grammars>
+  <resources base="http://localhost:9998/api/v20/">
+    <resource path="/">
+      <resource path="user/{userId}/incident/{incidentId}">
+        <param name="incidentId" style="template" type="xs:long" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+        <param name="userId" style="template" type="xs:long" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+        <method id="deleteUserIncident" name="DELETE">
+          <response>
+            <representation mediaType="application/json"/>
+            <representation mediaType="application/xml"/>
+          </response>
+        </method>
+        <method id="getUserIncident" name="GET">
+          <response>
+            <ns2:representation element="incident" mediaType="application/json" xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" xmlns:ns="http://wadl.dev.java.net/2009/02"/>
+            <ns2:representation element="incident" mediaType="application/xml" xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" xmlns:ns="http://wadl.dev.java.net/2009/02"/>
+          </response>
+        </method>
+      </resource>
+      <resource path="incident">
+        <method id="createIncident" name="POST">
+          <response>
+            <ns2:representation element="incident" mediaType="application/json" xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" xmlns:ns="http://wadl.dev.java.net/2009/02"/>
+            <ns2:representation element="incident" mediaType="application/xml" xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" xmlns:ns="http://wadl.dev.java.net/2009/02"/>
+          </response>
+        </method>
+        <method id="getIncidents" name="GET">
+          <request>
+            <param name="status" style="query" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+          </request>
+          <response>
+            <ns2:representation element="incident" mediaType="application/json" xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" xmlns:ns="http://wadl.dev.java.net/2009/02"/>
+            <ns2:representation element="incident" mediaType="application/xml" xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" xmlns:ns="http://wadl.dev.java.net/2009/02"/>
+          </response>
+        </method>
+      </resource>
+      <resource path="/">
+        <method id="getIncidentStatistics" name="GET">
+          <response>
+            <ns2:representation element="incidentStatistics" mediaType="application/json" xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" xmlns:ns="http://wadl.dev.java.net/2009/02"/>
+            <ns2:representation element="incidentStatistics" mediaType="application/xml" xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" xmlns:ns="http://wadl.dev.java.net/2009/02"/>
+          </response>
+        </method>
+      </resource>
+      <resource path="user">
+        <method id="getUsers" name="GET">
+          <request>
+            <param name="role" style="query" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+          </request>
+          <response>
+            <ns2:representation element="account" mediaType="application/json" xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" xmlns:ns="http://wadl.dev.java.net/2009/02"/>
+            <ns2:representation element="account" mediaType="application/xml" xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" xmlns:ns="http://wadl.dev.java.net/2009/02"/>
+          </response>
+        </method>
+      </resource>
+      <resource path="user/{userId}/incident">
+        <param name="userId" style="template" type="xs:long" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+        <method id="getUserIncidents" name="GET">
+          <request>
+            <param name="status" style="query" type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+          </request>
+          <response>
+            <ns2:representation element="incident" mediaType="application/json" xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" xmlns:ns="http://wadl.dev.java.net/2009/02"/>
+            <ns2:representation element="incident" mediaType="application/xml" xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" xmlns:ns="http://wadl.dev.java.net/2009/02"/>
+          </response>
+        </method>
+        <method id="createUserIncident" name="POST">
+          <response>
+            <ns2:representation element="incident" mediaType="application/json" xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" xmlns:ns="http://wadl.dev.java.net/2009/02"/>
+            <ns2:representation element="incident" mediaType="application/xml" xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" xmlns:ns="http://wadl.dev.java.net/2009/02"/>
+          </response>
+        </method>
+      </resource>
+      <resource path="user/{userId}">
+        <param name="userId" style="template" type="xs:long" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+        <method id="getUsers" name="GET">
+          <response>
+            <ns2:representation element="account" mediaType="application/json" xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" xmlns:ns="http://wadl.dev.java.net/2009/02"/>
+            <ns2:representation element="account" mediaType="application/xml" xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" xmlns:ns="http://wadl.dev.java.net/2009/02"/>
+          </response>
+        </method>
+      </resource>
+      <resource path="incident/{incidentId}/audit">
+        <param name="incidentId" style="template" type="xs:long" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+        <method id="getUserIncidentAudits" name="POST">
+          <response>
+            <ns2:representation element="audit" mediaType="application/json" xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" xmlns:ns="http://wadl.dev.java.net/2009/02"/>
+            <ns2:representation element="audit" mediaType="application/xml" xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" xmlns:ns="http://wadl.dev.java.net/2009/02"/>
+          </response>
+        </method>
+        <method id="getIncidentAudits" name="GET">
+          <response>
+            <ns2:representation element="audit" mediaType="application/json" xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" xmlns:ns="http://wadl.dev.java.net/2009/02"/>
+            <ns2:representation element="audit" mediaType="application/xml" xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" xmlns:ns="http://wadl.dev.java.net/2009/02"/>
+          </response>
+        </method>
+      </resource>
+      <resource path="user/{userId}/incident/{incidentId}/audit">
+        <param name="incidentId" style="template" type="xs:long" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+        <param name="userId" style="template" type="xs:long" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+        <method id="addUserIncidentAudits" name="POST">
+          <response>
+            <ns2:representation element="audit" mediaType="application/json" xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" xmlns:ns="http://wadl.dev.java.net/2009/02"/>
+            <ns2:representation element="audit" mediaType="application/xml" xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" xmlns:ns="http://wadl.dev.java.net/2009/02"/>
+          </response>
+        </method>
+      </resource>
+      <resource path="incident/{incidentId}">
+        <param name="incidentId" style="template" type="xs:long" xmlns:xs="http://www.w3.org/2001/XMLSchema"/>
+        <method id="getIncident" name="GET">
+          <response>
+            <ns2:representation element="incident" mediaType="application/json" xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" xmlns:ns="http://wadl.dev.java.net/2009/02"/>
+            <ns2:representation element="incident" mediaType="application/xml" xmlns:ns2="http://wadl.dev.java.net/2009/02" xmlns="" xmlns:ns="http://wadl.dev.java.net/2009/02"/>
+          </response>
+        </method>
+      </resource>
+    </resource>
+  </resources>
+</application>]]></con:content><con:type>http://wadl.dev.java.net/2009/02</con:type></con:part><con:part><con:url>http://localhost:9998/api/v20/application.wadl/xsd0.xsd</con:url><con:content><![CDATA[<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="account" type="account"/>
+  <xs:element name="audit" type="audit"/>
+  <xs:element name="incident" type="incident"/>
+  <xs:element name="incidentStatistics" type="incidentStatistics"/>
+  <xs:complexType name="incident">
+    <xs:sequence>
+      <xs:element name="creatorId" type="xs:long" minOccurs="0"/>
+      <xs:element name="incidentType" type="xs:string" minOccurs="0"/>
+      <xs:element name="address" type="address" minOccurs="0"/>
+      <xs:element name="description" type="xs:string" minOccurs="0"/>
+      <xs:element name="created" type="xs:dateTime" minOccurs="0"/>
+      <xs:element name="status" type="status" minOccurs="0"/>
+      <xs:element name="assigneeId" type="xs:long" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:long"/>
+  </xs:complexType>
+  <xs:complexType name="address">
+    <xs:sequence>
+      <xs:element name="addressLine" type="xs:string" minOccurs="0"/>
+      <xs:element name="cityLine" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:long"/>
+  </xs:complexType>
+  <xs:complexType name="audit">
+    <xs:sequence>
+      <xs:element name="creatorId" type="xs:long" minOccurs="0"/>
+      <xs:element name="created" type="xs:dateTime" minOccurs="0"/>
+      <xs:element name="description" type="xs:string" nillable="true" minOccurs="0"/>
+      <xs:element name="status" type="status" minOccurs="0"/>
+      <xs:element name="previousStatus" type="status" nillable="true" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:long"/>
+    <xs:attribute name="incidentId" type="xs:long"/>
+  </xs:complexType>
+  <xs:complexType name="incidentStatistics">
+    <xs:sequence>
+      <xs:element name="byStatus" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="count" type="byStatus" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="createdToday" type="xs:int"/>
+    <xs:attribute name="all" type="xs:int"/>
+  </xs:complexType>
+  <xs:complexType name="byStatus">
+    <xs:sequence/>
+    <xs:attribute name="status" type="status"/>
+    <xs:attribute name="value" type="xs:int"/>
+  </xs:complexType>
+  <xs:complexType name="account">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string" minOccurs="0"/>
+      <xs:element name="email" type="xs:string" minOccurs="0"/>
+      <xs:element name="phone" type="xs:string" minOccurs="0"/>
+      <xs:element name="role" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:long"/>
+  </xs:complexType>
+  <xs:simpleType name="status">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NEW"/>
+      <xs:enumeration value="CONFIRMED"/>
+      <xs:enumeration value="NOT_CONFIRMED"/>
+      <xs:enumeration value="SOLVED"/>
+      <xs:enumeration value="CLOSED"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>]]></con:content><con:type>http://www.w3.org/2001/XMLSchema</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:9998</con:endpoint></con:endpoints><con:resource name="/" path="" id="d9e6209a-166b-4023-803a-f26a0bddfd40"><con:settings/><con:parameters/><con:resource name="user/{userId}/incident" path="user/{userId}/incident" id="2c6a9ec6-e6e4-49fc-b5bd-1558045610c4"><con:settings/><con:parameters><con:parameter><con:name>userId</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:long</con:type><con:default xsi:nil="true"/></con:parameter></con:parameters><con:method name="GET - getUserIncidents" id="6be67e31-5774-4e1b-939f-ac36353840e0" method="GET"><con:settings/><con:parameters><con:parameter><con:name>status</con:name><con:value xsi:nil="true"/><con:style>QUERY</con:style><con:default xsi:nil="true"/></con:parameter></con:parameters><con:representation type="RESPONSE" id=""><con:mediaType>application/json</con:mediaType><con:params/><con:element>incident</con:element><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element>incident</con:element><con:description xsi:nil="true"/></con:representation><con:request name="Request 1" id="4cb98d67-7b87-44a0-81ef-1d95f642e913" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:9998</con:endpoint><con:request/><con:originalUri>http://localhost/api/v20/user//incident</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters>
+  <con:entry key="userId" value="1"/>
+  <con:entry key="status" value=""/>
+</con:parameters></con:request></con:method><con:method name="POST - createUserIncident" id="1ff997f0-a21a-4256-9435-348ce0741ac8" method="POST"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/json</con:mediaType><con:params/><con:element>incident</con:element><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element>incident</con:element><con:description xsi:nil="true"/></con:representation><con:request name="Request 1" id="9fec0be7-a610-4ccb-a151-819b25226154" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:9998</con:endpoint><con:request/><con:originalUri>http://localhost/api/v20/user/1/incident</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="userId" value="1" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:request></con:method></con:resource><con:resource name="/" path="" id="dba5adbd-b46e-4fc2-8960-ccd555b98e7b"><con:settings/><con:parameters/><con:method name="GET - getIncidentStatistics" id="c9906e7f-f27d-4fca-8bd6-c684374c0c3a" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/json</con:mediaType><con:params/><con:element>incidentStatistics</con:element><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element>incidentStatistics</con:element><con:description xsi:nil="true"/></con:representation><con:request name="Request 1" id="b232bd44-1f92-41a8-97a9-c98dfe22d543" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Accept" value="application/json" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>http://localhost:9998</con:endpoint><con:request/><con:originalUri>http://localhost/api/v20//</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource><con:resource name="user/{userId}/incident/{incidentId}/audit" path="user/{userId}/incident/{incidentId}/audit" id="8fbfaff1-6ca8-4e3b-a4aa-c5443dc48000"><con:settings/><con:parameters><con:parameter><con:name>incidentId</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:long</con:type><con:default xsi:nil="true"/></con:parameter><con:parameter><con:name>userId</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:long</con:type><con:default xsi:nil="true"/></con:parameter></con:parameters><con:method name="POST - getUserIncidentAudits" id="5e7f954c-cdb9-4ca2-84b7-5f557e200070" method="POST"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/json</con:mediaType><con:params/><con:element>audit</con:element><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element>audit</con:element><con:description xsi:nil="true"/></con:representation><con:request name="Request 1" id="88ed0a90-7394-4ae4-8d54-f4d253a4788d" mediaType="application/json"><con:settings/><con:endpoint>http://localhost:9998</con:endpoint><con:parameters/></con:request></con:method></con:resource><con:resource name="incident" path="incident" id="52ea8455-0bfa-43d7-acf8-d27eff42fa44"><con:settings/><con:parameters/><con:method name="POST - createIncident" id="f319e8ea-ef29-4b7a-bccd-c3f7fb7e220e" method="POST"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/json</con:mediaType><con:params/><con:element>incident</con:element><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element>incident</con:element><con:description xsi:nil="true"/></con:representation><con:request name="Request 1" id="8d5c769f-266e-4385-bd81-ab58671b63f0" mediaType="application/json"><con:settings/><con:endpoint>http://localhost:9998</con:endpoint><con:parameters/></con:request></con:method><con:method name="GET - getIncidents" id="301fbcb4-6c45-4322-97c1-4d4b96bddb0d" method="GET"><con:settings/><con:parameters><con:parameter><con:name>status</con:name><con:value xsi:nil="true"/><con:style>QUERY</con:style><con:default xsi:nil="true"/></con:parameter></con:parameters><con:representation type="RESPONSE" id=""><con:mediaType>application/json</con:mediaType><con:params/><con:element>incident</con:element><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element>incident</con:element><con:description xsi:nil="true"/></con:representation><con:request name="Request 1" id="2f4b9519-1613-4127-aa79-35ecc9cbccb4" mediaType="application/json"><con:settings/><con:endpoint>http://localhost:9998</con:endpoint><con:request/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:request></con:method></con:resource><con:resource name="user/{userId}/incident/{incidentId}" path="user/{userId}/incident/{incidentId}" id="d93e8fab-09fb-4b27-8a3c-a492309fe158"><con:settings/><con:parameters><con:parameter><con:name>incidentId</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:long</con:type><con:default xsi:nil="true"/></con:parameter><con:parameter><con:name>userId</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:long</con:type><con:default xsi:nil="true"/></con:parameter></con:parameters><con:method name="GET - getUserIncident" id="27dcc0e2-7182-4add-92c4-0666af0ab902" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/json</con:mediaType><con:params/><con:element>incident</con:element><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element>incident</con:element><con:description xsi:nil="true"/></con:representation><con:request name="Request 1" id="fc10172c-f57a-4d57-beeb-61f367748e39" mediaType="application/json"><con:settings/><con:endpoint>http://localhost:9998</con:endpoint><con:parameters/></con:request></con:method><con:method name="DELETE - deleteUserIncident" id="c91998c2-a094-4d84-992f-e70cb338c2e9" method="DELETE"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/json</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1" id="b19ed0b1-fca4-44e5-8ff2-21608390654b" mediaType="application/json"><con:settings/><con:endpoint>http://localhost:9998</con:endpoint><con:parameters/></con:request></con:method></con:resource><con:resource name="incident/{incidentId}/audit" path="incident/{incidentId}/audit" id="6ef7b2c1-2deb-4519-ae39-f3ecfa76908d"><con:settings/><con:parameters><con:parameter><con:name>incidentId</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:long</con:type><con:default xsi:nil="true"/></con:parameter></con:parameters><con:method name="GET - getIncidentAudits" id="228e85ec-8709-40ce-bc2b-fb6f28edadc3" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/json</con:mediaType><con:params/><con:element>audit</con:element><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element>audit</con:element><con:description xsi:nil="true"/></con:representation><con:request name="Request 1" id="135a6877-4fc5-45b2-ab07-15b7405fa897" mediaType="application/json"><con:settings/><con:endpoint>http://localhost:9998</con:endpoint><con:parameters/></con:request></con:method><con:method name="POST - getUserIncidentAudits" id="bae5a07b-54f6-4de6-828c-9b2d8883011f" method="POST"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/json</con:mediaType><con:params/><con:element>audit</con:element><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element>audit</con:element><con:description xsi:nil="true"/></con:representation><con:request name="Request 1" id="8ec87ece-bc6b-4e16-bb81-bc63e8aa9b98" mediaType="application/json"><con:settings/><con:endpoint>http://localhost:9998</con:endpoint><con:parameters/></con:request></con:method></con:resource><con:resource name="incident/{incidentId}" path="incident/{incidentId}" id="706d1cc7-bcd9-4e33-91b5-b000e5c90994"><con:settings/><con:parameters><con:parameter><con:name>incidentId</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:long</con:type><con:default xsi:nil="true"/></con:parameter></con:parameters><con:method name="GET - getIncident" id="842abdce-1cc2-4878-ba74-b587ee63f6e0" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/json</con:mediaType><con:params/><con:element>incident</con:element><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element>incident</con:element><con:description xsi:nil="true"/></con:representation><con:request name="Request 1" id="b756a33a-9ed7-4ac8-8ad8-a9db9eeef8c4" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Accept" value="application/json" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>http://localhost:9998</con:endpoint><con:request/><con:originalUri>http://localhost/api/v20/incident/1</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="incidentId" value="1" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:request></con:method></con:resource><con:resource name="user" path="user" id="b0ccd2d7-9192-43d2-89dc-fd47e985f74b"><con:settings/><con:parameters/><con:method name="GET - getUsers" id="8a1ebfc2-9887-49d5-aab0-1c049e190a5c" method="GET"><con:settings/><con:parameters><con:parameter><con:name>role</con:name><con:value xsi:nil="true"/><con:style>QUERY</con:style><con:default xsi:nil="true"/></con:parameter></con:parameters><con:representation type="RESPONSE" id=""><con:mediaType>application/json</con:mediaType><con:params/><con:element>account</con:element><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element>account</con:element><con:description xsi:nil="true"/></con:representation><con:request name="Request 1" id="eaaaaa97-6c9a-45d2-95a4-4c4e12e82d86" mediaType="application/json"><con:settings/><con:endpoint>http://localhost:9998</con:endpoint><con:parameters/></con:request></con:method></con:resource><con:resource name="user/{userId}" path="user/{userId}" id="2f6f1e95-96d8-46ad-afbc-8e1db324fa97"><con:settings/><con:parameters><con:parameter><con:name>userId</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:long</con:type><con:default xsi:nil="true"/></con:parameter></con:parameters><con:method name="GET - getUsers" id="6b8528c0-e92a-4d55-bcda-2929edda5a70" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/json</con:mediaType><con:params/><con:element>account</con:element><con:description xsi:nil="true"/></con:representation><con:representation type="RESPONSE" id=""><con:mediaType>application/xml</con:mediaType><con:params/><con:element>account</con:element><con:description xsi:nil="true"/></con:representation><con:request name="Request 1" id="f4afa5a4-1c9c-4c87-ab4b-ad4da26ea778" mediaType="application/json"><con:settings/><con:endpoint>http://localhost:9998</con:endpoint><con:parameters/></con:request></con:method></con:resource></con:resource></con:interface><con:testSuite id="f265eb18-f96d-4530-ba79-e41271f030b1" name="TestSuite 1"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="f0f3cd5e-49f8-45cc-b476-f07ca8d655d7" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="AddsIncidentJson" searchProperties="true"><con:settings/><con:testStep type="httprequest" name="HTTP Request" id="db69cd3a-07bb-46cb-afbb-453ed4fbf440"><con:settings/><con:config method="GET" xsi:type="con:HttpRequest" id="720c3546-0ba4-4525-bb08-0b5efe693c98" name="HTTP Request" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:endpoint>http://localhost:9998/setup?action=do</con:endpoint><con:request/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:config></con:testStep><con:testStep type="restrequest" name="REST Request" id="b76de41a-69e3-47a2-9854-aa27a405ff6c"><con:settings/><con:config service="application" resourcePath="/api/v20/user/{userId}/incident" methodName="POST - createUserIncident" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="REST Request" id="9fec0be7-a610-4ccb-a151-819b25226154" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Accept" value="application/json" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>http://localhost:9998</con:endpoint><con:request>{
+	"userId": 1,
+	"type": "Test AddIncident",
+	"description": "Test AddIncident"
+}
+</con:request><con:originalUri>http://localhost/api/v20/user/1/incident</con:originalUri><con:assertion type="GroovyScriptAssertion" id="55a0e294-e733-43fa-83ad-61a54229c677" name="Script Assertion"><con:configuration><scriptText>import groovy.json.JsonSlurper;
+def slurper = new JsonSlurper()
+def result = slurper.parseText(messageExchange.responseContent)
+
+assert result.incidentType == 'Test AddIncident'
+</scriptText></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="userId" value="1" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="b1513d3b-b8e8-4df0-ab2a-c6a7fa650011" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="AddsIncidentJsonWithTransfer" searchProperties="true"><con:settings/><con:testStep type="properties" name="Properties" id="835870da-042c-4188-a974-c4458a9cc76d"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>incidentId</con:name><con:value>6</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="httprequest" name="HTTP Request" id="cfa166ba-29c9-4e83-bf56-65565393fa64"><con:settings/><con:config method="GET" xsi:type="con:HttpRequest" id="720c3546-0ba4-4525-bb08-0b5efe693c98" name="HTTP Request" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:endpoint>http://localhost:9998/setup?action=do</con:endpoint><con:request/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:config></con:testStep><con:testStep type="restrequest" name="REST Request" id="8c27ae52-b6c0-475d-a790-8bfd3d743666"><con:settings/><con:config service="application" resourcePath="/api/v20/user/{userId}/incident" methodName="POST - createUserIncident" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="REST Request" id="9fec0be7-a610-4ccb-a151-819b25226154" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Accept" value="application/json" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>http://localhost:9998</con:endpoint><con:request>{
+	"userId": 1,
+	"type": "Test AddIncident",
+	"description": "Test AddIncident"
+}
+</con:request><con:originalUri>http://localhost/api/v20/user/1/incident</con:originalUri><con:assertion type="GroovyScriptAssertion" id="55a0e294-e733-43fa-83ad-61a54229c677" name="Script Assertion"><con:configuration><scriptText>import groovy.json.JsonSlurper;
+def slurper = new JsonSlurper()
+def result = slurper.parseText(messageExchange.responseContent)
+
+assert result.incidentType == 'Test AddIncident'
+
+// set incidentId
+context.getTestCase().getTestStepByName("Properties").getProperty("incidentId").setValue(result.id + "");
+
+</scriptText></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="userId" value="1" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:testStep type="restrequest" name="REST Request: Get Incident" id="49929753-1427-4952-ac87-57dde7e218c9"><con:settings/><con:config service="application" resourcePath="/api/v20/incident/{incidentId}" methodName="GET - getIncident" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="REST Request: Get Incident" id="b756a33a-9ed7-4ac8-8ad8-a9db9eeef8c4" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Accept" value="application/json" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>http://localhost:9998</con:endpoint><con:request/><con:originalUri>http://localhost/api/v20/incident/1</con:originalUri><con:assertion type="GroovyScriptAssertion" id="ec648609-43f1-4112-8c50-52dba13f565c" name="Script Assertion"><con:configuration><scriptText>import groovy.json.JsonSlurper;
+def slurper = new JsonSlurper()
+def result = slurper.parseText(messageExchange.responseContent)
+assert result.incidentType == 'Test AddIncident'
+// string to string comparison
+assert result.id + "" == context.expand('${incidentId}')</scriptText></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="incidentId" value="${Properties#incidentId}" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="a8f12d39-281d-498a-94c8-d5d1aa9c0def" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="AddsIncidentXmlWithTransfer" searchProperties="true"><con:settings/><con:testStep type="properties" name="Properties" id="0a4f85f5-88c7-4b87-86d4-b16d9773209a"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>incidentId</con:name><con:value>6</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="httprequest" name="HTTP Request" id="aef514e3-8a6f-428e-b7e8-eb7f42f5a366"><con:settings/><con:config method="GET" xsi:type="con:HttpRequest" id="720c3546-0ba4-4525-bb08-0b5efe693c98" name="HTTP Request" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:endpoint>http://localhost:9998/setup?action=do</con:endpoint><con:request/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:config></con:testStep><con:testStep type="restrequest" name="REST Request" id="d9c5a7e3-d57e-4f92-a5fa-f96c96a9bc22"><con:settings/><con:config service="application" resourcePath="/api/v20/user/{userId}/incident" methodName="POST - createUserIncident" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="REST Request" id="9fec0be7-a610-4ccb-a151-819b25226154" mediaType="application/xml" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Accept" value="application/xml" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>http://localhost:9998</con:endpoint><con:request><![CDATA[<incident userId="1">
+	<type>Incident with XML</type>
+	<description>Incident with XML</description>
+</incident>]]></con:request><con:originalUri>http://localhost/api/v20/user/1/incident</con:originalUri><con:assertion type="XPath Match" id="a3becb72-30d6-4dc2-8564-31bb4a3385ec" name="XPath Match"><con:configuration/></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="userId" value="1" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:testStep type="transfer" name="Property Transfer" id="c2ee402b-51a1-49fa-99b9-d1c36d4194e4"><con:settings/><con:config xsi:type="con:PropertyTransfersStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:transfers setNullOnMissingSource="true" transferTextContent="true" failOnError="true" ignoreEmpty="false" transferToAll="false" entitize="false" transferChildNodes="false"><con:name>IncidentId</con:name><con:sourceType>Response</con:sourceType><con:sourceStep>REST Request</con:sourceStep><con:sourcePath>//incident/@id</con:sourcePath><con:targetType>incidentId</con:targetType><con:targetStep>REST Request: Get Incident</con:targetStep><con:upgraded>true</con:upgraded></con:transfers></con:config></con:testStep><con:testStep type="restrequest" name="REST Request: Get Incident" id="d9428e58-4bf3-432c-98f6-01e31e531758"><con:settings/><con:config service="application" resourcePath="/api/v20/incident/{incidentId}" methodName="GET - getIncident" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="REST Request: Get Incident" id="b756a33a-9ed7-4ac8-8ad8-a9db9eeef8c4" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Accept" value="application/xml" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>http://localhost:9998</con:endpoint><con:request/><con:originalUri>http://localhost/api/v20/incident/1</con:originalUri><con:assertion type="XPath Match" id="5d28e3a2-43ae-4f6e-a808-d52ffb525c03" name="XPath Match"><con:configuration><path>//incidentType</path><content>Incident with XML</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="incidentId" value="8" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="3af27c2e-70f4-4bad-a839-22e55046d149" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="AddsIncidentLoadTest" searchProperties="true"><con:settings/><con:testStep type="groovy" name="Groovy Script" id="f7352427-9dca-48e6-8424-a440c327ed91"><con:settings/><con:config><script>import org.apache.commons.lang.RandomStringUtils
+
+String charset = (('A'..'Z') + ('0'..'9')).join()
+Integer length = 9
+String randomString = RandomStringUtils.random(length, charset.toCharArray())
+String incidentTypeRandom = "Incident Type " + randomString
+String incidentDescriptionRandom = "Incident Description " + randomString
+
+random = new Random()
+int randomInt = random.nextInt(3)+1
+
+// set properties
+testRunner.testCase.setPropertyValue( "type" , "Incident Type: " + randomString)
+testRunner.testCase.setPropertyValue( "description" , "Incident Description: " + randomString)
+testRunner.testCase.setPropertyValue( "userId" , randomInt + "")
+
+</script></con:config></con:testStep><con:testStep type="restrequest" name="REST Request" id="1846b92f-26b4-42ef-923d-9884552454c5"><con:settings/><con:config service="application" methodName="POST - createUserIncident" resourcePath="/api/v20/user/{userId}/incident" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="REST Request" id="a6844cb2-70e5-4a65-9fde-51d4766fa772" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:9998</con:endpoint><con:request>{
+	"userId": ${#TestCase#userId},
+	"type": "${#TestCase#type}",
+	"description": "${#TestCase#description}"
+}
+</con:request><con:originalUri>http://localhost/api/v20/user/2/incident</con:originalUri><con:assertion type="XPath Match" id="9862be4e-9cf9-4d9a-bcde-f05b86ed987f" name="XPath Match"><con:configuration><path>//incidentType</path><content>${#TestCase#type}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="userId" value="${#TestCase#userId}" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:restRequest></con:config></con:testStep><con:loadTest id="0dd0d3ae-2eae-4c3e-a9d3-25b25ca0ade1" name="LoadTest 1"><con:settings/><con:threadCount>5</con:threadCount><con:startDelay>0</con:startDelay><con:sampleInterval>250</con:sampleInterval><con:calculateTPSOnTimePassed>true</con:calculateTPSOnTimePassed><con:resetStatisticsOnThreadCountChange>true</con:resetStatisticsOnThreadCountChange><con:historyLimit>-1</con:historyLimit><con:testLimit>60</con:testLimit><con:limitType>TIME</con:limitType><con:loadStrategy><con:type>Simple</con:type></con:loadStrategy><con:assertion type="Step Status" name="Step Status"/><con:maxAssertionErrors>100</con:maxAssertionErrors><con:cancelExcessiveThreads>true</con:cancelExcessiveThreads><con:strategyInterval>500</con:strategyInterval></con:loadTest><con:properties><con:property><con:name>type</con:name><con:value>Incident Type: YOH4JUX7G</con:value></con:property><con:property><con:name>description</con:name><con:value>Incident Description: YOH4JUX7G</con:value></con:property><con:property><con:name>userId</con:name><con:value>1</con:value></con:property></con:properties></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/></con:soapui-project>
