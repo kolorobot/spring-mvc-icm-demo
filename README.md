@@ -36,7 +36,7 @@ Navigate to the project folder and run the following command:
 
 Open the browser and navigate to:
 
-    http://localhost:8080
+    http://localhost:9998
 
 Package the project
 -------------------
